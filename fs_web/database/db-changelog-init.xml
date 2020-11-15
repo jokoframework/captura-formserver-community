@@ -1,0 +1,1125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <!-- 
+    *************************************************************************************
+    Initialization of the core schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075590730-0' >
+    		<sql splitStatements="false">
+    			create schema core;
+    		</sql>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-1">
+        <createTable schemaName="core" tableName="authorizable_entities">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="authorizable_entities_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-2">
+        <createTable schemaName="core" tableName="authorizable_entities_authorizations">
+            <column name="authorizable_entity_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-3">
+        <createTable schemaName="core" tableName="authorizations">
+            <column name="dtype" type="VARCHAR(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="authorizations_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="level" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-4">
+        <createTable schemaName="core" tableName="devices">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="devices_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="brand" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="number" type="VARCHAR(255)"/>
+            <column name="serial" type="VARCHAR(255)"/>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="user_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-5">
+        <createTable schemaName="core" tableName="groups">
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="groups_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-6">
+        <createTable schemaName="core" tableName="groups_users">
+            <column name="group_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-7">
+        <createTable schemaName="core" tableName="role_grants_authorization">
+            <column name="grants_authorization_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-8">
+        <createTable schemaName="core" tableName="users">
+            <column name="activationtoken" type="VARCHAR(255)"/>
+            <column name="expirationdate" type="DATE"/>
+            <column name="first_name" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(512)"/>
+            <column name="mail" type="VARCHAR(250)"/>
+            <column name="password" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-9">
+        <addUniqueConstraint columnNames="name" constraintName="authorizations_name_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="core" tableName="authorizations"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-10">
+        <addUniqueConstraint columnNames="mail" constraintName="users_mail_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="core" tableName="users"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-11">
+        <addUniqueConstraint columnNames="username" constraintName="users_username_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="core" tableName="users"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-12">
+        <addForeignKeyConstraint baseColumnNames="authorizable_entity_id" baseTableName="authorizable_entities_authorizations" baseTableSchemaName="core" constraintName="fkf0a0cd6f8ab7080b" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizable_entities" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-13">
+        <addForeignKeyConstraint baseColumnNames="authorization_id" baseTableName="authorizable_entities_authorizations" baseTableSchemaName="core" constraintName="fkf0a0cd6f34f488b6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizations" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-14">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="devices" baseTableSchemaName="core" constraintName="fk5cf8acdd1299c4be" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-15">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="groups" baseTableSchemaName="core" constraintName="fkb63dd9d473d0bfd8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizable_entities" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-16">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="groups_users" baseTableSchemaName="core" constraintName="fkf4231bdd6de4def6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="groups" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-17">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="groups_users" baseTableSchemaName="core" constraintName="fkf4231bdd1299c4be" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-18">
+        <addForeignKeyConstraint baseColumnNames="grants_authorization_id" baseTableName="role_grants_authorization" baseTableSchemaName="core" constraintName="fk2d43713aec272663" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizations" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-19">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_grants_authorization" baseTableSchemaName="core" constraintName="fk2d43713a33038b99" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizations" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-20">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="users" baseTableSchemaName="core" constraintName="fk6a68e0873d0bfd8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizable_entities" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-21">
+        <createSequence schemaName="core" sequenceName="seq_authorizable_entities"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-22">
+        <createSequence schemaName="core" sequenceName="seq_authorizations"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075590730-23">
+        <createSequence schemaName="core" sequenceName="seq_devices"/>
+    </changeSet>
+       <!-- 
+    *************************************************************************************
+    Initialization of the sys schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075605413-0' >
+    		<sql splitStatements="false">
+    			create schema sys;
+    		</sql>
+    </changeSet>
+     <changeSet author="danicricco (generated)" id="1334075605413-1">
+        <createTable schemaName="sys" tableName="db_version">
+            <column name="date" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="script_id" type="int2">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mobileforms_version" type="VARCHAR(10)"/>
+            <column name="description" type="VARCHAR(300)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075605413-2">
+        <createTable schemaName="sys" tableName="parameters">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="parameters_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="available" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="label" type="VARCHAR(255)"/>
+            <column name="type" type="int4"/>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075605413-3">
+        <addPrimaryKey columnNames="date, script_id" constraintName="versions_pkey" schemaName="sys" tableName="db_version"/>
+    </changeSet>
+    
+     <!-- 
+    *************************************************************************************
+    Initialization of the I18n schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075595300-0' >
+    		<sql splitStatements="false">
+    			create schema i18n;
+    		</sql>
+    </changeSet>
+      <changeSet author="danicricco (generated)" id="1334075595300-1">
+        <createTable schemaName="i18n" tableName="labels">
+            <column name="language_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="key" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075595300-2">
+        <createTable schemaName="i18n" tableName="languages">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="languages_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="iso_language" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075595300-3">
+        <addPrimaryKey columnNames="language_id, key" constraintName="labels_pkey" schemaName="i18n" tableName="labels"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075595300-4">
+        <addUniqueConstraint columnNames="iso_language" constraintName="languages_iso_language_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="i18n" tableName="languages"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075595300-5">
+        <addForeignKeyConstraint baseColumnNames="language_id" baseTableName="labels" baseTableSchemaName="i18n" constraintName="fkbdd05fffa100b5bd" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="languages" referencedTableSchemaName="i18n" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075595300-6">
+        <createSequence schemaName="i18n" sequenceName="seq_languages"/>
+    </changeSet>
+    
+     <!-- 
+    *************************************************************************************
+    Initialization of the log schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075596891-0' >
+    		<sql splitStatements="false">
+    			create schema log;
+    		</sql>
+    </changeSet>
+     <changeSet author="danicricco (generated)" id="1334075596891-1">
+        <createTable schemaName="log" tableName="uncaught_exceptions">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="uncaught_exceptions_pkey"/>
+            </column>
+            <column name="exception_type" type="VARCHAR(250)"/>
+            <column defaultValueComputed="now()" name="insert_time" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="offending_class" type="VARCHAR(250)"/>
+            <column name="stack_trace" type="VARCHAR(5000)"/>
+            <column name="url" type="VARCHAR(250)"/>
+            <column name="user_agent" type="VARCHAR(250)"/>
+            <column name="user_id" type="int8"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075596891-2">
+        <createSequence schemaName="log" sequenceName="seq_uncaught_exceptions"/>
+    </changeSet>
+   
+     <!-- 
+    *************************************************************************************
+    Initialization of the mail schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075598475-0' >
+    		<sql splitStatements="false">
+    			create schema mail;
+    		</sql>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075598475-1">
+        <createTable schemaName="mail" tableName="queue">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="queue_pkey"/>
+            </column>
+            <column name="body" type="TEXT"/>
+            <column name="mail_from" type="VARCHAR(255)"/>
+            <column defaultValueComputed="now()" name="inserted" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sent" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="VARCHAR(255)"/>
+            <column name="mail_to" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075598475-2">
+        <createSequence schemaName="mail" sequenceName="seq_mail_queue"/>
+    </changeSet>
+    
+     <!-- 
+    *************************************************************************************
+    Initialization of the scripting schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075603514-0' >
+    		<sql splitStatements="false">
+    			create schema scripting;
+    		</sql>
+    </changeSet>
+     <changeSet author="danicricco (generated)" id="1334075603514-1">
+        <createTable schemaName="scripting" tableName="scripts">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="scripts_pkey"/>
+            </column>
+            <column name="script_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="script_code" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075603514-2">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="scripts" baseTableSchemaName="scripting" constraintName="fk72d449081299c4be" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075603514-3">
+        <createSequence schemaName="scripting" sequenceName="seq_script"/>
+    </changeSet>
+   
+     <!-- 
+    *************************************************************************************
+    Initialization of the Applications schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334088907142-0' >
+    		<sql splitStatements="false">
+    			create schema applications;
+    		</sql>
+    </changeSet>
+        <changeSet author="danicricco (generated)" id="1334088907142-1">
+        <createTable schemaName="applications" tableName="application_users">
+            <column name="user_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="application_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334088907142-2">
+        <createTable schemaName="applications" tableName="applications">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="applications_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column defaultValue="en" name="defaultlanguage" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="owner_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334088907142-3">
+              <addForeignKeyConstraint baseColumnNames="application_id" baseTableName="application_users" baseTableSchemaName="applications" constraintName="fk181ba59cea68119" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334088907142-4">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="application_users" baseTableSchemaName="applications" constraintName="fk181ba59f2d988b6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="applications" referencedTableSchemaName="applications" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334088907142-5">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="applications" baseTableSchemaName="applications" constraintName="fk37dca5237e8074d6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334088907142-6">
+        <createSequence schemaName="applications" sequenceName="seq_applications"/>
+    </changeSet>
+     <!-- 
+    *************************************************************************************
+    Initialization of the Project schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075600319-0' >
+    		<sql splitStatements="false">
+    			create schema projects;
+    		</sql>
+    </changeSet>
+     <changeSet author="danicricco (generated)" id="1334075600319-1">
+        <createTable schemaName="projects" tableName="projects">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="projects_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column defaultValue="en" name="defaultlanguage" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="application_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-2">
+        <createTable schemaName="projects" tableName="projects_auth">
+            <column name="authorization_name" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorizable_entity_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-3">
+        <createTable schemaName="projects" tableName="projects_details">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="projects_details_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="label" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-4">
+        <addPrimaryKey columnNames="authorization_name, authorizable_entity_id, project_id" constraintName="projects_auth_pkey" schemaName="projects" tableName="projects_auth"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-5">
+        <addUniqueConstraint columnNames="project_id, language, label" constraintName="projects_details_project_id_language_label_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="projects" tableName="projects_details"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-6">
+        <addForeignKeyConstraint baseColumnNames="application_id" baseTableName="projects" baseTableSchemaName="projects" constraintName="fkc479187aaee64511" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="applications" referencedTableSchemaName="applications" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-7">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="projects" baseTableSchemaName="projects" constraintName="fkc479187a7e8074d6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-8">
+        <addForeignKeyConstraint baseColumnNames="authorizable_entity_id" baseTableName="projects_auth" baseTableSchemaName="projects" constraintName="fke90dba4d8ab7080b" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizable_entities" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-9">
+        <addForeignKeyConstraint baseColumnNames="authorization_name" baseTableName="projects_auth" baseTableSchemaName="projects" constraintName="fke90dba4d3e9caca6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizations" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-10">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="projects_auth" baseTableSchemaName="projects" constraintName="fke90dba4de183ca11" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="projects" referencedTableSchemaName="projects" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-11">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="projects_details" baseTableSchemaName="projects" constraintName="fk37e6977de183ca11" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="projects" referencedTableSchemaName="projects" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-12">
+        <createSequence schemaName="projects" sequenceName="seq_projects"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075600319-13">
+        <createSequence schemaName="projects" sequenceName="seq_projects_details"/>
+    </changeSet>
+    <!-- 
+    *************************************************************************************
+    Initialization of the Form schema
+    *************************************************************************************
+     -->
+     <changeSet author='danicricco' id='1334075593508-0' >
+    		<sql splitStatements="false">
+    			create schema forms;
+    		</sql>
+    </changeSet>
+     <changeSet author="danicricco (generated)" id="1334075593508-1">
+        <createTable schemaName="forms" tableName="element_instances">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="element_instances_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="position" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="required" type="bool"/>
+            <column name="visible" type="bool"/>
+            <column name="prototype_id" type="int8"/>
+            <column name="page_id" type="int8"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-2">
+        <createTable schemaName="forms" tableName="element_prototypes">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="element_prototypes_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="allowsrequiredoverride" type="bool"/>
+            <column name="allowsvisibleoverride" type="bool"/>
+            <column name="required" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visible" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="xml_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pool_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-3">
+        <createTable schemaName="forms" tableName="elements_innertexts">
+            <column name="element_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-4">
+        <createTable schemaName="forms" tableName="elements_inputs">
+            <column name="max_length" type="int4"/>
+            <column name="min_length" type="int4"/>
+            <column name="read_only" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_inputs_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-5">
+        <createTable schemaName="forms" tableName="elements_labels">
+            <column name="element_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-6">
+        <createTable schemaName="forms" tableName="elements_locations">
+            <column name="coordinates" type="VARCHAR(255)"/>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_locations_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-7">
+        <createTable schemaName="forms" tableName="elements_photos">
+            <column name="filename" type="VARCHAR(255)"/>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_photos_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-8">
+        <createTable schemaName="forms" tableName="elements_selects">
+            <column name="dependson" type="VARCHAR(255)"/>
+            <column name="lookup" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lookup_collection" type="VARCHAR(255)"/>
+            <column name="lookup_label" type="VARCHAR(255)"/>
+            <column name="lookup_value" type="VARCHAR(255)"/>
+            <column name="multiple" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="on_change" type="VARCHAR(255)"/>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_selects_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-9">
+        <createTable schemaName="forms" tableName="elements_selects_options">
+            <column name="position" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_selects_options_pkey"/>
+            </column>
+            <column name="select_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-10">
+        <createTable schemaName="forms" tableName="elements_styles">
+            <column name="element_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="key" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-11">
+        <createTable schemaName="forms" tableName="flows">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="flows_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="default_target" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-12">
+        <createTable schemaName="forms" tableName="flows_targets">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="flows_targets_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="condition" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="element_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preaction" type="VARCHAR(255)"/>
+            <column name="target" type="VARCHAR(255)"/>
+            <column name="element_value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flow_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-13">
+        <createTable schemaName="forms" tableName="form_xml_cache">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="form_xml_cache_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="form_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-14">
+        <createTable schemaName="forms" tableName="form_xml_cache_xml">
+            <column name="form_xml_cache_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="TEXT"/>
+            <column name="language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-15">
+        <createTable schemaName="forms" tableName="forms">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="forms_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="acceptdata" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="collection" type="VARCHAR(255)"/>
+            <column name="default_language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="published" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="next_version" type="int8"/>
+            <column name="previous_version" type="int8"/>
+            <column name="project_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-16">
+        <createTable schemaName="forms" tableName="forms_auth">
+            <column name="form_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_name" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorizable_entity_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-17">
+        <createTable schemaName="forms" tableName="forms_labels">
+            <column name="form_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-18">
+        <createTable schemaName="forms" tableName="forms_languages">
+            <column name="form_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="languages" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-19">
+        <createTable schemaName="forms" tableName="forms_styles">
+            <column name="form_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="key" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-20">
+        <createTable schemaName="forms" tableName="pages">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pages_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="on_load" type="VARCHAR(255)"/>
+            <column name="on_unload" type="VARCHAR(255)"/>
+            <column name="position" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="save" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="xml_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flow_id" type="int8"/>
+            <column name="form_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-21">
+        <createTable schemaName="forms" tableName="pages_labels">
+            <column name="page_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-22">
+        <createTable schemaName="forms" tableName="pages_styles">
+            <column name="page_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="key" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-23">
+        <createTable schemaName="forms" tableName="pools">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pools_pkey"/>
+            </column>
+            <column defaultValueBoolean="true" name="active" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="created" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="modified" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-24">
+        <addPrimaryKey columnNames="element_id, language" constraintName="elements_innertexts_pkey" schemaName="forms" tableName="elements_innertexts"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-25">
+        <addPrimaryKey columnNames="element_id, language" constraintName="elements_labels_pkey" schemaName="forms" tableName="elements_labels"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-26">
+        <addPrimaryKey columnNames="element_id, key" constraintName="elements_styles_pkey" schemaName="forms" tableName="elements_styles"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-27">
+        <addPrimaryKey columnNames="form_xml_cache_id, language" constraintName="form_xml_cache_xml_pkey" schemaName="forms" tableName="form_xml_cache_xml"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-28">
+        <addPrimaryKey columnNames="authorization_name, authorizable_entity_id, form_id" constraintName="forms_auth_pkey" schemaName="forms" tableName="forms_auth"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-29">
+        <addPrimaryKey columnNames="form_id, language" constraintName="forms_labels_pkey" schemaName="forms" tableName="forms_labels"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-30">
+        <addPrimaryKey columnNames="form_id, key" constraintName="forms_styles_pkey" schemaName="forms" tableName="forms_styles"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-31">
+        <addPrimaryKey columnNames="page_id, language" constraintName="pages_labels_pkey" schemaName="forms" tableName="pages_labels"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-32">
+        <addPrimaryKey columnNames="page_id, key" constraintName="pages_styles_pkey" schemaName="forms" tableName="pages_styles"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-33">
+        <addUniqueConstraint columnNames="form_id" constraintName="form_xml_cache_form_id_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="forms" tableName="form_xml_cache"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-34">
+        <addUniqueConstraint columnNames="name" constraintName="forms_name_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="forms" tableName="forms"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-35">
+        <addUniqueConstraint columnNames="flow_id" constraintName="pages_flow_id_key" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="forms" tableName="pages"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-36">
+        <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="element_instances" baseTableSchemaName="forms" constraintName="fk24328cfb4e47fe8f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="pages" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-37">
+        <addForeignKeyConstraint baseColumnNames="prototype_id" baseTableName="element_instances" baseTableSchemaName="forms" constraintName="fk24328cfbed9dca2b" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-38">
+        <addForeignKeyConstraint baseColumnNames="pool_id" baseTableName="element_prototypes" baseTableSchemaName="forms" constraintName="fkd9f0c0b4c8143202" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="pools" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-39">
+        <addForeignKeyConstraint baseColumnNames="element_id" baseTableName="elements_innertexts" baseTableSchemaName="forms" constraintName="fk6c04bc9871be4a11" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-40">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_inputs" baseTableSchemaName="forms" constraintName="fk7492a314f6a35ee" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-41">
+        <addForeignKeyConstraint baseColumnNames="element_id" baseTableName="elements_labels" baseTableSchemaName="forms" constraintName="fkba9e84771be4a11" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-42">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_locations" baseTableSchemaName="forms" constraintName="fk2e1e8a164f6a35ee" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-43">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_photos" baseTableSchemaName="forms" constraintName="fk12e610c94f6a35ee" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-44">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_selects" baseTableSchemaName="forms" constraintName="fke33eebaf4f6a35ee" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-45">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_selects_options" baseTableSchemaName="forms" constraintName="fk3401fa0e4f6a35ee" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-46">
+        <addForeignKeyConstraint baseColumnNames="select_id" baseTableName="elements_selects_options" baseTableSchemaName="forms" constraintName="fk3401fa0ee6c3b3c7" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="elements_selects" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-47">
+        <addForeignKeyConstraint baseColumnNames="element_id" baseTableName="elements_styles" baseTableSchemaName="forms" constraintName="fk18b2212a71be4a11" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-48">
+        <addForeignKeyConstraint baseColumnNames="flow_id" baseTableName="flows_targets" baseTableSchemaName="forms" constraintName="fk3010b7c85083862f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="flows" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-49">
+        <addForeignKeyConstraint baseColumnNames="form_id" baseTableName="form_xml_cache" baseTableSchemaName="forms" constraintName="fk96bd179f1fadaa84" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-50">
+        <addForeignKeyConstraint baseColumnNames="form_xml_cache_id" baseTableName="form_xml_cache_xml" baseTableSchemaName="forms" constraintName="fk3d472f776d9c994" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="form_xml_cache" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-51">
+        <addForeignKeyConstraint baseColumnNames="next_version" baseTableName="forms" baseTableSchemaName="forms" constraintName="fk5d18c2fa792579a" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-52">
+        <addForeignKeyConstraint baseColumnNames="previous_version" baseTableName="forms" baseTableSchemaName="forms" constraintName="fk5d18c2fa154439e" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-53">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="forms" baseTableSchemaName="forms" constraintName="fk5d18c2fe183ca11" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="projects" referencedTableSchemaName="projects" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-54">
+        <addForeignKeyConstraint baseColumnNames="authorizable_entity_id" baseTableName="forms_auth" baseTableSchemaName="forms" constraintName="fk30e24fb88ab7080b" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizable_entities" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-55">
+        <addForeignKeyConstraint baseColumnNames="authorization_name" baseTableName="forms_auth" baseTableSchemaName="forms" constraintName="fk30e24fb83e9caca6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorizations" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-56">
+        <addForeignKeyConstraint baseColumnNames="form_id" baseTableName="forms_auth" baseTableSchemaName="forms" constraintName="fk30e24fb81fadaa84" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-57">
+        <addForeignKeyConstraint baseColumnNames="form_id" baseTableName="forms_labels" baseTableSchemaName="forms" constraintName="fk93308e0f1fadaa84" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-58">
+        <addForeignKeyConstraint baseColumnNames="form_id" baseTableName="forms_languages" baseTableSchemaName="forms" constraintName="fk1e10300b1fadaa84" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-59">
+        <addForeignKeyConstraint baseColumnNames="form_id" baseTableName="forms_styles" baseTableSchemaName="forms" constraintName="fka038c6f21fadaa84" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-60">
+        <addForeignKeyConstraint baseColumnNames="flow_id" baseTableName="pages" baseTableSchemaName="forms" constraintName="fk657efc45083862f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="flows" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-61">
+        <addForeignKeyConstraint baseColumnNames="form_id" baseTableName="pages" baseTableSchemaName="forms" constraintName="fk657efc41fadaa84" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="forms" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-62">
+        <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="pages_labels" baseTableSchemaName="forms" constraintName="fk9a53e8da4e47fe8f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="pages" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-63">
+        <addForeignKeyConstraint baseColumnNames="page_id" baseTableName="pages_styles" baseTableSchemaName="forms" constraintName="fka75c21bd4e47fe8f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="pages" referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-64">
+        <createSequence schemaName="forms" sequenceName="seq_element_instances"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-65">
+        <createSequence schemaName="forms" sequenceName="seq_element_prototypes"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-66">
+        <createSequence schemaName="forms" sequenceName="seq_flows"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-67">
+        <createSequence schemaName="forms" sequenceName="seq_flows_targets"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-68">
+        <createSequence schemaName="forms" sequenceName="seq_forms"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-69">
+        <createSequence schemaName="forms" sequenceName="seq_forms_xml_cache"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-70">
+        <createSequence schemaName="forms" sequenceName="seq_pages"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075593508-71">
+        <createSequence schemaName="forms" sequenceName="seq_pools"/>
+    </changeSet>
+     <!-- 
+    *************************************************************************************
+    Initialization of the public schema
+    *************************************************************************************
+     -->
+    <changeSet author="danicricco (generated)" id="1334075601927-1">
+        <createTable schemaName="public" tableName="projectdto">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="projectdto_pkey"/>
+            </column>
+            <column name="active" type="bool"/>
+            <column name="created" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="label" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ownerid" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075601927-2">
+        <createTable schemaName="public" tableName="revinfo">
+            <column name="rev" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="revinfo_pkey"/>
+            </column>
+            <column name="revtstmp" type="int8"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334075601927-3">
+        <createSequence schemaName="public" sequenceName="hibernate_sequence"/>
+    </changeSet>
+   
+   
+    
+</databaseChangeLog>

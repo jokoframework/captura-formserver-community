@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>py.com.sodep.captura</groupId>
+	<artifactId>formserver</artifactId>
+	<version>1.4.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>formserver</name>
+	<description>Captura's Form Server</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Propiedades para OWASP Dependency-check -->		
+        <dependency.check.report.dir>target/dependency-check</dependency.check.report.dir>
+	</properties>
+	<modules>
+		<module>fs_business_api</module>
+		<module>fs_business</module>
+		<module>fs_web</module>
+		<module>fs_web_common</module>
+		<module>fs_web_endpoints</module>
+	</modules>
+	<build>
+        <!-- Plugins para OWASP dependency-check-->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>2.1.0</version>
+                    <configuration>
+                        <format>XML</format>
+                        <outputDirectory>${dependency.check.report.dir}</outputDirectory>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

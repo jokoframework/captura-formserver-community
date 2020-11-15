@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%c] %-5p - %m%n" />
+		</layout>
+	</appender>
+
+	<category name="org.springframework">
+		<priority value="INFO" />
+	</category>
+	<category name="org.hibernate">
+		<priority value="INFO" />
+	</category>
+	<category name="org.hibernate.ejb">
+		<priority value="INFO" />
+	</category>
+
+	<category name="org.hibernate.cfg">
+		<priority value="INFO" />
+	</category>
+	<category name="org.hibernate.tool.hbm2ddl">
+		<priority value="INFO" />
+	</category>
+	<category name="py.com.sodep.mobileforms">
+		<priority value="DEBUG" />
+	</category>
+	<category name="org.apache.commons.beanutils">
+		<priority value="INFO" />
+	</category>
+	<category name="freemarker.cache">
+		<priority value="INFO" />
+	</category>
+	<category name="py.com.sodep.mobileforms.impl.services.workers">
+	    <priority value="INFO" />
+	</category>
+	<category name="py.com.sodep.mobileforms.authorization.AuthorizationAspect">
+	    <priority value="ERROR" />
+	</category>
+	<category name="py.com.sodep.mobileforms.impl.services.data.SynchronizationService">
+	    <priority value="TRACE" />
+	</category>
+	
+	
+	<root>
+		<priority value="DEBUG" />
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>

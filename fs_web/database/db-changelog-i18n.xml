@@ -1,0 +1,14 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="1" author="i18n" runOnChange="true">
+    	<sqlFile path="database/i18n-en.sql" splitStatements="false" />
+    </changeSet>
+     <changeSet id="2" author="i18n" runOnChange="true">
+    	<sqlFile path="database/i18n-es.sql" splitStatements="false" />
+    </changeSet>
+</databaseChangeLog>

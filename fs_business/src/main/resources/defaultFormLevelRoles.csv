@@ -1,0 +1,9 @@
+ROLE_FORM_OWNER,form.edit
+ROLE_FORM_OWNER,form.mobile
+ROLE_FORM_OWNER,form.read.web
+ROLE_FORM_OWNER,form.inputData.web
+ROLE_FORM_OWNER,form.design
+ROLE_FORM_OWNER,form.publish
+ROLE_FORM_OWNER,form.viewReport
+ROLE_FORM_OWNER,form.createReport
+ROLE_FORM_OWNER,form.delete

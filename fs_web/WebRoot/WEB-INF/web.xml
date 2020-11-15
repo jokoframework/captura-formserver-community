@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>mobleforms-web</display-name>
+  <session-config>
+    <!-- ==== Default Session Configuration ==== -->
+	<!-- You can set the default session timeout (in minutes) for all newly   -->
+	<!-- created sessions by modifying the value below.                       -->
+    <session-timeout>60</session-timeout>
+    <cookie-config>
+      <http-only>true</http-only>
+    </cookie-config>
+  </session-config>
+  <welcome-file-list>
+    <welcome-file>home/home.mob</welcome-file>
+  </welcome-file-list>
+ 
+  <listener>
+    <listener-class>py.com.sodep.mobileforms.web.listener.SessionListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>py.com.sodep.mobileforms.web.listener.GeneralServletContextListener</listener-class>
+  </listener>
+  
+  <filter>
+    <filter-name>urlHistoryFilter</filter-name>
+    <filter-class>py.com.sodep.mobileforms.web.filters.URLHistoryFilter</filter-class>
+    <init-param>
+      <param-name>key</param-name>
+      <param-value>mfh</param-value>
+    </init-param>
+    
+  </filter>
+  <filter-mapping>
+    <filter-name>urlHistoryFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+  	<filter-name>responseHeadersFilter</filter-name>
+    <filter-class>py.com.sodep.mobileforms.web.endpoints.filters.ResponseHeadersFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>responseHeadersFilter</filter-name>
+    <url-pattern>/api/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping> 
+  
+  <filter>
+    <filter-name>I18nFilter</filter-name>
+    <filter-class>py.com.sodep.mobileforms.web.filters.I18nFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>I18nFilter</filter-name>
+    <url-pattern>*.mob</url-pattern>
+    <url-pattern>*.jsp</url-pattern>
+    <url-pattern>*.ftl</url-pattern>
+    <url-pattern>*.ajax</url-pattern>
+    <url-pattern>*.json</url-pattern>
+    <url-pattern>*.txt</url-pattern>
+    <url-pattern>/api/*</url-pattern>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+  	<filter-name>AuthorizationFilter</filter-name>
+  	<filter-class>py.com.sodep.mobileforms.web.filters.AuthorizationFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	 <filter-name>AuthorizationFilter</filter-name>
+    <url-pattern>*.mob</url-pattern>
+    <url-pattern>*.jsp</url-pattern>
+    <url-pattern>*.ftl</url-pattern>
+    <url-pattern>*.ajax</url-pattern>
+    <url-pattern>*.json</url-pattern>
+    <url-pattern>*.txt</url-pattern>
+    <url-pattern>/api/*</url-pattern>
+    
+    <url-pattern>/reports/images/image.jpeg</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>monitoring</filter-name>
+    <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>monitoring</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <listener>
+    <listener-class>net.bull.javamelody.SessionListener</listener-class>
+  </listener>
+	
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:/META-INF/spring/business-applicationContext.xml
+				/WEB-INF/spring/web-securityContext.xml
+				classpath:net/bull/javamelody/monitoring-spring-datasource.xml</param-value>
+  </context-param>
+  <!-- javamelody security -->
+  
+   		<login-config>
+                <auth-method>BASIC</auth-method>
+                <realm-name>Monitoring</realm-name>
+        </login-config>
+        <security-role>
+                <role-name>monitoring</role-name>
+        </security-role>
+        <security-constraint>
+                <web-resource-collection>
+                        <web-resource-name>Monitoring</web-resource-name>
+                        <url-pattern>/monitoring</url-pattern>
+                </web-resource-collection>
+                <auth-constraint>
+                        <role-name>monitoring</role-name>
+                </auth-constraint>
+                <!-- if SSL enabled (SSL and certificate must then be configured in the server)
+                <user-data-constraint>
+                        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+                </user-data-constraint> 
+                -->
+        </security-constraint>
+   <!-- END javamelody security -->
+  
+  <servlet>
+    <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>
+				/WEB-INF/spring/web-applicationContext.xml
+			</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+    <url-pattern>*.mob</url-pattern>
+    <url-pattern>*.ajax</url-pattern>
+    <url-pattern>*.json</url-pattern>
+    <url-pattern>*.jpeg</url-pattern>
+    <url-pattern>*.txt</url-pattern>
+    <url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+   <servlet>
+        <servlet-name>StickyCaptcha</servlet-name>
+        <servlet-class>py.com.sodep.mobileforms.web.listener.CaptchaMFProducerServlet</servlet-class>
+        <!--The width and height params are optional; 
+        if unspecified they default to 200 and 50 respectively. 
+         -->
+        <init-param>
+            <param-name>width</param-name>
+            <param-value>250</param-value>
+        </init-param>
+        <init-param>
+            <param-name>height</param-name>
+            <param-value>75</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>StickyCaptcha</servlet-name>
+        <url-pattern>/api/public/captcha</url-pattern>
+    </servlet-mapping>
+  <servlet>
+    <servlet-name>freemarker</servlet-name>
+    <servlet-class>freemarker.ext.servlet.FreemarkerServlet</servlet-class>
+    <init-param>
+      <param-name>TemplatePath</param-name>
+      <param-value>/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>NoCache</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ContentType</param-name>
+      <param-value>text/html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>template_update_delay</param-name>
+      <param-value>0</param-value>
+    </init-param>
+    <init-param>
+      <param-name>default_encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>number_format</param-name>
+      <param-value>0.##########</param-value>
+    </init-param>
+    <load-on-startup>5</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>freemarker</servlet-name>
+    <url-pattern>*.ftl</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>
+        	org.springframework.web.filter.DelegatingFilterProxy
+        </filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+	<filter>
+		<filter-name>ApplicationLicenseFilter</filter-name>
+		<filter-class>py.com.sodep.mobileforms.web.filters.ApplicationLicenseFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ApplicationLicenseFilter</filter-name>
+		<url-pattern>/home/home.mob</url-pattern>
+	</filter-mapping>
+  
+  <!-- I don't think that just redirecting to the home page is a good solution. 
+  An error message should be displayed. Also, I was having an exception on an ajax request, 
+  because of this redirect, and getting a 500 instead of a 404, that was an expected 
+  response code if the server was an "older version". --> 
+  <!-- 07/10/2013 jmpr -->
+<!--   <error-page> -->
+<!--   	<error-code>404</error-code> -->
+<!--   	<location>/home/home.mob</location>  	 -->
+<!--   </error-page> -->
+</web-app>

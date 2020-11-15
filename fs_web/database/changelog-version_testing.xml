@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet author="danicricco (generated)" id="1334091421166-1">
+        <createTable schemaName="version_testing" tableName="my_entity">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="my_entity_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-2">
+        <createTable schemaName="version_testing" tableName="my_entity_aud">
+            <column name="id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="int2"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-3">
+        <createTable schemaName="version_testing" tableName="my_entity_labels">
+            <column name="my_entity_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)"/>
+            <column name="language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-4">
+        <createTable schemaName="version_testing" tableName="my_entity_labels_aud">
+            <column name="rev" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="my_entity_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="int2"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-5">
+        <createTable schemaName="version_testing" tableName="myentity_subentity_aud">
+            <column name="rev" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="my_entity_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="int2"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-6">
+        <createTable schemaName="version_testing" tableName="subentities">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="subentities_pkey"/>
+            </column>
+            <column name="uninteger" type="int4"/>
+            <column name="unstring" type="VARCHAR(255)"/>
+            <column name="my_entity_id" type="int8"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-7">
+        <createTable schemaName="version_testing" tableName="subentities_aud">
+            <column name="id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rev" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revtype" type="int2"/>
+            <column name="uninteger" type="int4"/>
+            <column name="unstring" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-8">
+        <addPrimaryKey columnNames="id, rev" constraintName="my_entity_aud_pkey" schemaName="version_testing" tableName="my_entity_aud"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-9">
+        <addPrimaryKey columnNames="my_entity_id, language" constraintName="my_entity_labels_pkey" schemaName="version_testing" tableName="my_entity_labels"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-10">
+        <addPrimaryKey columnNames="rev, my_entity_id, value, language" constraintName="my_entity_labels_aud_pkey" schemaName="version_testing" tableName="my_entity_labels_aud"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-11">
+        <addPrimaryKey columnNames="rev, my_entity_id, id" constraintName="myentity_subentity_aud_pkey" schemaName="version_testing" tableName="myentity_subentity_aud"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-12">
+        <addPrimaryKey columnNames="id, rev" constraintName="subentities_aud_pkey" schemaName="version_testing" tableName="subentities_aud"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-13">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="my_entity_aud" baseTableSchemaName="version_testing" constraintName="fk193eaca7df74e053" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="rev" referencedTableName="revinfo" referencedTableSchemaName="public" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-14">
+        <addForeignKeyConstraint baseColumnNames="my_entity_id" baseTableName="my_entity_labels" baseTableSchemaName="version_testing" constraintName="fke966688d6792d23" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="my_entity" referencedTableSchemaName="version_testing" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-15">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="my_entity_labels_aud" baseTableSchemaName="version_testing" constraintName="fk789c1059df74e053" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="rev" referencedTableName="revinfo" referencedTableSchemaName="public" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-16">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="myentity_subentity_aud" baseTableSchemaName="version_testing" constraintName="fkd6e56f04df74e053" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="rev" referencedTableName="revinfo" referencedTableSchemaName="public" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-17">
+        <addForeignKeyConstraint baseColumnNames="my_entity_id" baseTableName="subentities" baseTableSchemaName="version_testing" constraintName="fkcd33c601d6792d23" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="my_entity" referencedTableSchemaName="version_testing" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-18">
+        <addForeignKeyConstraint baseColumnNames="rev" baseTableName="subentities_aud" baseTableSchemaName="version_testing" constraintName="fke21b0b52df74e053" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="rev" referencedTableName="revinfo" referencedTableSchemaName="public" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-19">
+        <createSequence schemaName="version_testing" sequenceName="seq_myentity"/>
+    </changeSet>
+    <changeSet author="danicricco (generated)" id="1334091421166-20">
+        <createSequence schemaName="version_testing" sequenceName="seq_subentities"/>
+    </changeSet>
+</databaseChangeLog>

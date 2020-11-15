@@ -1,0 +1,11 @@
+ROLE_PROJECT_OWNER,project.edit
+ROLE_PROJECT_OWNER,project.delete
+ROLE_PROJECT_OWNER,project.read.web
+ROLE_PROJECT_OWNER,project.create.form
+ROLE_PROJECT_OWNER,form.edit
+ROLE_PROJECT_OWNER,form.mobile
+ROLE_PROJECT_OWNER,form.read.web
+ROLE_PROJECT_OWNER,form.inputData.web
+ROLE_PROJECT_OWNER,form.design
+ROLE_PROJECT_OWNER,form.publish
+ROLE_PROJECT_OWNER,form.delete

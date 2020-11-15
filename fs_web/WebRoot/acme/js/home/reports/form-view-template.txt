@@ -1,0 +1,17 @@
+
+
+		<div class="span12">
+			<form class="form-horizontal form-view-horizontal">
+                <input type="hidden" id="rowId" value="<%= rowId %>" />
+				 <% for(var i=0; i<elements.length; i++) { %>
+                        <div  class="control-group" >
+                            <label class="control-label" >
+                        	    <b><%= elements[i].label %>:</b>
+                            </label>
+                        	<%= elements[i].value %>
+                        </div>
+                <% } %>
+
+			</form>
+		</div>
+

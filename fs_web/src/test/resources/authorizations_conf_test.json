@@ -1,0 +1,7 @@
+{
+	"hiddenAuthorizations":["form.edit"],
+	"dependentAuthorization":{
+		"application.project.cancreate":["project.edit"],
+		"project.edit":["form.edit"]
+	}
+}

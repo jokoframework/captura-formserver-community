@@ -1,0 +1,31 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<include file="db-changelog-init.xml" relativeToChangelogFile="true" />
+	<changeSet id="1" author="danicricco">
+		<sqlFile path="database/db-initialization.sql" />
+	</changeSet>
+
+	<include file="db-changelog-evolution.xml" relativeToChangelogFile="true" />
+	<include file="db-changelog-i18n.xml" relativeToChangelogFile="true" />
+	<include file="db-changelog-parameters.xml" relativeToChangelogFile="true" />
+	
+	<changeSet id="1" author="gui_definition" runOnChange="true">
+    	<sqlFile path="database/gui_definition.sql" splitStatements="false" />
+    </changeSet>
+
+	<!-- Specifics changesets that use contexts: http://www.liquibase.org/manual/contexts -->
+	<changeSet id="1" author="mf-testing" runAlways="true" runOnChange="true" context="mf-testing">
+		<sqlFile path="database/specifics/mf-testing.sql" splitStatements="false" />
+	</changeSet>
+	<changeSet id="1" author="captura-demo" runAlways="true" runOnChange="true" context="captura-demo">
+		<sqlFile path="database/specifics/captura-demo.sql" splitStatements="false" />
+	</changeSet>
+	<changeSet id="1" author="deploy_counter" runAlways="true">
+		<sql>
+		UPDATE sys.parameters SET value=(select cast(nextval('sys.seq_deploy') AS VARCHAR)) WHERE id=1024;
+		</sql>
+	</changeSet>
+</databaseChangeLog>

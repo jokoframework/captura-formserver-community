@@ -1,0 +1,2889 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet author="danicricco" id="1">
+		<createTable schemaName="core" tableName="dummy">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="dummy_key" />
+			</column>
+			<column defaultValueBoolean="true" name="active" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+
+		</createTable>
+	</changeSet>
+
+	<changeSet author="mprieto" id="1">
+		<addColumn tableName="queue" schemaName="mail">
+			<column name="html" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="mprieto" id="2">
+		<addColumn tableName="element_prototypes" schemaName="forms">
+			<column name="top_level" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="mprieto" id="3">
+		<sqlFile path="database/app_scope_changeset.sql" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="1">
+		<dropColumn tableName="forms" schemaName="forms"
+			columnName="name" />
+		<dropColumn tableName="forms" schemaName="forms"
+			columnName="description" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="2">
+		<renameColumn tableName="projects_auth" schemaName="projects"
+			oldColumnName="authorization_name" newColumnName="authorization_id" />
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="3">
+		<renameColumn tableName="forms_auth" schemaName="forms"
+			oldColumnName="authorization_name" newColumnName="authorization_id" />
+	</changeSet>
+
+
+	<changeSet author="mprieto" id="4">
+		<createTable schemaName="applications" tableName="parameters">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_applications_parameters" />
+			</column>
+			<column defaultValueBoolean="true" name="active" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE" />
+			<column name="available" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column name="parameter_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="VARCHAR(255)" />
+			<column name="label" type="VARCHAR(255)" />
+			<column name="type" type="int4" />
+			<column name="value" type="VARCHAR(255)" />
+			<column name="application_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="mprieto" id="5">
+		<addUniqueConstraint columnNames="parameter_id, application_id"
+			constraintName="unique_parameter_id_application_id" schemaName="applications"
+			tableName="parameters" />
+	</changeSet>
+	<changeSet author="mprieto" id="6">
+		<addForeignKeyConstraint baseColumnNames="application_id"
+			baseTableName="parameters" baseTableSchemaName="applications"
+			constraintName="fk_parameters_applications" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="applications"
+			referencedTableSchemaName="applications" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="mprieto" id="7">
+		<createSequence schemaName="applications"
+			sequenceName="seq_applications_parameters" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="8">
+		<dropColumn schemaName="applications" tableName="parameters"
+			columnName="available" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="9">
+		<createTable tableName="tokens" schemaName="core">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_tokens" />
+			</column>
+			<column defaultValueBoolean="true" name="active" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE" />
+			<column name="token" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="expires" type="TIMESTAMP WITH TIME ZONE" />
+			<column name="purpose" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="grantee_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="granter_id" type="int8" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="fk_tokens_grantee"
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedTableSchemaName="core"
+			referencedTableName="users" referencedColumnNames="id"
+			baseTableSchemaName="core" baseTableName="tokens" baseColumnNames="grantee_id" />
+		<addForeignKeyConstraint constraintName="fk_tokens_granter"
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedTableSchemaName="core"
+			referencedTableName="users" referencedColumnNames="id"
+			baseTableSchemaName="core" baseTableName="tokens" baseColumnNames="granter_id" />
+		<createSequence schemaName="core" sequenceName="seq_tokens" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="10">
+		<dropColumn schemaName="sys" tableName="parameters"
+			columnName="available" />
+		<dropTable schemaName="sys" tableName="db_version" />
+		<dropTable schemaName="core" tableName="dummy" />
+		<dropTable tableName="projectdto" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="11">
+		<dropColumn schemaName="core" tableName="users" columnName="activationtoken" />
+		<dropTable tableName="revinfo" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="12">
+		<dropColumn schemaName="forms" tableName="element_prototypes"
+			columnName="xml_id" />
+		<dropColumn schemaName="forms" tableName="pages"
+			columnName="xml_id" />
+	</changeSet>
+	<changeSet author="mprieto" id="13">
+		<dropColumn schemaName="core" tableName="users" columnName="username" />
+		<addNotNullConstraint schemaName="core"
+			tableName="users" columnName="mail" />
+	</changeSet>
+
+	<!-- see #431 -->
+	<!-- inserts an authorization to control edition of app settings -->
+	<!-- <changeSet author="mprieto" id="14"> -->
+	<!-- <sqlFile path="database/authorization_app_config.sql" /> -->
+	<!-- </changeSet> -->
+
+	<changeSet id="15" author="haquino">
+		<addColumn schemaName="forms" tableName="element_prototypes">
+			<column name="application_id" type="int8" />
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="application_id"
+			baseTableName="element_prototypes" baseTableSchemaName="forms"
+			constraintName="element_prototype_application_pk" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="applications"
+			referencedTableSchemaName="applications" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet id="16" author="haquino">
+		<dropNotNullConstraint schemaName="forms"
+			tableName="element_prototypes" columnName="pool_id" />
+	</changeSet>
+
+	<changeSet author="danicricco=" id="2">
+		<sql splitStatements="false">
+			create schema mf_data;
+		</sql>
+	</changeSet>
+
+	<changeSet author="danicricco" id="3">
+		<createTable schemaName="mf_data" tableName="lookuptables">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_lookuptable" />
+			</column>
+			<column defaultValueBoolean="true" name="active" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE" />
+			<column name="project_id" type="int8" />
+			<column name="dataset_definition" type="VARCHAR(250)">
+				<constraints nullable="false" />
+			</column>
+			<column name="next_version" type="int8" />
+			<column name="previous_version" type="int8" />
+			<column name="default_language" type="VARCHAR(16)" />
+		</createTable>
+	</changeSet>
+	<changeSet author="danicricco" id="4">
+		<createTable schemaName="mf_data" tableName="lookuptables_labels">
+			<column name="lookup_table_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="value" type="VARCHAR(1024)" />
+			<column name="language" type="VARCHAR(16)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="danicricco" id="5">
+		<addPrimaryKey columnNames="lookup_table_id, language"
+			constraintName="lookuptables_labels_pkey" schemaName="mf_data"
+			tableName="lookuptables_labels" />
+	</changeSet>
+	<changeSet author="danicricco" id="6">
+		<addForeignKeyConstraint baseColumnNames="project_id"
+			baseTableName="lookuptables" baseTableSchemaName="mf_data"
+			constraintName="fk_lookuptable_project" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="projects"
+			referencedTableSchemaName="projects" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="danicricco" id="7">
+		<addForeignKeyConstraint baseColumnNames="lookup_table_id"
+			baseTableName="lookuptables_labels" baseTableSchemaName="mf_data"
+			constraintName="fk_lookuptables_labels" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="lookuptables"
+			referencedTableSchemaName="mf_data" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="danicricco" id="8">
+		<createSequence schemaName="mf_data" sequenceName="seq_lookuptable_id" />
+	</changeSet>
+	<changeSet author="danicricco" id="9">
+		<addColumn tableName="lookuptables" schemaName="mf_data">
+			<column name="version" type="int8" defaultValueNumeric="0">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="rodrigovz" id="4">
+		<sql splitStatements="false">
+			create schema menu;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="5">
+		<createTable schemaName="menu" tableName="sub_menu">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_submenu" />
+			</column>
+			<column name="title" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="position" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence schemaName="menu" sequenceName="seq_sub_menu" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="6">
+		<createTable schemaName="menu" tableName="menu_item">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_menu_item" />
+			</column>
+			<column name="title" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="main_module" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="url" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="position" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="sub_menu_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence schemaName="menu" sequenceName="seq_menu_item" />
+		<addForeignKeyConstraint constraintName="fk_sub_menu"
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedTableSchemaName="menu"
+			referencedTableName="sub_menu" referencedColumnNames="id"
+			baseTableSchemaName="menu" baseTableName="menu_item" baseColumnNames="sub_menu_id" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="7">
+		<dropSequence schemaName="menu" sequenceName="seq_menu_item" />
+		<dropSequence schemaName="menu" sequenceName="seq_sub_menu" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="8">
+		<renameColumn tableName="menu_item" schemaName="menu"
+			oldColumnName="title" newColumnName="i18n_title" />
+		<renameColumn tableName="sub_menu" schemaName="menu"
+			oldColumnName="title" newColumnName="i18n_title" />
+	</changeSet>
+
+	<changeSet id="17" author="haquino">
+		<dropTable schemaName="forms" tableName="elements_selects_options" />
+		<dropColumn schemaName="forms" tableName="elements_selects"
+			columnName="on_change" />
+		<dropColumn schemaName="forms" tableName="elements_selects"
+			columnName="dependson" />
+		<dropColumn schemaName="forms" tableName="elements_selects"
+			columnName="lookup_collection" />
+		<dropColumn schemaName="forms" tableName="elements_selects"
+			columnName="lookup" />
+		<addColumn schemaName="forms" tableName="elements_selects">
+			<column name="lookup_identifier" type="bigint"></column>
+			<column name="option_source" type="smallint" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<!-- This is the form's own version -->
+	<changeSet author="mprieto" id="15">
+		<addColumn schemaName="forms" tableName="forms">
+			<column name="version" type="bigint" defaultValue="1">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="mprieto" id="16">
+		<addColumn schemaName="forms" tableName="forms">
+			<column name="dataset_version" type="bigint">
+			</column>
+		</addColumn>
+		<renameColumn schemaName="mf_data" tableName="lookuptables"
+			oldColumnName="version" newColumnName="dataset_version" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="17">
+		<renameColumn schemaName="forms" tableName="forms"
+			oldColumnName="collection" newColumnName="dataset_definition" />
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="9">
+		<dropNotNullConstraint schemaName="forms"
+			tableName="forms" columnName="acceptdata" />
+	</changeSet>
+
+	<changeSet id="18" author="haquino">
+		<addColumn schemaName="mf_data" tableName="lookuptables">
+			<column name="option_source" type="smallint" defaultValue="0">
+			</column>
+		</addColumn>
+	</changeSet>
+
+
+	<changeSet author="mprieto" id="18">
+		<sql splitStatements="false">
+			create schema ui;
+		</sql>
+		<createTable schemaName="ui" tableName="multiselect_conf">
+			<column name="id" type="VARCHAR(512)">
+				<constraints primaryKey="true" primaryKeyName="pk_multiselect_conf" />
+			</column>
+			<column name="service_name" type="VARCHAR(512)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="10">
+		<renameColumn schemaName="core" tableName="devices"
+			oldColumnName="description" newColumnName="imei" />
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="11">
+		<dropColumn schemaName="core" tableName="devices"
+			columnName="serial" />
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="13">
+		<addColumn schemaName="core" tableName="devices">
+			<column name="application_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_aplication_id"
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedTableSchemaName="applications"
+			referencedTableName="applications" referencedColumnNames="id"
+			baseTableSchemaName="core" baseTableName="devices" baseColumnNames="application_id" />
+	</changeSet>
+
+	<changeSet id="19" author="haquino">
+		<addColumn schemaName="forms" tableName="elements_inputs">
+			<column name="default_value" type="VARCHAR(255)">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+		<renameColumn schemaName="forms" tableName="elements_locations"
+			oldColumnName="coordinates" newColumnName="default_value" />
+	</changeSet>
+
+	<changeSet id="20" author="haquino">
+		<addColumn schemaName="forms" tableName="elements_selects">
+			<column name="default_value" type="VARCHAR(255)">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="mprieto" id="19">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('forms', 'multiselect.forms'),
+			('projects', 'multiselect.projects' );
+		</sql>
+	</changeSet>
+
+	<changeSet author="danicricco" id="10">
+		<createTable schemaName="sys" tableName="acme_modules">
+			<column name="id" type="integer">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_acme_modules" />
+			</column>
+			<column name="i18n_title" type="VARCHAR(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="i18n_description" type="VARCHAR(100)">
+
+			</column>
+			<column name="action_type" type="smallint">
+			</column>
+			<column name="js_amd" type="VARCHAR(100)">
+			</column>
+			<column name="url_view" type="VARCHAR(250)">
+			</column>
+			<column name="js_action_code" type="VARCHAR(250)">
+			</column>
+			<column name="toolbox" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="parent_id" type="integer">
+			</column>
+			<column name="tree_lft" type="integer">
+			</column>
+			<column name="tree_rgt" type="integer">
+			</column>
+
+		</createTable>
+
+	</changeSet>
+
+	<changeSet author="danicricco" id="11">
+		<createSequence schemaName="sys" sequenceName="seq_acme_module" />
+	</changeSet>
+
+	<changeSet author="danicricco" id="12">
+		<addColumn schemaName="sys" tableName="acme_modules">
+			<column name="position" type="integer">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="13">
+		<sqlFile path="database/create-acmemodules-based-Menu.sql"
+			splitStatements="false" />
+	</changeSet>
+	<changeSet author="danicricco" id="14">
+		<addColumn schemaName="sys" tableName="acme_modules">
+			<column name="root" type="integer">
+			</column>
+		</addColumn>
+
+	</changeSet>
+	<changeSet author="danicricco" id="15">
+		<createTable schemaName="sys" tableName="acme_launcher">
+			<column name="id" type="integer">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_acme_launcher" />
+			</column>
+			<column name="name" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="launch_type" type="smallint">
+			</column>
+			<column name="js_amd" type="VARCHAR(100)">
+			</column>
+			<column name="url_view" type="VARCHAR(250)">
+			</column>
+			<column name="js_code" type="VARCHAR(500)">
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="danicricco" id="16">
+		<sql splitStatements="false">
+			insert into
+			sys.acme_launcher(id,name,launch_type,js_amd,url_view)
+			select
+			id,i18n_title,0,js_amd,url_view from sys.acme_modules where js_amd is
+			not null;
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="17">
+		<dropColumn schemaName="sys" tableName="acme_modules"
+			columnName="action_type" />
+	</changeSet>
+	<changeSet author="danicricco" id="18">
+		<dropColumn schemaName="sys" tableName="acme_modules"
+			columnName="js_amd" />
+	</changeSet>
+	<changeSet author="danicricco" id="19">
+		<dropColumn schemaName="sys" tableName="acme_modules"
+			columnName="url_view" />
+	</changeSet>
+	<changeSet author="danicricco" id="20">
+		<dropColumn schemaName="sys" tableName="acme_modules"
+			columnName="js_action_code" />
+	</changeSet>
+	<changeSet author="danicricco" id="21">
+		<renameTable schemaName="sys" oldTableName="acme_modules"
+			newTableName="acme_tree_menu" />
+	</changeSet>
+	<changeSet author="danicricco" id="22">
+		<addColumn schemaName="sys" tableName="acme_tree_menu">
+			<column name="module" type="integer" />
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="23">
+		<sql splitStatements="false">
+			update sys.acme_tree_menu set module=id where
+			id in (select id from sys.acme_launcher);
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="24">
+		<renameTable schemaName="sys" oldTableName="acme_launcher"
+			newTableName="acme_launchers" />
+	</changeSet>
+	<changeSet author="danicricco" id="25">
+		<createSequence schemaName="sys" sequenceName="seq_acme_tree_menu" />
+	</changeSet>
+	<changeSet author="danicricco" id="26">
+		<renameColumn schemaName="sys" tableName="acme_tree_menu"
+			oldColumnName="module" newColumnName="module_id" />
+	</changeSet>
+	<changeSet author="danicricco" id="27">
+		<addForeignKeyConstraint baseTableSchemaName="sys"
+			referencedTableSchemaName="sys" constraintName="fk_treemenu_module"
+			baseTableName="acme_tree_menu" baseColumnNames="module_id"
+			referencedTableName="acme_launchers" referencedColumnNames="id" />
+	</changeSet>
+	<changeSet author="danicricco" id="28">
+		<createSequence schemaName="sys" sequenceName="seq_acme_launchers" />
+	</changeSet>
+	<changeSet author="danicricco" id="29">
+		<renameColumn schemaName="sys" tableName="acme_tree_menu"
+			oldColumnName="module_id" newColumnName="launcher_id" />
+	</changeSet>
+	<changeSet author="danicricco" id="30">
+		<createTable schemaName="sys" tableName="acme_views">
+			<column name="id" type="integer">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_acme_views" />
+			</column>
+			<column name="name" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="js_amd" type="VARCHAR(100)">
+			</column>
+			<column name="url_view" type="VARCHAR(250)">
+			</column>
+			<column name="toolbox_root" type="integer">
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="danicricco" id="31">
+		<sql splitStatements="false">
+			insert into sys.acme_views
+			(id,name,js_amd,url_view)
+			select id,name,js_amd,url_view from
+			sys.acme_launchers ;
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="32">
+		<createSequence schemaName="sys" sequenceName="seq_acme_views" />
+	</changeSet>
+	<changeSet author="danicricco" id="33">
+		<dropColumn schemaName="sys" tableName="acme_launchers"
+			columnName="js_amd" />
+		<dropColumn schemaName="sys" tableName="acme_launchers"
+			columnName="url_view" />
+		<addColumn schemaName="sys" tableName="acme_launchers">
+			<column name="view_id" type="integer" />
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="34">
+		<sql splitStatements="false">
+			update sys.acme_launchers set view_id=id;
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="35">
+		<sql splitStatements="false">
+			update sys.acme_views v set
+			js_amd=m.main_module,url_view=m.url
+			from menu.menu_item m where
+			v.id=m.id;
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="36">
+		<addForeignKeyConstraint baseTableSchemaName="sys"
+			referencedTableSchemaName="sys" constraintName="fk_acme_views"
+			baseTableName="acme_views" baseColumnNames="toolbox_root"
+			referencedTableName="acme_tree_menu" referencedColumnNames="id" />
+	</changeSet>
+	<changeSet author="danicricco" id="37">
+		<sql splitStatements="false">
+			select
+			setval('sys.seq_acme_launchers',(select max(id) from
+			sys.acme_launchers));
+			select setval('sys.seq_acme_tree_menu',(select
+			max(id) from sys.acme_tree_menu));
+			select
+			setval('sys.seq_acme_views',(select max(id) from sys.acme_views));
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="38">
+		<addColumn schemaName="sys" tableName="acme_launchers">
+			<column name="js_amd" type="VARCHAR(100)" />
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="39">
+		<dropTable tableName="menu_item" schemaName="menu" />
+		<dropTable tableName="sub_menu" schemaName="menu" />
+	</changeSet>
+	<changeSet author="danicricco" id="40">
+		<sql splitStatements="false">
+			drop schema menu;
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="41">
+		<addColumn schemaName="sys" tableName="acme_views">
+			<column name="show_menu" type="boolean" />
+			<column name="show_toolbox" type="boolean" />
+			<column name="show_navigator" type="boolean" />
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="42">
+		<sql splitStatements="false">
+			update sys.acme_views set
+			show_menu=true,show_toolbox=false,show_navigator=false;
+		</sql>
+	</changeSet>
+
+	<changeSet author="danicricco" id="43">
+		<sql splitStatements="false" stripComments="true">
+			--STEP 1) insert the toolbox container. The root of the tree
+			INSERT INTO sys.acme_tree_menu(id, i18n_title,toolbox)
+			values((select nextval('sys.seq_acme_tree_menu')),'Toolbox Project',true);
+
+			--STEP 2) Assigned to the view the toolbox root
+			update sys.acme_views v set toolbox_root=m."id"
+			from sys.acme_tree_menu m
+			where v."name"='web.home.admin.projects'
+			and m."i18n_title"='Toolbox Project';
+
+			--STEP 3) Create the toolbox
+			--Insert a launcher of type EXECUTE_JS
+			INSERT INTO sys.acme_launchers(id, name, launch_type, js_code, js_amd)
+			VALUES ((select nextval('sys.seq_acme_launchers')), 'create project',
+			1, 'createNewProject', '/acme/js/home/admin/project-crud-amd.js');
+
+			--insert the node that refers to the launcher
+			INSERT INTO sys.acme_tree_menu(id, i18n_title, i18n_description, toolbox,
+			parent_id, "position", launcher_id)
+			VALUES ((select nextval('sys.seq_acme_tree_menu')),
+			'web.toolbox.project.create', 'web.toolbox.project.create',
+			true, (select id from sys.acme_tree_menu m where m.i18n_title='Toolbox
+			Project'), 1,(select currval('sys.seq_acme_launchers')));
+
+			--insert a launcher to open the workflow editor
+			INSERT INTO sys.acme_launchers(id, name, launch_type, view_id)
+			VALUES ((select nextval('sys.seq_acme_launchers')), 'open editor', 0,
+			((select id from sys.acme_views where name='web.home.editor')));
+
+			INSERT INTO sys.acme_tree_menu(id, i18n_title, i18n_description,
+			toolbox, parent_id, "position", launcher_id)
+			VALUES ((select nextval('sys.seq_acme_tree_menu')),
+			'web.toolbox.weditor.open', 'web.toolbox.weditor.open',
+			true, (select id from sys.acme_tree_menu m where m.i18n_title='Toolbox
+			Project'), 1,(select currval('sys.seq_acme_launchers')));
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="44">
+		<sql splitStatements="false" stripComments="true">
+			update sys.acme_views
+			set show_toolbox=true where "name"='web.home.admin.projects';
+		</sql>
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="14">
+		<dropNotNullConstraint schemaName="core"
+			tableName="devices" columnName="user_id" />
+	</changeSet>
+	<changeSet author="danicricco" id="45">
+		<addUniqueConstraint schemaName="sys" tableName="acme_launchers"
+			columnNames="view_id" constraintName="unique_acme_launchers_view" />
+	</changeSet>
+	<changeSet author="danicricco" id="46">
+		<addForeignKeyConstraint baseTableSchemaName="sys"
+			referencedTableSchemaName="sys" constraintName="fk_launcher_view"
+			baseTableName="acme_launchers" baseColumnNames="view_id"
+			referencedTableName="acme_views" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="20">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('pools', 'multiselect.pools'),
+			('processItems', 'multiselect.processItems' );
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="16">
+		<createTable schemaName="sys" tableName="authorizations_groups">
+			<column name="id" type="integer">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_authorizations_groups" />
+			</column>
+			<column name="name" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="columns_number" type="integer">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addUniqueConstraint schemaName="sys"
+			tableName="authorizations_groups" columnNames="name"
+			constraintName="unique_name_authorizations_groups" />
+		<addColumn schemaName="core" tableName="authorizations">
+			<column name="authorization_group_id" type="integer" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="mprieto" id="21">
+		<addColumn schemaName="forms" tableName="element_instances">
+			<column name="field_name" type="VARCHAR(1024)"></column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="17">
+		<addNotNullConstraint schemaName="sys" tableName="acme_launchers"
+			columnName="launch_type" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="22">
+		<addColumn schemaName="applications" tableName="applications">
+			<column name="initial_setup_ready" type="bool"
+				defaultValueBoolean="false">
+			</column>
+		</addColumn>
+		<sql>
+			update applications.applications set initial_setup_ready = false;
+		</sql>
+		<addNotNullConstraint schemaName="applications"
+			tableName="applications" columnName="initial_setup_ready" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="18">
+		<renameColumn tableName="authorizations_groups"
+			schemaName="sys" oldColumnName="name" newColumnName="i18n_name" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="19">
+		<dropColumn tableName="authorizations_groups" schemaName="sys"
+			columnName="columns_number" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="20">
+		<addColumn schemaName="sys" tableName="authorizations_groups">
+			<column name="position" type="integer"></column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="rodrigovz" id="21">
+		<addDefaultValue schemaName="sys" tableName="authorizations_groups"
+			columnName="position" defaultValue="0" />
+		<addNotNullConstraint schemaName="sys"
+			tableName="authorizations_groups" columnName="position" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="22">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('users', 'multiselect.users');
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="23">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('groups', 'multiselect.groups'),
+			('roles', 'multiselect.roles');;
+		</sql>
+	</changeSet>
+	<changeSet id="21" author="haquino">
+		<addColumn schemaName="projects" tableName="projects">
+			<column name="lock_version" type="int4">
+			</column>
+		</addColumn>
+		<addColumn schemaName="forms" tableName="forms">
+			<column name="lock_version" type="int4">
+			</column>
+		</addColumn>
+		<sql>
+			update projects.projects set lock_version = 0 where lock_version is null;
+			update forms.forms set lock_version = 0 where lock_version is null;
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="47">
+		<addColumn schemaName="sys" tableName="acme_tree_menu">
+			<column name="visible" type="boolean" />
+			<column name="active" type="boolean" />
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="48">
+		<addDefaultValue schemaName="sys" tableName="acme_tree_menu"
+			columnName="active" defaultValue="true" />
+		<addDefaultValue schemaName="sys" tableName="acme_tree_menu"
+			columnName="visible" defaultValue="true" />
+	</changeSet>
+	<changeSet author="danicricco" id="49">
+		<addColumn schemaName="sys" tableName="acme_views">
+			<column name="trigger_navigator_link" type="boolean"
+				defaultValue="true" />
+		</addColumn>
+	</changeSet>
+	<changeSet author="rodrigovz" id="24">
+		<addColumn tableName="acme_launchers" schemaName="sys">
+			<column name="authorization_id" type="int8"></column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="authorization_id"
+			baseTableName="acme_launchers" baseTableSchemaName="sys"
+			constraintName="fk_authorization_id" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="authorizations"
+			referencedTableSchemaName="core" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="26">
+		<createTable schemaName="core" tableName="brand_devices">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="brand_devices_pk" />
+			</column>
+			<column name="description" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createTable schemaName="core" tableName="model_devices">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="model_devices_pk" />
+			</column>
+			<column name="description" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="brand_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseColumnNames="brand_id"
+			baseTableName="model_devices" baseTableSchemaName="core"
+			constraintName="fk_brand_id" deferrable="false" initiallyDeferred="false"
+			onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+			referencedTableName="brand_devices" referencedTableSchemaName="core"
+			referencesUniqueColumn="false" />
+		<addColumn tableName="devices" schemaName="core">
+			<column name="model_id" type="int8"></column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="model_id"
+			baseTableName="devices" baseTableSchemaName="core" constraintName="fk_model_id"
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="model_devices"
+			referencedTableSchemaName="core" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="27">
+		<renameColumn tableName="brand_devices" schemaName="core"
+			oldColumnName="description" newColumnName="name" />
+		<renameColumn tableName="model_devices" schemaName="core"
+			oldColumnName="description" newColumnName="name" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="28">
+		<addColumn tableName="brand_devices" schemaName="core">
+			<column defaultValueBoolean="true" name="active" type="bool">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addColumn tableName="brand_devices" schemaName="core">
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addColumn tableName="brand_devices" schemaName="core">
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addColumn tableName="brand_devices" schemaName="core">
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE">
+			</column>
+		</addColumn>
+		<addColumn tableName="model_devices" schemaName="core">
+			<column defaultValueBoolean="true" name="active" type="bool">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addColumn tableName="model_devices" schemaName="core">
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addColumn tableName="model_devices" schemaName="core">
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addColumn tableName="model_devices" schemaName="core">
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="rodrigovz" id="29">
+		<dropColumn tableName="devices" schemaName="core"
+			columnName="brand" />
+		<dropColumn tableName="devices" schemaName="core"
+			columnName="token" />
+		<dropColumn tableName="devices" schemaName="core"
+			columnName="type" />
+		<dropColumn tableName="devices" schemaName="core"
+			columnName="imei" />
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="30">
+		<addNotNullConstraint schemaName="core"
+			tableName="devices" columnName="model_id" />
+	</changeSet>
+
+	<changeSet id="22" author="haquino">
+		<createSequence schemaName="core" sequenceName="seq_model_devices" />
+		<createSequence schemaName="core" sequenceName="seq_brand_devices" />
+	</changeSet>
+
+	<changeSet id="23" author="haquino">
+		<addColumn schemaName="forms" tableName="element_prototypes">
+			<column name="lock_version" type="int4">
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="mprieto" id="23">
+		<dropNotNullConstraint schemaName="core"
+			tableName="users" columnName="mail" />
+		<addColumn schemaName="core" tableName="users">
+			<column name="former_mail" type="VARCHAR(512)">
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="24" author="haquino">
+		<dropColumn schemaName="forms" tableName="elements_locations"
+			columnName="default_value" />
+		<!-- PostgreSQL 9.1 uses float8 for longitude and latitude REfs: http://www.postgresql.org/docs/9.1/static/earthdistance.html -->
+		<addColumn schemaName="forms" tableName="elements_locations">
+			<column name="default_latitude" type="float8">
+			</column>
+			<column name="default_longitude" type="float8">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="rodrigovz" id="31">
+		<addColumn tableName="authorizable_entities" schemaName="core">
+			<column name="type" type="VARCHAR(20)"></column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="rodrigovz" id="33">
+		<sql>
+			UPDATE core.authorizable_entities SET type='User'
+			WHERE id in (SELECT id FROM core.users);
+			UPDATE core.authorizable_entities SET type='Group'
+			WHERE id in (SELECT id FROM core.groups);
+		</sql>
+	</changeSet>
+
+	<changeSet author="mprieto" id="24">
+		<sql>
+			create schema actions;
+		</sql>
+		<createTable schemaName="actions" tableName="clauses">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="actions_pkey" />
+			</column>
+			<column name="element_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="operator" type="VARCHAR(32)">
+				<constraints nullable="false" />
+			</column>
+			<column name="value" type="VARCHAR(1024)">
+				<constraints nullable="false" />
+			</column>
+			<column name="sentence_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence schemaName="actions" sequenceName="seq_clauses" />
+		<!-- a clause references an element id -->
+		<addForeignKeyConstraint constraintName="fk_clauses_element_instances"
+			baseTableSchemaName="actions" baseTableName="clauses"
+			baseColumnNames="element_id" referencedTableSchemaName="forms"
+			referencedTableName="element_instances" referencedColumnNames="id"
+
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" />
+
+		<createTable schemaName="actions" tableName="sentences">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="sentences_pkey" />
+			</column>
+			<column name="result_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="element_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence schemaName="actions" sequenceName="seq_sentences" />
+
+		<!-- a clause references a sentence. A clause is part of a sentence -->
+		<addForeignKeyConstraint constraintName="fk_clauses_sentences"
+			baseTableSchemaName="actions" baseTableName="clauses"
+			baseColumnNames="sentence_id" referencedTableSchemaName="actions"
+			referencedTableName="sentences" referencedColumnNames="id"
+
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" />
+
+		<addForeignKeyConstraint constraintName="fk_sentences_element_instances"
+			baseTableSchemaName="actions" baseTableName="sentences"
+			baseColumnNames="element_id" referencedTableSchemaName="forms"
+			referencedTableName="element_instances" referencedColumnNames="id"
+
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" />
+
+		<createTable schemaName="actions" tableName="results">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="results_pkey" />
+			</column>
+			<column name="value" type="VARCHAR(1024)"></column>
+		</createTable>
+		<createSequence schemaName="actions" sequenceName="seq_results" />
+
+		<!-- A sentence references a result -->
+		<addForeignKeyConstraint constraintName="fk_sentences_results"
+			baseTableSchemaName="actions" baseTableName="sentences"
+			baseColumnNames="result_id" referencedTableSchemaName="actions"
+			referencedTableName="results" referencedColumnNames="id" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" />
+
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="34">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('usersNotInGroup', 'multiselect.usersNotInGroup');
+		</sql>
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="36">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('groupsNotContainingUser', 'multiselect.groupsNotContainingUser');
+		</sql>
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="37">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('rolesNotContainingEntity', 'multiselect.rolesNotContainingEntity');
+		</sql>
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="38">
+		<dropColumn tableName="authorizable_entities" schemaName="core"
+			columnName="type" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="39">
+		<dropColumn tableName="forms" schemaName="forms"
+			columnName="previous_version" />
+		<renameColumn tableName="forms" schemaName="forms"
+			oldColumnName="next_version" newColumnName="root" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="40">
+		<renameColumn tableName="forms" schemaName="forms"
+			oldColumnName="root" newColumnName="root_id" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="41">
+		<sql>
+			UPDATE forms.forms SET root_id=id;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="43">
+		<sql>
+			CREATE VIEW forms.forms_last_version_view
+			AS select f.root_id as root_id, max(f.version) as max_version from
+			forms.forms f
+			group by f.root_id;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="44">
+		<sql>
+			CREATE VIEW forms.forms_last_version_published_view
+			AS SELECT f.root_id, max(f.version) AS max_version
+			FROM forms.forms f
+			GROUP BY f.root_id,f.published
+			HAVING f.published=true;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="46">
+		<addColumn tableName="forms" schemaName="forms">
+			<column name="was_published" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addColumn tableName="forms" schemaName="forms">
+			<column name="published_date" type="datetime">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="rodrigovz" id="47">
+		<sql>
+			DROP VIEW forms.forms_last_version_published_view;
+			CREATE VIEW forms.forms_published_view
+			AS SELECT f.root_id, max(f.version) AS max_version
+			FROM forms.forms f
+			GROUP BY f.root_id,f.published
+			HAVING f.published=true;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="49">
+		<sql>
+			DROP VIEW forms.forms_published_view;
+			CREATE OR REPLACE VIEW
+			forms.forms_published_view AS
+			SELECT f.root_id, max(f.version) AS version
+			FROM forms.forms f
+			GROUP BY f.root_id, f.published
+			HAVING f.published = true;
+
+			DROP VIEW forms.forms_last_version_view;
+			CREATE OR REPLACE VIEW forms.forms_last_version_view AS
+			SELECT f.root_id, max(f.version) AS version
+			FROM forms.forms f
+			GROUP BY f.root_id;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="50">
+		<dropNotNullConstraint schemaName="core"
+			tableName="authorizations" columnName="name" />
+		<addColumn schemaName="core" tableName="authorizations">
+			<column name="friendly_name" type="VARCHAR(255)">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="haquino" id="25">
+		<dropNotNullConstraint schemaName="core"
+			tableName="users" columnName="mail" />
+		<addColumn schemaName="forms" tableName="element_prototypes">
+			<column name="root_id" type="int8" />
+			<column name="version" type="int8" />
+		</addColumn>
+		<sql>
+			UPDATE forms.element_prototypes SET root_id = null, version = 1;
+		</sql>
+		<addNotNullConstraint schemaName="forms"
+			tableName="element_prototypes" columnName="version" />
+	</changeSet>
+
+	<changeSet author="mprieto" id="25">
+		<addColumn schemaName="core" tableName="tokens">
+			<column name="application_id" type="bigint"></column>
+		</addColumn>
+		<addForeignKeyConstraint baseTableSchemaName="core"
+			baseTableName="tokens" baseColumnNames="application_id"
+			constraintName="fk_tokens_applications" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="applications"
+			referencedTableSchemaName="applications" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet id="26" author="haquino">
+		<sql>
+			CREATE VIEW
+			forms.element_prototypes_last_version_view
+			AS
+			select
+			ep.root_id as root_id, max(ep.version) as max_version
+			from
+			forms.element_prototypes ep
+			group by
+			ep.root_id;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="51">
+		<sql>
+			DROP VIEW forms.element_prototypes_last_version_view;
+			CREATE OR REPLACE VIEW forms.element_prototypes_last_version_view AS
+			SELECT ep.root_id as root_id, max(ep.version) AS version
+			FROM
+			forms.element_prototypes ep
+			GROUP BY ep.root_id;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="53">
+		<sql>
+			CREATE OR REPLACE VIEW forms.forms_was_published_view AS
+			SELECT distinct (f.root_id)
+			FROM forms.forms f
+			GROUP BY f.root_id,
+			f.was_published
+			HAVING f.was_published = true;
+		</sql>
+	</changeSet>
+	<changeSet author="rodrigovz" id="54">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('formsPublished', 'multiselect.formsPublished'),
+			('formsWasPublished', 'multiselect.formsWasPublished');
+		</sql>
+	</changeSet>
+	<changeSet author="mprieto" id="26">
+		<sql>
+			DELETE FROM applications.application_users;
+			INSERT INTO applications.application_users(user_id, application_id) SELECT
+			u.id, u.default_application FROM core.users u WHERE
+			u.default_application IS NOT NULL;
+		</sql>
+	</changeSet>
+	<changeSet author="mprieto" id="27">
+		<addPrimaryKey schemaName="applications" tableName="application_users"
+			columnNames="user_id, application_id" />
+		<addColumn schemaName="applications" tableName="application_users">
+			<column name="status" type="int" defaultValue="0"></column>
+		</addColumn>
+		<sql>
+			UPDATE applications.application_users SET status = 0;
+		</sql>
+		<addNotNullConstraint schemaName="applications"
+			tableName="application_users" columnName="status" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="56">
+		<addNotNullConstraint schemaName="core"
+			tableName="authorizations" columnName="level" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="57">
+		<sql splitStatements="false">
+			create schema pools;
+			ALTER TABLE forms.pools SET SCHEMA pools;
+		</sql>
+	</changeSet>
+	
+	<changeSet author="rodrigovz" id="58">
+        <createTable schemaName="pools" tableName="pools_auth">
+            <column name="authorization_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pool_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorizable_entity_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="authorization_id, authorizable_entity_id, pool_id" 
+        constraintName="pools_auth_pkey" schemaName="pools" tableName="pools_auth"/>
+        <addForeignKeyConstraint baseColumnNames="authorizable_entity_id" baseTableName="pools_auth" baseTableSchemaName="pools" 
+        constraintName="fk_pools_auth_authorizable_entity_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" 
+        referencedColumnNames="id" referencedTableName="authorizable_entities" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    	<addForeignKeyConstraint baseColumnNames="authorization_id" baseTableName="pools_auth" baseTableSchemaName="pools" 
+    	constraintName="fk_pools_auth_authorization_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" 
+    	referencedColumnNames="id" referencedTableName="authorizations" referencedTableSchemaName="core" referencesUniqueColumn="false"/>
+    	<addForeignKeyConstraint baseColumnNames="pool_id" baseTableName="pools_auth" baseTableSchemaName="pools" 
+    	constraintName="fk_pools_auth_pool_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" 
+    	referencedColumnNames="id" referencedTableName="pools" referencedTableSchemaName="pools" referencesUniqueColumn="false"/>
+    </changeSet>
+<!-- 	<changeSet author="mprieto" id="28"> -->
+<!-- 	    <createTable schemaName="forms" tableName="elements_inputs_embedded"> -->
+<!-- 	        <column name="id" type="int8"> -->
+<!--                 <constraints nullable="false" primaryKey="true" primaryKeyName="elements_inputs_embedded_pkey"/> -->
+<!--             </column> -->
+<!-- 	    </createTable> -->
+<!-- 	    <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_inputs_embedded" baseTableSchemaName="forms"  -->
+<!-- 	        constraintName="fk_elements_inputs_embedded_prototype"  onDelete="NO ACTION" onUpdate="NO ACTION"  -->
+<!-- 	        referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" /> -->
+	    
+<!-- 	    <createTable schemaName="forms" tableName="elements_selects_embedded"> -->
+<!-- 	        <column name="id" type="int8"> -->
+<!--                 <constraints nullable="false" primaryKey="true" primaryKeyName="elements_selects_embedded_pkey"/> -->
+<!--             </column> -->
+<!-- 	    </createTable> -->
+<!-- 	    <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_selects_embedded" baseTableSchemaName="forms"  -->
+<!-- 	        constraintName="fk_elements_selects_embedded_prototype"  onDelete="NO ACTION" onUpdate="NO ACTION"  -->
+<!-- 	        referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" /> -->
+	    
+<!-- 	    <createTable schemaName="forms" tableName="elements_locations_embedded"> -->
+<!-- 	        <column name="id" type="int8"> -->
+<!--                 <constraints nullable="false" primaryKey="true" primaryKeyName="elements_locations_embedded_pkey"/> -->
+<!--             </column> -->
+<!-- 	    </createTable> -->
+<!-- 	    <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_locations_embedded" baseTableSchemaName="forms"  -->
+<!-- 	        constraintName="fk_elements_locations_embedded_prototype"  onDelete="NO ACTION" onUpdate="NO ACTION"  -->
+<!-- 	        referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" /> -->
+	    
+<!-- 	    <createTable schemaName="forms" tableName="elements_photos_embedded"> -->
+<!-- 	        <column name="id" type="int8"> -->
+<!--                 <constraints nullable="false" primaryKey="true" primaryKeyName="elements_photos_embedded_pkey"/> -->
+<!--             </column> -->
+<!-- 	    </createTable> -->
+<!-- 	    <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_photos_embedded" baseTableSchemaName="forms"  -->
+<!-- 	        constraintName="fk_elements_photos_embedded_prototype"  onDelete="NO ACTION" onUpdate="NO ACTION"  -->
+<!-- 	        referencedColumnNames="id" referencedTableName="element_prototypes" referencedTableSchemaName="forms" /> -->     
+<!-- 	</changeSet> -->
+<!-- 	<changeSet author="mprieto" id="29"> -->
+<!-- 	    <addColumn schemaName="forms" tableName="element_prototypes"> -->
+<!-- 	        <column name="is_embedded" type="bool"></column> -->
+<!-- 	    </addColumn> -->
+<!-- 	    <sql> -->
+<!-- 	        UPDATE forms.element_prototypes SET is_embedded = false; -->
+<!-- 	    </sql> -->
+<!-- 	    <addNotNullConstraint schemaName="forms" tableName="element_prototypes"  -->
+<!-- 	        columnName="is_embedded"/> -->
+<!-- 	</changeSet> -->
+	<changeSet author="mprieto" id="30">
+	    <addColumn schemaName="forms" tableName="element_prototypes">
+	        <column name="instantiability" type="int4" defaultValue="0"></column>
+	    </addColumn>
+	    <sql>
+	        UPDATE forms.element_prototypes SET instantiability = 0;
+	    </sql>
+	    <addNotNullConstraint schemaName="forms" tableName="element_prototypes" 
+	        columnName="instantiability"/>
+	</changeSet>
+	<changeSet author="rodrigovz" id="59">
+		<sql splitStatements="false">
+			ALTER SEQUENCE forms.seq_pools SET SCHEMA pools;
+		</sql>
+	</changeSet>
+	<!-- Default process items -->
+	<changeSet id="31" author="mprieto">
+	    <sql>
+			-- Input type Text
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Text','en');
+			INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES  (100,0,false,'TEXT',currval('forms.seq_element_prototypes'),null);
+			
+			-- Input type Date
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Date','en');
+			INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (null,null,false,'DATE',currval('forms.seq_element_prototypes'),null);
+			
+			-- Input type Decimal
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Decimal','en');
+			INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (1000,-1000,false,'DECIMAL',currval('forms.seq_element_prototypes'),null);
+			
+			-- Input type Integer
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Integer','en');
+			INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (1000,-1000,false,'INTEGER',currval('forms.seq_element_prototypes'),null);
+			
+			-- Input type Password
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Password','en');
+			INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (20,6,false,'PASSWORD',currval('forms.seq_element_prototypes'),null);
+			
+			-- Input type Textarea
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Text Area','en');
+			INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (255,0,false,'TEXTAREA',currval('forms.seq_element_prototypes'),null);
+			
+			-- Input type Time
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Time','en');
+			INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (null,null,false,'TIME',currval('forms.seq_element_prototypes'),null);
+			
+			-- Select
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Dropdown','en');
+			INSERT INTO forms.elements_selects(lookup_label, lookup_value, multiple, id, lookup_identifier, option_source, default_value) VALUES (null,null,false,currval('forms.seq_element_prototypes'),null,0,null);
+			
+			-- Location
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Location','en');
+			INSERT INTO forms.elements_locations(id, default_latitude, default_longitude) VALUES (currval('forms.seq_element_prototypes'),null,null);
+			
+			-- Photo
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Photo','en');
+			INSERT INTO forms.elements_photos(filename, id) VALUES (null,currval('forms.seq_element_prototypes'));
+		</sql>
+	</changeSet>
+	<!-- At this point we made a refactor of the authorization tables, so we 
+		need to run the old authorization files. Refactor of authorization -->
+
+
+	<changeSet author="danicricco" id="50">
+		<addColumn schemaName="core" tableName="authorizable_entities_authorizations">
+			<column name="authorization_name" type="VARCHAR(255)" />
+		</addColumn>
+		<addColumn schemaName="core" tableName="role_grants_authorization">
+			<column name="authorization_name" type="VARCHAR(255)" />
+		</addColumn>
+		<dropAllForeignKeyConstraints
+			baseTableSchemaName="core" baseTableName="role_grants_authorization" />
+		<dropAllForeignKeyConstraints
+			baseTableSchemaName="core" baseTableName="authorizable_entities_authorizations" />
+		<dropAllForeignKeyConstraints
+			baseTableSchemaName="applications" baseTableName="applications_auth" />
+		<dropAllForeignKeyConstraints
+			baseTableSchemaName="projects" baseTableName="projects_auth" />
+		<dropAllForeignKeyConstraints
+			baseTableSchemaName="forms" baseTableName="forms_auth" />
+		<dropAllForeignKeyConstraints
+			baseTableSchemaName="sys" baseTableName="authorizations_groups" />
+
+	</changeSet>
+	<changeSet author="danicricco" id="51">
+		<dropAllForeignKeyConstraints
+			baseTableSchemaName="sys" baseTableName="acme_launchers" />
+			
+		<sql>
+		ALTER TABLE core.authorizations DROP  CONSTRAINT authorizations_pkey CASCADE;
+			update core.authorizations set name=id where name is null;
+		</sql>
+		<addPrimaryKey schemaName="core" tableName="authorizations"
+			columnNames="name" constraintName="pk_authorizations" />
+	</changeSet>
+	<changeSet author="danicricco" id="52">
+
+		<createTable schemaName="core" tableName="roles">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_roles" />
+			</column>
+			<column name="application_id" type="int8">
+			</column>
+			<column defaultValueBoolean="true" name="editable" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="true" name="active" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE" />
+			<column name="available" type="bool">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="danicricco" id="53">
+		<createSequence schemaName="core" sequenceName="seq_core_roles" />
+	</changeSet>
+	<changeSet author="danicricco" id="54">
+		<sql>
+			delete from core.roles;
+			INSERT INTO core.roles(
+			id, application_id, editable, active, created, deleted, modified,
+			available)
+			select
+			a.id,a.application_id,a.editable,a.active,a.created,a.deleted,a.modified,true
+			from core.authorizations a where dtype='Role';
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="55">
+		<addColumn schemaName="core" tableName="authorizable_entities_authorizations">
+			<column name="role_id" type="int8" />
+			<column name="application_id" type="int8" />
+			<column name="project_id" type="int8" />
+			<column name="form_id" type="int8" />
+		</addColumn>
+
+	</changeSet>
+	<changeSet author="danicricco" id="56">
+		<sql>
+			INSERT INTO core.authorizable_entities_authorizations(
+			authorizable_entity_id, authorization_id, application_id)
+			SELECT authorizable_entity_id,authorization_name,application_id
+			FROM applications.applications_auth;
+
+			INSERT INTO core.authorizable_entities_authorizations(
+			authorizable_entity_id, authorization_id, project_id)
+			SELECT
+			authorizable_entity_id,authorization_id, project_id
+			FROM projects.projects_auth;
+
+			INSERT INTO core.authorizable_entities_authorizations(
+			authorizable_entity_id, authorization_id, form_id)
+			SELECT
+			authorizable_entity_id,authorization_id,form_id
+			FROM forms.forms_auth;
+
+			UPDATE core.authorizable_entities_authorizations
+			SET role_id=authorization_id
+			where authorization_id in (
+			select d.id from core.authorizations d where
+			d.dtype='Role'
+			);
+
+		</sql>
+	</changeSet>
+	<changeSet author="danicricco" id="57">
+		<dropTable schemaName="applications" tableName="applications_auth" />
+		<dropTable schemaName="projects" tableName="projects_auth" />
+		<dropTable schemaName="forms" tableName="forms_auth" />
+	</changeSet>
+	<changeSet  author="danicricco" id="58">
+		<sql>
+			update core.authorizable_entities_authorizations d set
+			authorization_name=
+			(select name from core.authorizations where
+			id=d.authorization_id);
+		</sql>
+	</changeSet>
+	<changeSet  author="danicricco" id="59">
+		<dropColumn schemaName="core"
+			tableName="authorizable_entities_authorizations" columnName="authorization_id" />
+		<addForeignKeyConstraint constraintName="fk_authorizable_entities_authorizations"
+			referencedTableSchemaName="core" referencedTableName="authorizations"
+			baseTableSchemaName="core" baseColumnNames="authorization_name"
+			baseTableName="authorizable_entities_authorizations"
+			referencedColumnNames="name" />
+	</changeSet>
+	<changeSet author="danicricco" id="60">
+		<dropColumn schemaName="sys" tableName="acme_launchers"
+			columnName="authorization_id" />
+		<addColumn schemaName="sys" tableName="acme_launchers">
+			<column name="authorization_name" type="VARCHAR(255)" />
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_acme_launchers_authorizations"
+			referencedTableSchemaName="core" referencedTableName="authorizations"
+			referencedColumnNames="name" baseTableSchemaName="sys"
+			baseColumnNames="authorization_name" baseTableName="acme_launchers" />
+	</changeSet>
+	<changeSet author="danicricco" id="61">
+
+		<sql>
+			delete from core.authorizable_entities_authorizations
+			where authorization_name in (
+			select name from core.authorizations d where
+			d.dtype='Role'
+			);
+			delete from core.authorizations where dtype='Role';
+		</sql>
+		<dropColumn schemaName="core" tableName="authorizations"
+			columnName="dtype" />
+	</changeSet>
+	<changeSet author="danicricco" id="62">
+		<dropColumn schemaName="core" tableName="authorizations"
+			columnName="id" />
+	</changeSet>
+	<changeSet author="danicricco" id="63">
+		<addPrimaryKey schemaName="core"
+			tableName="authorizable_entities_authorizations" columnNames="authorizable_entity_id,authorization_name" />
+	</changeSet>
+	<changeSet author="danicricco" id="64">
+		<dropColumn schemaName="core"
+			tableName="authorizable_entities_authorizations" columnName="authorization_name" />
+	</changeSet>
+	<changeSet author="danicricco" id="65">
+		<addColumn schemaName="core" tableName="authorizable_entities_authorizations">
+			<column name="id" type="int8">
+			</column>
+		</addColumn>
+		<createSequence schemaName="core"
+			sequenceName="seq_authorizable_entities_authorizations" />
+		<addPrimaryKey schemaName="core"
+			tableName="authorizable_entities_authorizations" columnNames="id" />
+	</changeSet>
+	<changeSet author="danicricco" id="66">
+		<addColumn schemaName="core" tableName="authorizable_entities_authorizations">
+			<column name="pool_id" type="int8">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="67">
+		<addColumn schemaName="core" tableName="authorizable_entities_authorizations">
+			<column name="auth_level" type="int">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="68">
+		<dropColumn schemaName="core" tableName="authorizations" columnName="level"/>
+		<addColumn schemaName="core" tableName="authorizations">
+			<column name="auth_level" type="int">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="69" >
+		<dropColumn schemaName="core" tableName="authorizations" columnName="active"/>
+		<dropColumn schemaName="core" tableName="authorizations" columnName="created"/>
+		<dropColumn schemaName="core" tableName="authorizations" columnName="deleted"/>
+		<dropColumn schemaName="core" tableName="authorizations" columnName="modified"/>
+		<dropColumn schemaName="core" tableName="authorizations" columnName="description"/>
+		<dropColumn schemaName="core" tableName="authorizations" columnName="application_id"/>
+		<dropColumn schemaName="core" tableName="authorizations" columnName="editable"/>
+		<dropColumn schemaName="core" tableName="authorizations" columnName="friendly_name"/>
+	</changeSet>
+	<changeSet author="danicricco" id="70">
+		<dropColumn schemaName="core" tableName="authorizations" columnName="authorization_group_id"/>
+		<dropColumn schemaName="sys" tableName="authorizations_groups" columnName="id" />
+		<addColumn schemaName="core" tableName="authorizations">
+			<column name="auth_group" type="varchar(50)"></column>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_authorization_group" referencedTableSchemaName="sys" referencedTableName="authorizations_groups" referencedColumnNames="i18n_name" baseTableSchemaName="core" baseTableName="authorizations" baseColumnNames="auth_group"  />
+	</changeSet>
+	<changeSet author="danicricco"  id="71">
+		<addPrimaryKey schemaName="sys" tableName="authorizations_groups" columnNames="i18n_name"/>
+	</changeSet>
+	<changeSet author="danicricco"  id="72">
+		<dropNotNullConstraint schemaName="sys" tableName="authorizations_groups" columnName="position"/>
+	</changeSet>
+	<changeSet author="danicricco"  id="73">
+		<addColumn schemaName="core" tableName="roles">
+			<column name="auth_level" type="int"></column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco"  id="74">
+		<addColumn schemaName="core" tableName="roles">
+			<column name="description" type="varchar(500)"></column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco"  id="75">
+		<addColumn schemaName="core" tableName="roles">
+			<column name="name" type="varchar(500)"></column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco"  id="76">
+		<dropColumn schemaName="core" tableName="roles" columnName="available"/>
+	</changeSet>
+	<changeSet author="danicricco"  id="77">
+		<dropColumn schemaName="core" tableName="role_grants_authorization" columnName="grants_authorization_id"/>
+	</changeSet>
+	<changeSet author="danicricco"  id="78">
+		<addPrimaryKey schemaName="core" tableName="role_grants_authorization" columnNames="role_id,authorization_name"/>
+	</changeSet>
+	<changeSet author="danicricco"  id="79">
+		<addNotNullConstraint schemaName="core" tableName="authorizable_entities_authorizations" columnName="auth_level"/>
+	</changeSet>
+
+	<changeSet author="danicricco"  id="80">
+		<addColumn schemaName="forms" tableName="forms">
+			<column name="published_version" type="bigint"></column>			
+		</addColumn>
+	</changeSet>
+	
+	<changeSet author="rodrigovz"  id="60">
+		<dropForeignKeyConstraint
+    		constraintName="fk_acme_launchers_authorizations"
+    		baseTableSchemaName="sys"
+    		baseTableName="acme_launchers"/>
+	</changeSet>
+	<changeSet author="rodrigovz"  id="61">
+		<addColumn tableName="pools" schemaName="pools">
+			<column name="owner_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_pool_owner_id"
+			baseTableSchemaName="pools" baseTableName="pools"
+			baseColumnNames="owner_id" referencedTableSchemaName="core"
+			referencedTableName="users" referencedColumnNames="id"
+			deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+			onUpdate="NO ACTION" />
+	</changeSet>
+	<changeSet author="rodrigovz"  id="63">
+		<dropTable schemaName="pools" tableName="pools_auth"/>
+	</changeSet>
+	<changeSet author="danicricco" id="81">
+
+		<addColumn schemaName="mf_data" tableName="lookuptables">
+			<column name="application_id" type="int8">
+			</column>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_lookuptable_application"
+			referencedTableSchemaName="applications" referencedTableName="applications" referencedColumnNames="id"
+			 baseTableSchemaName="mf_data" baseTableName="lookuptables"  baseColumnNames="application_id" />
+	</changeSet>
+	
+	<changeSet id="32" author="mprieto" >
+        <addUniqueConstraint
+            columnNames="root_id, version"
+            schemaName="forms"
+            tableName="forms" />
+    </changeSet>
+    
+    <changeSet author="rodrigovz"  id="64">
+		<addColumn tableName="queue" schemaName="mail">
+			<column name="attempts" type="int8" defaultValueNumeric="0">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet author="rodrigovz"  id="66">
+		<sql splitStatements="false">
+			create schema reports;
+		</sql>
+	</changeSet>
+	
+	<changeSet author="rodrigovz" id="67">
+		<createTable schemaName="reports" tableName="reports">
+			<column name="id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="VARCHAR(256)">
+				<constraints nullable="false" />
+			</column>
+			<column name="form_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseColumnNames="form_id"
+			baseTableName="reports" baseTableSchemaName="reports"
+			constraintName="fk_reports_form_id" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="forms"
+			referencedTableSchemaName="forms" referencesUniqueColumn="false" />
+	</changeSet>
+	
+	<changeSet author="rodrigovz" id="68">
+		<renameTable schemaName="reports" oldTableName="reports"
+			newTableName="querys" />
+	</changeSet>
+
+	<changeSet author="rodrigovz" id="69">
+		<createTable schemaName="reports" tableName="query_details">
+			<column name="id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="element_instance_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="operator" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="op1" type="VARCHAR(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="op2" type="VARCHAR(50)">
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseColumnNames="element_instance_id"
+			baseTableName="query_details" baseTableSchemaName="reports"
+			constraintName="fk_query_details_element_instance_id" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="element_instances"
+			referencedTableSchemaName="forms" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="70">
+		<renameTable schemaName="reports" oldTableName="query_details"
+			newTableName="querys_filters" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="71">
+		<addPrimaryKey columnNames="id"
+			constraintName="querys_id_pkey" schemaName="reports"
+			tableName="querys" />
+		<addColumn tableName="querys_filters" schemaName="reports">
+			<column name="query_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="query_id"
+			baseTableName="querys_filters" baseTableSchemaName="reports"
+			constraintName="fk_query_details_query_id" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="querys"
+			referencedTableSchemaName="reports" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="73">
+		<addPrimaryKey columnNames="id"
+			constraintName="querys_filters_id_pkey" schemaName="reports"
+			tableName="querys_filters" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="74">
+		<createSequence schemaName="reports"
+			sequenceName="seq_querys" />
+		<createSequence schemaName="reports"
+			sequenceName="seq_querys_filters" />		
+	</changeSet>
+	<changeSet author="rodrigovz" id="76">
+		<createTable schemaName="reports" tableName="querys_column_view">
+			<column name="id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="query_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="element_instance_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="header" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="view" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addPrimaryKey columnNames="id"
+			constraintName="querys_column_view_id_pkey" schemaName="reports"
+			tableName="querys_column_view" />
+		<addForeignKeyConstraint baseColumnNames="query_id"
+			baseTableName="querys_column_view" baseTableSchemaName="reports"
+			constraintName="fk_query_column_view_query_id" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="querys"
+			referencedTableSchemaName="reports" referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="element_instance_id"
+			baseTableName="querys_column_view" baseTableSchemaName="reports"
+			constraintName="fk_querys_column_view_element_instance_id" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="element_instances"
+			referencedTableSchemaName="forms" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="77">
+		<renameTable schemaName="reports" oldTableName="querys_column_view"
+			newTableName="querys_column" />
+		<createSequence schemaName="reports"
+			sequenceName="seq_querys_column"/>
+		<dropColumn tableName="querys_column" schemaName="reports"
+			columnName="header" />
+		<dropColumn tableName="querys_column" schemaName="reports"
+			columnName="view"/>
+		<addColumn tableName="querys_column" schemaName="reports">
+			<column name="type" type="VARCHAR(30)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>			
+	</changeSet>
+	<changeSet author="rodrigovz" id="78">
+		<renameTable schemaName="reports" oldTableName="querys_column"
+			newTableName="querys_columns" />
+	</changeSet>
+	<changeSet author="rodrigovz" id="80">
+		<addColumn tableName="querys_columns" schemaName="reports">
+			<column name="column_order" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="mprieto" id="33">
+	    <sql>
+	       drop schema if exists actions cascade;
+	    </sql>
+	    <createTable schemaName="forms" tableName="elements_filters">
+	        <column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_elements_filters" />
+			</column>
+			<column name="filter_type" type="integer">
+			    <constraints nullable="false"/>
+			</column>
+			<column name="column_name" type="varchar(512)">
+			    <constraints nullable="false"/>
+			</column>
+			<column name="condition" type="integer">
+			    <constraints nullable="false"/>
+			</column>
+			<column name="dynamic_default_value_id" type="int8">
+			</column>
+			<column name="select_id" type="int8">
+			</column>
+	    </createTable>
+	    <createSequence schemaName="forms" sequenceName="seq_elements_filters"/>
+	    
+	    <createTable schemaName="forms" tableName="elements_dynamic_default_values">
+	        <column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_elements_dynamic_default_values" />
+			</column>
+	        <column name="lookup" type="varchar(512)">
+			    <constraints nullable="false"/>
+			</column>
+			<column name="column_name" type="varchar(512)">
+			    <constraints nullable="false"/>
+			</column>
+	    </createTable>
+	    <createSequence schemaName="forms" sequenceName="seq_elements_dynamic_default_values"/>
+	    
+	    <addForeignKeyConstraint constraintName="fk_elements_filters_elements_dynamic_default_values" 
+	        baseTableSchemaName="forms" baseTableName="elements_filters" baseColumnNames="dynamic_default_value_id"
+			referencedTableSchemaName="forms" referencedTableName="elements_dynamic_default_values"  referencedColumnNames="id"  />
+	    
+	   	<addForeignKeyConstraint constraintName="fk_elements_filters_elements_selects"  
+	   	    baseTableSchemaName="forms" baseTableName="elements_filters" baseColumnNames="select_id"
+			referencedTableSchemaName="forms" referencedTableName="elements_selects" referencedColumnNames="id" />
+	   	
+	   	<addColumn schemaName="forms" tableName="elements_inputs" >
+	   	    <column name="dynamic_default_value_id" type="int8">
+	   	    </column>
+	   	</addColumn>
+	   	
+	   	<addForeignKeyConstraint constraintName="fk_elements_inputs_dynamic_default_value_id" 
+	   	    baseTableSchemaName="forms" baseTableName="elements_inputs" baseColumnNames="dynamic_default_value_id" 
+	   	    referencedTableSchemaName="forms" referencedTableName="elements_dynamic_default_values" referencedColumnNames="id"/>
+	    
+	</changeSet>
+	<changeSet id="34" author="mprieto">
+	    <addColumn schemaName="forms" tableName="elements_selects">
+	        <column name="ignore_unknown_filters" type="boolean"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="35" author="mprieto">
+	    <addColumn schemaName="forms" tableName="elements_filters">
+	        <column name="element_instance_id" type="int8">
+	            <constraints nullable="false"/>
+	        </column>
+	    </addColumn>
+	    <addForeignKeyConstraint constraintName="fk_elements_filters_elements" 
+	        baseTableSchemaName="forms" baseTableName="elements_filters" baseColumnNames="element_instance_id" 
+	   	    referencedTableSchemaName="forms" referencedTableName="element_instances" referencedColumnNames="id"/>
+	</changeSet>
+	<changeSet id="36" author="mprieto">
+	    <dropColumn schemaName="forms" tableName="elements_filters" columnName="dynamic_default_value_id"/>
+	    <dropColumn schemaName="forms" tableName="elements_inputs" columnName="dynamic_default_value_id"/>
+	   	<dropColumn schemaName="forms" tableName="elements_filters" columnName="select_id"/>
+	   	<dropColumn schemaName="forms" tableName="elements_selects" columnName="ignore_unknown_filters"/>
+	    <dropTable schemaName="forms" tableName="elements_dynamic_default_values"/>
+	    <dropSequence schemaName="forms" sequenceName="seq_elements_dynamic_default_values"/>
+	    <addColumn schemaName="forms" tableName="element_instances">
+	        <column name="xml_id" type="varchar(255)"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="37" author="mprieto">
+	    <sql>
+	        UPDATE forms.element_instances SET xml_id = 'element' || id
+	    </sql>
+	</changeSet>
+	<changeSet id="38" author="mprieto">
+	    <addColumn schemaName="forms" tableName="element_instances">
+	        <column name="default_value_column" type="varchar(512)"></column>
+	        <column name="default_value_lookup" type="int8"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="39" author="mprieto">
+	    <addColumn schemaName="forms" tableName="elements_filters" >
+	        <column name="right_value" type="varchar(512)"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="40" author="mprieto">
+	    <renameColumn schemaName="forms" tableName="elements_filters" oldColumnName="condition" newColumnName="comparison_operator"/>
+	</changeSet>
+	<changeSet author="rodrigovz" id="81">
+		<addColumn tableName="querys" schemaName="reports">
+			<column name="default_query" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="41" author="mprieto">
+	    <dropTable schemaName="forms" tableName="elements_innertexts"/>
+	    <createTable schemaName="forms" tableName="elements_texts">
+	        <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_texts_pkey"/>
+            </column>
+	        <column name="value" type="VARCHAR(1024)"/>
+	    </createTable>
+	    <addForeignKeyConstraint baseTableSchemaName="forms" baseTableName="elements_texts"  baseColumnNames="id" 
+	    	constraintName="elements_texts_element_prototypes" deferrable="false" initiallyDeferred="false" 
+			onDelete="NO ACTION" onUpdate="NO ACTION" 
+			referencedTableSchemaName="forms" referencedTableName="element_prototypes" referencedColumnNames="id" />
+	</changeSet>
+	<changeSet id="42" author="mprieto">
+	    <renameColumn schemaName="forms" tableName="element_instances" oldColumnName="xml_id" newColumnName="instance_id"/>
+	</changeSet>
+	
+	<changeSet id="43" author="mprieto">
+	    <sql>
+			-- Type Headline
+			INSERT INTO forms.element_prototypes(id, active, deleted, allowsrequiredoverride, allowsvisibleoverride, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability) 
+			VALUES (nextval('forms.seq_element_prototypes'),true,false,false,false,false,true,null,null,1,currval('forms.seq_element_prototypes'),1,2);
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Headline','en');
+			INSERT INTO forms.elements_texts(value, id) VALUES ('HEADLINE',currval('forms.seq_element_prototypes'));	        
+	        
+	    </sql>
+	</changeSet>
+	
+	<changeSet id="44" author="mprieto">
+	    <renameTable schemaName="forms" newTableName="elements_headlines" oldTableName="elements_texts"/>
+	</changeSet>
+	
+	<changeSet id="45" author="mprieto">
+	    <dropTable schemaName="forms" tableName="elements_styles"/>
+	</changeSet>
+
+	<changeSet id="46" author="mprieto">
+	    <dropTable schemaName="forms" tableName="pages_styles" />
+	    <dropTable schemaName="forms" tableName="forms_styles" />
+	</changeSet>
+	
+	<changeSet id="47" author="mprieto">
+	    <dropColumn schemaName="forms" tableName="elements_headlines" columnName="value"/>
+	</changeSet>
+	
+	<changeSet id="48" author="mprieto">
+	    <dropColumn schemaName="forms" tableName="element_prototypes" columnName="allowsrequiredoverride"/>
+	    <dropColumn schemaName="forms" tableName="element_prototypes" columnName="allowsvisibleoverride"/>
+	</changeSet> 
+	
+	<changeSet id="49" author="mprieto">
+	    <dropColumn schemaName="forms" tableName="element_prototypes" columnName="top_level"/>
+	</changeSet>
+	
+	<changeSet author="rodrigovz" id="83">
+		<dropNotNullConstraint schemaName="reports"
+			tableName="querys_columns" columnName="element_instance_id" />
+		<addColumn schemaName="reports" tableName="querys_columns">
+			<column name="metadata_column" type="VARCHAR(100)" />
+		</addColumn>
+	</changeSet>
+	<changeSet id="50" author="mprieto">
+	    <renameColumn schemaName="forms" tableName="flows_targets" oldColumnName="condition" newColumnName="operator"/>
+	</changeSet>
+	<changeSet id="51" author="mprieto">
+	    <addColumn schemaName="forms" tableName="forms" >
+	        <column name="provide_location" type="boolean" defaultValue="false"></column>
+	    </addColumn>
+	    <sql>
+	        UPDATE forms.forms SET provide_location=false;
+	    </sql>
+	</changeSet>
+	<changeSet id="52" author="mprieto">
+	    <addColumn schemaName="forms" tableName="pages">
+	        <column name="instance_id" type="varchar(255)"></column>
+	     </addColumn>
+	    <sql>
+	        UPDATE forms.pages SET instance_id = 'page' || id
+	    </sql>
+	</changeSet>
+	
+	<changeSet id="82" author="danicricco">
+		<renameTable schemaName="reports" newTableName="queries" oldTableName="querys"/>
+	</changeSet>
+	<changeSet author="danicricco" id="83">
+		<addColumn schemaName="reports" tableName="queries">
+			<column name="selected_table_columns" type="TEXT">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="84">
+		<addColumn schemaName="reports" tableName="queries">
+			<column name="selected_csv_columns" type="TEXT">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="danicricco" id="85">
+		<addColumn schemaName="reports" tableName="queries">
+			<column name="filter_options" type="TEXT">
+			</column>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet author="danicricco" id="86">
+		<dropTable tableName="querys_columns" schemaName="reports"/>		
+	</changeSet>
+	
+	<changeSet author="danicricco" id="87">
+		<dropTable tableName="querys_filters" schemaName="reports"/>		
+	</changeSet>
+	
+	<changeSet id="53" author="mprieto">
+	    <sql>
+	       UPDATE forms.elements_inputs  SET max_length = null, min_length = null WHERE
+			id IN (SELECT p.id FROM forms.element_prototypes p WHERE p.instantiability = 2) 
+			and (type = 'DECIMAL' OR type = 'INTEGER');
+	    </sql>
+	</changeSet>
+	<changeSet id="88" author="danicricco">
+	    <addColumn schemaName="forms" tableName="element_prototypes"  >
+	    	<column name="default_language" type="character varying(3)">
+			</column>
+	    </addColumn>
+	    <!-- 
+	    We were using only english so this is an update to be sure that all elemnent have a language before we introduce a constratint
+	     -->
+	    <sql>
+	    	update forms.element_prototypes set default_language='en';
+	    </sql>
+	    <addNotNullConstraint schemaName="forms" tableName="element_prototypes" columnName="default_language"/>
+	</changeSet>
+	
+	<changeSet id="89" author="danicricco">
+	    <addColumn schemaName="forms" tableName="pages"  >
+	    	<column name="default_language" type="character varying(3)">
+			</column>
+	    </addColumn>
+	    <!-- 
+	    We were using only english so this is an update to be sure that all elemnent have a language before we introduce a constratint
+	     -->
+	    <sql>
+	    	update forms.pages set default_language='en';
+	    </sql>
+	    <addNotNullConstraint schemaName="forms" tableName="pages" columnName="default_language"/>
+	</changeSet>
+
+	<changeSet id="90" author="danicricco">
+		<dropColumn schemaName="log" tableName="uncaught_exceptions" columnName="stack_trace"/>
+		<addColumn schemaName="log" tableName="uncaught_exceptions" ><column name="stack_trace" type="TEXT"></column></addColumn>
+	</changeSet>
+	<changeSet id="54" author="mprieto">
+	    <sql>
+	        
+	        INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Text' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Texto', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Date' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Fecha', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Decimal' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Decimal', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Integer' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Entero', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Password' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Contraseña', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Time' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Hora', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Dropdown' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Lista desplegable', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Location' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Ubicación', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Photo' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Fotografía', 'es');
+			
+			INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Headline' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Encabezado', 'es');
+			
+				        
+	    </sql>
+
+	</changeSet>
+
+	<changeSet id="55" author="mprieto">
+		<sql>create schema documents</sql>
+		<createTable tableName="uploads" schemaName="documents">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_data_uploads" />
+			</column>
+			<column name="user_id" type="int8">
+			</column>
+			<column name="device_id" type="varchar(255)">
+			</column>
+			<column name="document_id" type="varchar(255)"></column>
+			<column name="size" type="int8"></column>
+			<column name="received" type="int8"></column>
+			<column name="status" type="int2"></column>
+			<column name="tmp_file" type="varchar(2048)"></column>
+		</createTable>
+		<createSequence schemaName="documents" sequenceName="seq_uploads" />
+		<addUniqueConstraint columnNames="user_id, device_id, document_id"
+			constraintName="unique_document_upload" schemaName="documents"
+			tableName="uploads" />
+	</changeSet>
+	<changeSet id="56" author="mprieto">
+	    <addColumn tableName="uploads" schemaName="documents" >
+	        <column name="random_str" type="varchar(32)"></column>
+	    </addColumn>
+	    <dropColumn schemaName="documents" tableName="uploads"
+			columnName="tmp_file" />
+	</changeSet>
+	<changeSet id="57" author="mprieto">
+	    <addColumn tableName="uploads" schemaName="documents">
+	        <column defaultValueComputed="now()" name="created_at" type="TIMESTAMP WITH TIME ZONE"></column>
+	        <column defaultValueComputed="now()" name="modified_at" type="TIMESTAMP WITH TIME ZONE"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="58" author="mprieto">
+	    <sql>
+	        DELETE FROM documents.uploads
+	    </sql>
+	    <dropColumn schemaName="documents" tableName="uploads" columnName="status"/>
+	    <addColumn schemaName="documents" tableName="uploads">
+	        <column name="status" type="varchar(255)"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="59" author="mprieto">
+		<dropColumn schemaName="documents" tableName="uploads"
+			columnName="received" />
+	</changeSet>
+	
+	<changeSet id="91" author="danicricco">
+		<dropTable schemaName="documents" tableName="uploads"  />
+		<createTable tableName="uploads" schemaName="mf_data">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_data_uploads" />
+			</column>
+			<column name="user_id" type="int8">
+			</column>
+			<column name="device_id" type="varchar(255)">
+			</column>
+			<column name="document_id" type="varchar(255)" ></column>
+			<column name="size" type="int8"></column>
+			<column name="received" type="int8"></column>
+			<column name="status" type="varchar(255)"></column>
+			<column name="random_str" type="varchar(32)"></column>
+			<column defaultValueComputed="now()" name="created_at" type="TIMESTAMP WITH TIME ZONE"></column>
+	        <column defaultValueComputed="now()" name="modified_at" type="TIMESTAMP WITH TIME ZONE"></column>
+			<column name="error_desc" type="TEXT"></column>
+		</createTable>
+		<createSequence schemaName="mf_data" sequenceName="seq_uploads" />
+		<addUniqueConstraint columnNames="user_id, device_id, document_id"
+			constraintName="unique_document_upload" schemaName="mf_data"
+			tableName="uploads" />
+		<addNotNullConstraint schemaName="mf_data" tableName="uploads" columnName="user_id"/>
+		<addNotNullConstraint schemaName="mf_data" tableName="uploads" columnName="device_id"/>
+		<addNotNullConstraint schemaName="mf_data" tableName="uploads" columnName="document_id"/>
+		<addNotNullConstraint schemaName="mf_data" tableName="uploads" columnName="size"/>
+		<addNotNullConstraint schemaName="mf_data" tableName="uploads" columnName="status"/>
+	</changeSet>
+	<changeSet id="92" author="danicricco">
+		<sql>
+			drop sequence documents.seq_uploads;
+			drop schema documents;
+		</sql>
+	</changeSet>
+	<changeSet id="93" author="danicricco">
+		<dropColumn schemaName="mf_data" tableName="uploads" columnName="document_id"/>
+		<addColumn schemaName="mf_data" tableName="uploads">
+			<column name="document_id" type="int8" ></column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="60" author="mprieto">
+		<addUniqueConstraint columnNames="user_id, device_id, document_id" constraintName="unique_document_upload" schemaName="mf_data" tableName="uploads" />
+	</changeSet>
+	<changeSet id="94" author="danicricco">
+		<addColumn tableName="authorizations" schemaName="core" >
+			<column name="visible" type="boolean" defaultValue="true"></column>
+		</addColumn>
+		<sql>
+			update core.authorizations set visible=true;
+		</sql>
+		<addNotNullConstraint tableName="authorizations" schemaName="core" columnName="visible"/>
+	</changeSet>
+	<changeSet id="95" author="danicricco">
+		<createTable tableName="authorization_dependencies" schemaName="core" >
+			<column name="base_auth" type="character varying(255)"></column>
+			<column name="granted_auth" type="character varying(255)"  ></column>
+		</createTable>
+		<addPrimaryKey tableName="authorization_dependencies" schemaName="core" columnNames="base_auth,granted_auth"/>
+	</changeSet>
+	<changeSet id="61" author="mprieto">
+	    <addColumn schemaName="mf_data" tableName="uploads">
+	        <column name="new_document_id" type="varchar(255)"></column>
+	    </addColumn>
+	    <sql>
+	        UPDATE mf_data.uploads SET new_document_id = document_id || '';
+	    </sql>
+	    <dropColumn schemaName="mf_data" tableName="uploads" columnName="document_id"/>
+	    <renameColumn schemaName="mf_data" tableName="uploads" oldColumnName="new_document_id" newColumnName="document_id"/>
+	    <addUniqueConstraint columnNames="user_id, device_id, document_id" constraintName="unique_document_upload" schemaName="mf_data" tableName="uploads" />
+	    <createIndex schemaName="mf_data" tableName="uploads" indexName="user_device_IX" >
+	        <column name="device_id" ></column>
+	        <column name="user_id" ></column>
+	    </createIndex>
+	</changeSet>
+	<changeSet id="62" author="mprieto">
+	    <dropColumn schemaName="core" tableName="devices" columnName="model_id"/>
+	    <dropTable schemaName="core" tableName="model_devices"/>
+	    <dropTable schemaName="core" tableName="brand_devices"/>
+		<addColumn schemaName="core" tableName="devices" >
+		    <column name="model" type="VARCHAR(2048)"></column>
+		</addColumn>
+		<addColumn schemaName="core" tableName="devices" >
+		    <column name="brand" type="VARCHAR(2048)"></column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="63" author="mprieto">
+	    <addColumn schemaName="core" tableName="devices">
+	        <column name="os" type="VARCHAR(256)"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="64" author="mprieto">
+	    <dropColumn schemaName="core" tableName="devices" columnName="application_id"/>
+	    <dropColumn schemaName="core" tableName="devices" columnName="user_id"/>
+	</changeSet>
+	<changeSet id="65" author="mprieto">
+	    <createTable schemaName="core" tableName="users_devices">
+	        <column name="user_id" type="int8"></column>
+	        <column name="device_id" type="int8"></column>
+	    </createTable>
+	<addForeignKeyConstraint constraintName="fk_devices_users_users"
+		referencedTableSchemaName="core" referencedTableName="users" referencedColumnNames="id"
+		baseTableSchemaName="core" baseTableName="users_devices" baseColumnNames="user_id" />
+	<addForeignKeyConstraint constraintName="fk_devices_users_devices"
+		referencedTableSchemaName="core" referencedTableName="devices" referencedColumnNames="id"
+		baseTableSchemaName="core" baseTableName="users_devices" baseColumnNames="device_id" />
+	</changeSet>
+	<changeSet id="66" author="mprieto">
+	    <addColumn schemaName="core" tableName="devices">
+	        <column name="identifier" type="VARCHAR(512)"></column>
+	    </addColumn>
+	    <addColumn schemaName="core" tableName="devices">
+	        <column name="version_number" type="VARCHAR(32)"></column>
+	    </addColumn>
+	</changeSet>
+	<changeSet id="67" author="mprieto">
+		<addUniqueConstraint schemaName="core" tableName="devices"
+			columnNames="model,brand,os,identifier,version_number" />
+	</changeSet>
+	<changeSet id="68" author="mprieto">
+	    <renameColumn schemaName="core" tableName="devices" oldColumnName="number" newColumnName="phone_number"/>
+	</changeSet>
+	<changeSet id="69" author="mprieto">
+		<dropUniqueConstraint schemaName="core" tableName="devices"
+			constraintName="devices_model_brand_os_identifier_version_number_key" />
+		<addUniqueConstraint schemaName="core" tableName="devices"
+			constraintName="unique_device" columnNames="model,brand,os,identifier,version_number,phone_number" />
+	</changeSet>
+	<changeSet id="70" author="mprieto">
+	    <addColumn schemaName="core" tableName="users">
+	        <column name="system_administrator" type="bool" defaultValueBoolean="false" ></column>
+	    </addColumn>
+	    <sql>
+	        UPDATE core.users SET system_administrator = false;
+	    </sql>
+	    <addNotNullConstraint schemaName="core"
+			tableName="users" columnName="system_administrator" />
+	</changeSet>
+	
+	<changeSet id="71" author="mprieto">
+		<sql>
+			INSERT INTO ui.multiselect_conf(id, service_name) VALUES
+			('applications', 'multiselect.applications');
+		</sql>
+	</changeSet>
+	<changeSet id="72" author="mprieto">
+	    <sql>
+	        UPDATE core.users SET system_administrator=true WHERE mail='root@mobileforms.sodep.com.py'
+	    </sql>
+	</changeSet>
+	<changeSet id="96" author="danicricco" >
+		<addColumn schemaName="mf_data" tableName="uploads">
+			<column  name="completed_at" type="TIMESTAMP WITH TIME ZONE"></column>			
+		</addColumn>
+		<addColumn schemaName="mf_data" tableName="uploads">
+			<column  name="saved_at" type="TIMESTAMP WITH TIME ZONE"></column>			
+		</addColumn>		
+	</changeSet>
+	<changeSet id="73" author="mprieto">
+	    <sql>
+	        INSERT INTO forms.elements_labels(element_id, value, language) values (
+			(SELECT element_id FROM forms.elements_labels WHERE value='Text Area' and language='en' and element_id in 
+			(SELECT id FROM  forms.element_prototypes WHERE instantiability = 2)), 'Area de Texto', 'es');
+	    </sql>
+	        
+	</changeSet>
+	
+	<changeSet id="97" author="danicricco">
+		<createTable schemaName="mf_data" tableName="connectors">
+			<column name="id" type="int8"></column>
+			<column name="application_id" type="int8"></column>
+			<column name="name" type="varchar(250)"></column>
+			<column name="connector_type" type="varchar(50)"></column>
+			<column name="direction" type="varchar(50)"></column>
+			<column name="user_id" type="int8"></column>
+		</createTable>
+		<addPrimaryKey tableName="connectors" schemaName="mf_data"
+			columnNames="id" />
+		<addForeignKeyConstraint constraintName="fk_connectors_application"
+			referencedTableSchemaName="applications" referencedTableName="applications"
+			referencedColumnNames="id" baseTableSchemaName="mf_data"
+			baseTableName="connectors" baseColumnNames="application_id" />
+		<addForeignKeyConstraint constraintName="fk_devices_users_users"
+			referencedTableSchemaName="core" referencedTableName="users"
+			referencedColumnNames="id" baseTableSchemaName="mf_data"
+			baseTableName="connectors" baseColumnNames="user_id" />
+		<createSequence schemaName="mf_data" sequenceName="seq_connectors_id" />
+	</changeSet>
+	<changeSet id="98" author="danicricco">
+		<addColumn schemaName="mf_data" tableName="lookuptables">
+			<column name="owner_id" type="int8"></column>
+		</addColumn>
+		<addColumn schemaName="mf_data" tableName="lookuptables">
+			<column name="last_ddl_IP" type="varchar(39)"></column>
+		</addColumn>
+		<addColumn schemaName="mf_data" tableName="lookuptables">
+			<column name="is_rest"  type="boolean" defaultValue="false" ></column>
+		</addColumn>		
+	</changeSet>
+	<changeSet id="99" author="danicricco">
+	    <sql>
+	        update mf_data.lookuptables set owner_id=1 ;
+	    </sql>
+	    <addNotNullConstraint schemaName="mf_data" tableName="lookuptables" columnName="owner_id"/>
+	    <addForeignKeyConstraint constraintName="fk_lookuptables_owner"
+			referencedTableSchemaName="core" referencedTableName="users"
+			referencedColumnNames="id" baseTableSchemaName="mf_data"
+			baseTableName="lookuptables" baseColumnNames="owner_id" />
+	    </changeSet>
+	  <changeSet id="100" author="danicricco">
+	      <addColumn schemaName="mf_data" tableName="lookuptables">
+			<column name="identifier"  type="varchar(250)"  ></column>
+		  </addColumn>
+		  <sql>
+		      update mf_data.lookuptables set identifier=id;		      
+		  </sql>	      
+	  </changeSet>
+	  <changeSet id="101" author="danicricco">
+	    	<renameColumn schemaName="mf_data" tableName="lookuptables"  oldColumnName="last_ddl_IP" newColumnName="last_ddl_ip"/>  
+	    </changeSet>
+	    <changeSet id="102" author="danicricco">
+	    	<addColumn schemaName="mf_data" tableName="lookuptables" >
+	    	    <column name="name" type="varchar(250)"></column>
+	    	</addColumn>  
+	    	<sql>
+	    	    update mf_data.lookuptables t set name=(select value from mf_data.lookuptables_labels l where l.language=t.default_language and t.id=l.lookup_table_id );	    	    
+	    	</sql>
+	    	<dropTable schemaName="mf_data" tableName="lookuptables_labels" />
+	    </changeSet>
+	    <changeSet id="74" author="mprieto">
+			<addColumn schemaName="core" tableName="devices">
+				<column name="application_id" type="int8"></column>
+			</addColumn>
+			<addForeignKeyConstraint constraintName="fk_device_applications"
+				referencedTableSchemaName="applications" referencedTableName="applications"
+				referencedColumnNames="id" baseTableSchemaName="core"
+				baseTableName="devices" baseColumnNames="application_id" />
+			<sql>
+			    delete from core.users_devices;
+			    delete from core.devices;
+			</sql>
+			<addNotNullConstraint schemaName="core" tableName="devices" columnName="application_id" />
+		</changeSet>
+		<changeSet id="75" author="mprieto">
+			<dropUniqueConstraint schemaName="core" tableName="devices"
+				constraintName="unique_device" />
+			<addUniqueConstraint schemaName="core" tableName="devices"
+				constraintName="unique_device" columnNames="model,brand,os,identifier,version_number,phone_number,application_id" />
+		</changeSet>
+		<changeSet id="76" author="mprieto">
+			<dropUniqueConstraint schemaName="core" tableName="devices"
+				constraintName="unique_device" />
+			<sql>
+			    delete from core.users_devices;
+			    delete from core.devices;
+			</sql>
+			<addUniqueConstraint schemaName="core" tableName="devices"
+				constraintName="unique_device" columnNames="model,brand,os,identifier,application_id" />
+		</changeSet>
+		<changeSet id="103" author="danicricco">
+		    	<addColumn schemaName="core" tableName="devices"  >
+		    	    <column name="manufacturer" type="character varying(256)"></column>
+		    	</addColumn>
+		    	<addColumn schemaName="core" tableName="devices"  >
+		    	    <column name="product" type="character varying(256)"></column>
+		    	</addColumn>
+		    	<addColumn schemaName="core" tableName="devices"  >
+		    	    <column name="release" type="character varying(256)"></column>
+		    	</addColumn>
+		   </changeSet>
+		<changeSet id="104" author="amiranda">
+			    <sql>
+	    			-- Input type Email
+					INSERT INTO forms.element_prototypes(id, active, deleted,
+					 required, visible, pool_id,
+					  application_id, lock_version, root_id, 
+					  version, instantiability, default_language) 
+					VALUES (nextval('forms.seq_element_prototypes'),true,false,
+					false,true,null,
+					null,1,currval('forms.seq_element_prototypes'),
+					1,2, 'en');
+					INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'E-mail','en');
+					INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Correo Electrónico','es');
+					INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (null,null,false,'EMAIL',currval('forms.seq_element_prototypes'),null);
+					   
+			    </sql>
+		    </changeSet>
+		<changeSet id="105" author="amiranda">
+			    <sql>
+	    			-- Input type External Link
+					INSERT INTO forms.element_prototypes(id, active, deleted, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability, default_language) 
+					VALUES (nextval('forms.seq_element_prototypes'), true, false, false, true, null, null, 1, currval('forms.seq_element_prototypes'), 1, 2, 'en');
+					INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'External Link','en');
+					INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Enlace Externo','es');
+					INSERT INTO forms.elements_inputs(max_length, min_length, read_only, type, id, default_value) VALUES (null,null,true,'EXTERNAL_LINK',currval('forms.seq_element_prototypes'),null);
+					   
+			    </sql>
+		    </changeSet>
+		  <changeSet id="1" author="dallen">
+		  	<addColumn schemaName="reports" tableName="queries">
+				<column defaultValueBoolean="false" name="download_locations_as_links" type="bool">
+					<constraints nullable="false" />
+				</column>		  
+			</addColumn>
+		  </changeSet>
+		<changeSet id="77" author="mprieto">
+		    <addColumn schemaName="core" tableName="devices">
+		        <column defaultValueBoolean="false" name="blacklisted" type="bool"></column>
+	        </addColumn>
+		</changeSet>
+		  <changeSet id="2" author="dallen">
+		  	<addColumn schemaName="reports" tableName="queries">
+				<column name="selected_sorting_columns" type="TEXT"></column>		  
+			</addColumn>
+		  </changeSet>
+	<changeSet id="1" author="afeltes">
+		<createSequence 
+			cycle="true"
+            incrementBy="1"
+            maxValue="9223372036854775807"
+            minValue="1"
+            schemaName="sys"
+            sequenceName="seq_parameters"
+            startValue="1050"/>
+	</changeSet>
+	<changeSet id="78" author="mprieto">
+		<addColumn schemaName="mf_data" tableName="uploads">
+			<column defaultValueBoolean="false" name="bypass_uniqueness_check" type="bool"></column>
+		</addColumn>
+		<sql>
+			UPDATE mf_data.uploads SET bypass_uniqueness_check = false;
+		</sql>
+		<addNotNullConstraint schemaName="mf_data" tableName="uploads" columnName="bypass_uniqueness_check"/>
+	</changeSet>
+	<changeSet id="79" author="mprieto">
+        <createTable schemaName="log" tableName="logins">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="logins_pkey"/>
+            </column>
+            <column defaultValueComputed="now()" name="login_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int8"/>
+            <column name="application_id" type="int8"/>
+        </createTable>
+        <createSequence schemaName="log" sequenceName="seq_logins"/>
+	</changeSet>
+	<changeSet id="80" author="mprieto">
+		<addColumn schemaName="mf_data" tableName="uploads">
+			<column name="application_id" type="int8"></column>
+		</addColumn>
+		<createIndex schemaName="mf_data" tableName="uploads" indexName="upload_application_IX" >
+	        <column name="application_id" ></column>
+	    </createIndex>
+	</changeSet>
+	<changeSet id="81" author="mprieto">
+		<addColumn schemaName="applications" tableName="applications">
+			<column name="default_time_zone" type="varchar(5)" defaultValue="GMT"></column>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="82" author="mprieto">
+		<addColumn tableName="elements_photos" schemaName="forms">
+			<column name="camera_only" type="boolean" defaultValue="false"></column>
+		</addColumn>
+		<update  tableName="elements_photos" schemaName="forms">
+			<column name="camera_only" value="false"> 
+			</column>
+		</update>
+		<addNotNullConstraint schemaName="forms" tableName="elements_photos" 
+			columnName="camera_only"/>
+	</changeSet>
+	
+	<changeSet id="83" author="mprieto">
+        <createTable schemaName="forms" tableName="elements_checkboxes">
+            <column name="selected" type="boolean"/>
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_checkboxes_pkey"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_checkboxes" baseTableSchemaName="forms" 
+	        constraintName="elements_checkboxes_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" 
+	        onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" 
+	        referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+	    <sql>
+	    	-- Input type Checkbox
+			INSERT INTO forms.element_prototypes(id, active, deleted, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability, default_language) 
+			VALUES (nextval('forms.seq_element_prototypes'), true, false, false, true, null, null, 1, currval('forms.seq_element_prototypes'), 1, 2, 'en');
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Checkbox','en');
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Casilla de verificación','es');
+			INSERT INTO forms.elements_checkboxes(id, selected) VALUES  (currval('forms.seq_element_prototypes'), false);
+	    </sql>
+    </changeSet>
+    <changeSet id="84" author="mprieto">
+    	<renameColumn schemaName="forms" tableName="elements_checkboxes" oldColumnName="selected" newColumnName="checked"/>
+    </changeSet>
+    <changeSet id="85" author="mprieto">
+        <createTable schemaName="forms" tableName="elements_barcodes">
+            <column name="id" type="int8">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="elements_barcodes_pkey"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_barcodes" baseTableSchemaName="forms" 
+	        constraintName="elements_barcodes_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" 
+	        onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="element_prototypes" 
+	        referencedTableSchemaName="forms" referencesUniqueColumn="false"/>
+	    <sql>
+	    	-- Item type Barcode
+			INSERT INTO forms.element_prototypes(id, active, deleted, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability, default_language) 
+			VALUES (nextval('forms.seq_element_prototypes'), true, false, false, true, null, null, 1, currval('forms.seq_element_prototypes'), 1, 2, 'en');
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Barcode','en');
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Código de barras','es');
+			INSERT INTO forms.elements_barcodes(id) VALUES  (currval('forms.seq_element_prototypes'));
+	    </sql>
+    </changeSet>
+
+	<changeSet id="86" author="mprieto">
+		<createTable schemaName="forms" tableName="elements_signatures">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="elements_signatures_pkey" />
+			</column>
+		</createTable>
+
+		<addForeignKeyConstraint baseColumnNames="id" baseTableName="elements_signatures" baseTableSchemaName="forms"
+			constraintName="elements_signatures_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="element_prototypes"
+			referencedTableSchemaName="forms" referencesUniqueColumn="false" />
+		<sql>
+			-- Item type Signature
+			INSERT INTO forms.element_prototypes(id, active, deleted, required, visible, pool_id, application_id, lock_version, root_id, version, instantiability, default_language) 
+			VALUES (nextval('forms.seq_element_prototypes'), true, false, false, true, null, null, 1, currval('forms.seq_element_prototypes'), 1, 2, 'en');
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Signature','en');
+			INSERT INTO forms.elements_labels(element_id, value, language) VALUES (currval('forms.seq_element_prototypes'),'Firma','es');
+			INSERT INTO forms.elements_signatures(id) VALUES  (currval('forms.seq_element_prototypes'));
+		</sql>
+	</changeSet>
+	
+	<changeSet id="87" author="mprieto" >
+		<createSequence schemaName="sys" sequenceName="seq_deploy" />
+	</changeSet>
+
+    <changeSet author="rvillalba" id="0">
+        <addColumn schemaName="reports" tableName="queries">
+            <column name="elements_file_names" type="TEXT">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet  id="88" author="afeltes">
+        <addColumn schemaName="core" tableName="users">
+            <column name="secure_password" type="VARCHAR(256)">
+            </column>
+        </addColumn>
+        <addColumn schemaName="core" tableName="users">
+            <column name="salt" type="VARCHAR(64)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+	<changeSet id="89" author="afeltes">
+		<sql>
+			insert into sys.parameters(id, active, deleted, description, label, type, value)
+			select
+			1024, true, false, 'Installation id (incremented every time liquibase is run) ', 'SYS_DEPLOY', 0, '0'
+			where not exists (
+			select * from sys.parameters where id = 1024);
+		</sql>
+	</changeSet>
+
+	<changeSet author="rvillalba" id="1">
+		<addColumn tableName="logins" schemaName="log">
+			<column name="login_type_value" type="VARCHAR(255)">
+			</column>
+		</addColumn>
+		<sql>
+			UPDATE log.logins SET login_type_value = 'UNKNOWN';
+		</sql>
+	</changeSet>
+
+	<changeSet id="1" author="vrumich">
+		<sql splitStatements="false">
+			create schema workflow;
+		</sql>
+	</changeSet>
+
+	<changeSet id="2" author="vrumich">
+		<createTable tableName="states" schemaName="workflow">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_states" />
+			</column>
+			<column name="active" type="bool" defaultValueBoolean="true"></column>
+			<column name="description" type="varchar(1000)">
+			</column>
+			<column name="form_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="initial" type="bool"></column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="3" author="vrumich">
+		<createSequence schemaName="workflow" sequenceName="seq_states" />
+	</changeSet>
+	
+	<changeSet id="4" author="vrumich">
+		<createTable tableName="states_roles" schemaName="workflow">
+			<column name="state_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="role_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addPrimaryKey schemaName="workflow" tableName="states_roles"
+			constraintName="pk_states_roles" columnNames="state_id, role_id" />
+		<addForeignKeyConstraint constraintName="fk_states_roles_state_id"
+			referencedTableSchemaName="workflow" referencedTableName="states"
+			referencedColumnNames="id" baseTableSchemaName="workflow"
+			baseTableName="states_roles" baseColumnNames="state_id" />
+	</changeSet>
+	
+	<changeSet id="5" author="vrumich">
+		<createTable tableName="transitions" schemaName="workflow">
+			<column name="id" type="int8">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="pk_transitions" />
+			</column>
+			<column name="active" type="bool" defaultValueBoolean="true"></column>
+			<column name="description" type="varchar(255)">
+			</column>
+			<column name="origin_state" type="int8">
+			</column>
+			<column name="target_state" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint constraintName="fk_transitions_origin_state"
+			referencedTableSchemaName="workflow" referencedTableName="states"
+			referencedColumnNames="id" baseTableSchemaName="workflow"
+			baseTableName="transitions" baseColumnNames="origin_state" />
+		<addForeignKeyConstraint constraintName="fk_transitions_target_state"
+			referencedTableSchemaName="workflow" referencedTableName="states"
+			referencedColumnNames="id" baseTableSchemaName="workflow"
+			baseTableName="transitions" baseColumnNames="target_state" />
+	</changeSet>
+	
+	<changeSet id="6" author="vrumich">
+		<createSequence schemaName="workflow" sequenceName="seq_transitions" />
+	</changeSet>
+	
+	<changeSet id="7" author="vrumich">
+		<createTable tableName="transitions_roles" schemaName="workflow">
+			<column name="transition_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+			<column name="role_id" type="int8">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addPrimaryKey schemaName="workflow" tableName="transitions_roles"
+			constraintName="pk_transitions_roles" columnNames="transition_id, role_id" />
+		<addForeignKeyConstraint constraintName="fk_transitions_roles_transition_id"
+			referencedTableSchemaName="workflow" referencedTableName="transitions"
+			referencedColumnNames="id" baseTableSchemaName="workflow"
+			baseTableName="transitions_roles" baseColumnNames="transition_id" />
+	</changeSet>
+	
+	<changeSet id="8" author="vrumich">
+		<addNotNullConstraint schemaName="workflow"
+			tableName="states" columnName="active" />
+	</changeSet>
+	
+	<changeSet id="9" author="vrumich">
+		<addColumn tableName="states" schemaName="workflow">
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE" />
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="10" author="vrumich">
+		<addColumn tableName="transitions" schemaName="workflow">
+			<column defaultValueComputed="now()" name="created"
+				type="TIMESTAMP WITH TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueBoolean="false" name="deleted" type="bool">
+				<constraints nullable="false" />
+			</column>
+			<column defaultValueComputed="now()" name="modified"
+				type="TIMESTAMP WITH TIME ZONE" />
+			<column name="form_id" type="int8"></column>
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="11" author="vrumich">
+		<addNotNullConstraint schemaName="workflow" tableName="transitions"
+							  columnName="form_id"/>
+	</changeSet>
+	
+	<changeSet author="rvillalba" id="2">
+		<addColumn tableName="applications" schemaName="applications">
+			<column name="has_workflow" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+</databaseChangeLog>
+

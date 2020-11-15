@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="mobileforms">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<!-- <properties> -->
+		<!-- <property name="hibernate.ejb.event.post-insert" value="org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener" 
+			/> -->
+		<!-- <property name="hibernate.ejb.event.post-update" value="org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener" 
+			/> -->
+		<!-- <property name="hibernate.ejb.event.post-delete" value="org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener" 
+			/> -->
+		<!-- <property name="hibernate.ejb.event.pre-collection-update" value="org.hibernate.envers.event.AuditEventListener" 
+			/> -->
+		<!-- <property name="hibernate.ejb.event.pre-collection-remove" value="org.hibernate.envers.event.AuditEventListener" 
+			/> -->
+		<!-- <property name="hibernate.ejb.event.post-collection-recreate" value="org.hibernate.envers.event.AuditEventListener" 
+			/> -->
+		<!-- </properties> -->
+
+		<!-- data -->
+		<class>py.com.sodep.mobileforms.api.entities.data.DBLookupTable</class>
+		<!-- core -->
+
+
+		<class>py.com.sodep.mobileforms.api.entities.core.AuthorizableEntity</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.AuthorizableEntityAuthorization</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.AuthorizationGroup</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.Authorization</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.Device</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.Group</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.Role</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.Token</class>
+		<class>py.com.sodep.mobileforms.api.entities.core.User</class>
+
+		<!-- application -->
+		<class>py.com.sodep.mobileforms.api.entities.application.Application</class>
+		<class>py.com.sodep.mobileforms.api.entities.application.ApplicationParameter</class>
+		<class>py.com.sodep.mobileforms.api.entities.application.ApplicationUserAssociation</class>
+
+
+		<!-- projects -->
+		<class>py.com.sodep.mobileforms.api.entities.projects.Project</class>
+		<class>py.com.sodep.mobileforms.api.entities.projects.ProjectDetails</class>
+
+		<!-- forms -->
+		<class>py.com.sodep.mobileforms.api.entities.forms.Form</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.FormLastVersionView</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.FormPublishedView</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.FormXmlCache</class>
+
+		<!-- forms.page -->
+
+		<class>py.com.sodep.mobileforms.api.entities.forms.page.ConditionalTarget</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.page.Flow</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.page.Page</class>
+
+		<!-- forms.elements -->
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.ElementInstance</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.ElementPrototype</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.ElementPrototypeLastVersionView</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.Headline</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.Input</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.Location</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.Photo</class>
+		<class>py.com.sodep.mobileforms.api.entities.forms.elements.Select</class>
+		
+		<!-- pools -->
+		<class>py.com.sodep.mobileforms.api.entities.pools.Pool</class>
+		
+		<!-- i18n -->
+		<class>py.com.sodep.mobileforms.api.entities.i18n.I18nLanguage</class>
+	
+		<!-- log -->
+		<class>py.com.sodep.mobileforms.api.entities.log.UncaughtException</class>
+	
+		<!-- mail -->
+		<class>py.com.sodep.mobileforms.api.entities.mail.MailQueue</class>
+
+		<!-- scripting -->
+		<class>py.com.sodep.mobileforms.api.entities.scripting.SodepScript</class>
+
+		<class>py.com.sodep.mobileforms.api.entities.sys.AcmeLauncher</class>
+		<class>py.com.sodep.mobileforms.api.entities.sys.AcmeTreeMenu</class>
+		<class>py.com.sodep.mobileforms.api.entities.sys.AcmeView</class>
+		<class>py.com.sodep.mobileforms.api.entities.sys.IParameter</class>
+		<class>py.com.sodep.mobileforms.api.entities.sys.SystemParameter</class>
+
+		<class>py.com.sodep.mobileforms.api.entities.ui.multiselect.MultiselectConf</class>
+
+		<!-- dynamicvalues -->
+		<class>py.com.sodep.mobileforms.api.entities.dynamicvalues.Filter</class>
+		
+		<!-- Report -->
+		<class>py.com.sodep.mobileforms.api.entities.report.Query</class>
+		
+		<!-- Document -->
+		<class>py.com.sodep.mobileforms.api.entities.documents.upload.DocumentUpload</class>
+		
+		<class>py.com.sodep.mobileforms.api.entities.core.Device</class>
+		
+		<!-- Workflow -->
+		<class>py.com.sodep.mobileforms.api.entities.workflow.State</class>
+		<class>py.com.sodep.mobileforms.api.entities.workflow.Transition</class>
+		<class>py.com.sodep.mobileforms.api.entities.workflow.StateRole</class>
+		<class>py.com.sodep.mobileforms.api.entities.workflow.StateRoleId</class>
+		<class>py.com.sodep.mobileforms.api.entities.workflow.TransitionRole</class>
+		<class>py.com.sodep.mobileforms.api.entities.workflow.TransitionRoleId</class>
+		
+	</persistence-unit>
+
+
+</persistence>

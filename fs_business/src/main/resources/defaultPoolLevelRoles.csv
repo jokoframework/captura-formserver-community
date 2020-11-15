@@ -1,0 +1,4 @@
+ROLE_POOL_OWNER,pool.edit
+ROLE_POOL_OWNER,pool.read
+ROLE_POOL_OWNER,pool.delete
+

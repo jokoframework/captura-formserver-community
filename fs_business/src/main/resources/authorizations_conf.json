@@ -1,0 +1,57 @@
+{
+	"hiddenAuthorizations":["application.project.list","application.pool.list","application.form.list",
+							"application.config",
+							"application.menu.roles",
+							"application.role.list","application.role.edit","application.processItem.list",
+							"application.role.delete","application.role.cancreate",
+							"application.toolbox.project.new","application.toolbox.role.new","application.toolbox.user.new","application.toolbox.pool.new",
+							"application.toolbox.form.new","application.toolbox.processItem.new","application.toolbox.group.new","application.toolbox.device.new",
+							"application.menu.processManager","application.menu.dataImport","application.menu.roles","application.menu.usersAndGroups","application.menu.usersAndGroups",
+							"application.menu.devices","application.menu.config","application.license","application.menu.lookupTables",
+							"application.lookupTable.create","application.lookupTable.edit","application.lookupTable.read","form.inputData.web","form.open","project.read.mobile","form.workflow.read","form.workflow.transition"
+							
+							
+							
+							],
+	"dependentAuthorization":{
+				"pool.read":["application.pool.list","application.menu.processManager","application.processItem.list"],
+				"pool.edit":["application.pool.list","pool.read","application.menu.processManager","application.processItem.create","application.processItem.list"],
+				"pool.delete":["application.pool.list","pool.read","application.menu.processManager","application.processItem.list"],
+				
+				"form.read.web":["form.open","application.form.list","application.menu.processManager"],
+				"form.edit":["form.open","form.read.web","application.form.list","application.menu.processManager"],
+				"form.delete":["form.open","form.read.web","application.form.list","application.menu.processManager"],
+				"form.design":["form.open","form.read.web","application.form.list","application.menu.processManager"],
+				"form.publish":["form.open","form.read.web","application.form.list","application.menu.processManager"],
+				"form.viewReport":["form.read.web","application.form.list","application.menu.processManager"],
+				"form.createReport":["form.viewReport","form.read.web","application.form.list","application.menu.processManager", "form.deleteReport"],
+				"form.mobile":["project.read.mobile","application.rest.lookupTables.read"],
+				
+				"project.read.web":["application.project.list","application.menu.processManager"],
+				"project.edit":["project.read.web","application.project.list","application.menu.processManager"],
+				"project.delete":["project.read.web","application.project.list","application.menu.processManager"],
+				"project.create.form":["application.toolbox.form.new","application.menu.processManager"],
+				
+				"application.project.cancreate":["application.toolbox.project.new","application.menu.processManager"],
+				"application.pool.cancreate":["application.toolbox.pool.new","application.menu.processManager","application.pool.list","application.processItem.list","application.toolbox.processItem.new"],
+				"application.diassociateDevice":["application.user.list","application.menu.usersAndGroups"],
+				"application.user.list":["application.menu.usersAndGroups"],
+				"application.user.edit":["application.menu.usersAndGroups","application.user.list"],
+				"application.user.delete":["application.menu.usersAndGroups","application.user.list"],
+				"application.user.cancreate":["application.menu.usersAndGroups","application.user.list","application.toolbox.user.new","application.user.edit"],
+				"application.group.list":["application.menu.usersAndGroups"],
+				"application.group.edit":["application.menu.usersAndGroups","application.group.list"],
+				"application.group.delete":["application.menu.usersAndGroups","application.group.list"],
+				"application.group.cancreate":["application.menu.usersAndGroups","application.group.list","application.toolbox.group.new","application.group.edit"],
+				
+				"application.role.administration":["application.role.list","application.menu.roles","application.toolbox.role.new","application.role.edit","application.role.delete"],
+				"application.lookupTable.administration":["application.lookupTable.read","application.lookupTable.edit","application.lookupTable.create","application.menu.dataImport","application.menu.lookupTables"],
+				
+				"application.rest.lookupTables.list":["application.menu.lookupTables"],
+				"application.rest.lookupTables.read":["application.menu.lookupTables","application.rest.lookupTables.list"],
+				"application.rest.lookupTables.modify":["application.menu.lookupTables","application.rest.lookupTables.list","application.rest.lookupTables.read"],
+				"application.rest.lookupTables.insert":["application.menu.lookupTables","application.rest.lookupTables.list","application.rest.lookupTables.read"],
+				"application.rest.lookupTables.create":["application.menu.lookupTables","application.rest.lookupTables.list","application.menu.dataImport"]				
+				
+	}
+}

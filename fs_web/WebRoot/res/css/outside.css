@@ -1,0 +1,199 @@
+body{
+	margin: 0px;
+}
+
+.mf_header{
+	background: #ccc;
+	background:-moz-linear-gradient(bottom,#ccc 0,#fff 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#fff),color-stop(100%,#ccc));
+	background:-webkit-linear-gradient(bottom,#ccc 0,#fff 100%);
+	background:-o-linear-gradient(bottom,#ccc 0,#fff 100%);
+	background:-ms-linear-gradient(bottom,#ccc 0,#fff 100%);
+	background:linear-gradient(bottom,#ccc 0,#fff 100%);
+	padding: 20px 40px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.marketing {
+  text-align: center;
+  color: #5a5a5a;
+}
+.marketing{
+	
+}
+.marketing h1 {
+  margin-top: 30px;
+  margin-bottom: 40px;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.marketing h3 {
+  font-weight: 200;
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+.marketing p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+body {
+
+	/*background: url(../img/body_bck.jpg);*/
+	background-color: #f5f5f5;
+}
+
+.mf_container{
+	padding-left: 60px;
+	padding-right: 60px;
+}
+
+.content{
+	background-color: white;
+	border: 1px solid rgb(213, 213, 213);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;	
+	border-radius: 6px;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-bottom: 10px;
+
+}
+#registrationForm input{
+	width: 90%;
+	height: 25px;	
+}
+
+.smallInputs input{
+	width: 40%;
+}
+.smallInputs input{
+	width: 40%;
+}
+.captchaGroup{
+	background-color: #ccc;
+	margin-right: 5%;
+	padding: 10px;	
+}
+.registerThumbnail{
+	border: 1px solid rgb(213, 213, 213);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	margin-left: 30%;
+	margin-right: 30%;
+	width:200px;
+	padding: 5px;
+}
+#someOtherFeatures{
+	text-align: left;
+	color: #5a5a5a;
+}
+#someOtherFeatures p{
+	font-size: 12px;
+  line-height: 1.5;
+  line-height: 1;
+  margin-top: 20px;
+  padding-left:20px;
+  background-image: url("../img/green-check-small.png");
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+ padding-bottom: 0px;
+ padding-top: 0px;
+   
+  
+}
+.footerEmpty{
+	margin-top: 30px;
+	font-weight: 200;
+ 	
+}
+.footer{
+	margin-top: 20px;
+	border-top: 1px solid rgb(213, 213, 213);	
+}
+.loginWrapper{
+	margin-top: 5%;	 
+}
+#messageBlock{
+	padding-top:0px;
+	padding-bottom:10px;
+	height:10px;
+	font-size: 14px;
+  	line-height: 1.5;
+  	line-height: 1;
+  	color: red;
+  	text-align: center;
+}
+#progressBlock{
+	padding-top: 5px;
+	padding-bottom: 10px;
+	text-align: center;
+}
+.loginHeader{
+	text-align: center;
+	
+}
+.loginBox{
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width:300px;
+	padding: 30px;	
+}
+.recoveryBox{
+	margin-top:40px;
+	margin-left: auto;
+	margin-right: auto;
+	width:400px;
+	padding-left:20px;	
+	padding-right: 20px;
+	padding-bottom: 20px;
+}
+#recoveryMessage{
+	width: 60%;
+}
+.recoveryBottom{
+	margin-bottom: 10px;
+}
+.activationBox{
+	margin-top:40px;
+	margin-left: auto;
+	margin-right: auto;
+	width:400px;
+	padding-left:20px;	
+	padding-right: 20px;
+	padding-bottom: 20px;
+}
+.loginContent{
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	margin-top:20px;
+}
+.loginBox input{
+	width: 95%;
+	height: 25px;	
+}
+#forgotPasswordBox{
+	font-size: 12px;
+  line-height: 1.5;
+  line-height: 1;
+  color: #5a5a5a;
+  text-align: right;
+}
+#registerBox{
+	font-size: 14px;
+  line-height: 1.5;
+  line-height: 1;
+  color: #5a5a5a;
+  text-align: center;
+  margin-top: 10px;
+}
+#buttonSubmitBox{
+	float: right;
+}
+.validation_msg{
+	color: red;
+}

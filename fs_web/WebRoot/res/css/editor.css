@@ -1,0 +1,338 @@
+
+.mainFormDiv{
+	border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+div#mainFormTitleDiv{
+	background-color: #F5F5F5;
+	border-bottom: 1px solid #E5E5E5;
+	padding: 5px 10px;
+	padding-top: 10px;l
+}
+#pageButtonDiv{
+	background-color: #F5F5F5;
+	padding-bottom:5px;
+	padding-top:10px;
+	padding-left: 10px;
+	padding-right: 10px;
+
+}
+#pageButtonDiv #newPageButton{
+	margin-left: 5px;
+}
+div#formDiv {
+	padding: 5px 10px;
+	
+}
+div#mainAreaDiv {
+	background-color: #D0D0D0;
+	
+	
+}
+#formLabel{
+	color: #0089CC;
+	font-size: 20px;
+	font-weight: bold;
+}
+.pageTitleDiv{
+	margin-bottom: 10px;
+}
+.pageDelete{
+	position:absolute; 
+	top:2px; 
+	right:6px; 
+	cursor: pointer;
+}
+.pageElementDiv{
+	
+}
+
+#propertiesDiv{
+	overflow: auto;
+}
+#propertiesTable{
+	display: block;	
+}
+.propertyLabel{
+	font-size: 12px;
+}
+.editorPanelBox {
+	background-color: #F5F5F5;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	text-align: left;
+}
+.editPanelBoxTitle{
+	color: #0089CC;
+	margin-bottom: 5px;
+	font-size: 16px;
+}
+
+.editorPanelBox h5{
+	
+}
+
+#currentVersionDiv{
+	
+}
+#publicationDiv{
+	margin-top: 10px;
+}
+div#editorDiv {
+	
+	
+}
+.publicationBox{
+	/*padding-top: 18px;*/
+}
+.publicationForm{
+
+}
+div.draggable {
+	cursor: pointer
+}
+
+.droppable {
+	width: 150px;
+	height: 150px;
+	padding: 0.5em;
+	float: left;
+	margin: 10px;
+}
+
+div.page {
+	background-color:#fff;
+	border: 1px solid rgba(0, 0, 0, 1);
+	border-radius: 5px 5px 5px 5px;
+	padding: 10px;
+	text-align: left;
+	height: 200px;
+	position: relative;
+	margin: 5px;
+}
+
+div.unreachable {
+	background-color:#FF7766
+}
+
+div.saveable {
+	border: double thick;
+}
+
+ul.sortable {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 90%
+}
+
+ul.sortable li {
+	margin: 0 3px 3px 3px;
+	padding: 0.4em;
+	padding-left: 1.5em;
+	height: 18px;
+	position: relative;
+	cursor: move
+}
+
+li.item i {
+	margin-right: 8px
+}
+
+span#liLabel {
+	position: absolute;
+	top: 5px;
+	width: 80%
+}
+
+ul.sortable li .deleteSpan {
+	position: absolute;
+	right: 5px;
+	top: 5px
+}
+
+div#toolboxDiv {
+	height: 480px;
+	/*margin-top: 80px;*/
+	/*margin-top: 140px;*/
+		
+}
+#propertiesBox{
+	min-height: 359px;
+}
+.ui-accordion-content.toolboxSection {
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.toolboxSection {
+	overflow: hidden;
+	position: static;
+	background: #EEEEEE;
+	border-top: 1px solid rgba(0, 0, 0, 0.15);
+	text-align: left;
+}
+
+div.toolboxItem {
+	min-height: 18px;
+	max-width: 400px;
+	z-index: 999;
+	background-color: #FFFFFF;
+	margin-top:4px;
+    margin-bottom:4px;
+	margin-left:3px;
+	margin-right:3px;
+	padding:5px;
+	color: #005985;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+}
+
+.toolboxSection .toolboxItem .protoLabel{
+        color: #005985;
+        font-size: 12px;
+        height:14px;
+        line-height:14px;
+        vertical-align:bottom;
+      /* display: inline-block;*/
+        padding-left: 2px;
+}
+
+div.toolboxItem i {
+	margin-right: 8px;
+}
+
+.accordion {
+	margin: 5px 0 20px;
+}
+
+.accordion-group {
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 4px 4px 4px 4px;
+	margin-bottom: 5px;
+}
+
+.accordion-heading {
+	border-bottom: 0 none;
+	font-weight: bold;
+}
+
+
+
+table#propertiesTable tr {
+	margin-left: 0px;
+}
+
+table#propertiesTable {
+	margin: 0px;
+}
+
+div.formActionsRight {
+	position: absolute;
+	right: 0px;
+	top: 10px;
+	padding: 0px;
+	margin-right: 18px;
+}
+
+a#newPageButton {
+	margin-left: 20px;
+}
+
+div#pagesDiv {
+	height: 430px;
+	overflow: auto;
+	/*	margin: 10px */
+}
+
+li.item {
+	overflow: hidden
+}
+
+div.contextMenu {
+	text-align: left;
+	display: none;
+	position: absolute;
+	padding: 10px;
+	background-color: #F1F1F1;
+	border: 1px solid #979797;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+div.subContextMenu {
+	text-align: left;
+	position: absolute;
+	padding: 10px;
+	background-color: #F1F1F1;
+	border: 1px solid #979797;
+	border: 1px solid #979797;
+	margin-left: 1px;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+div#elementContextMenu {
+	width: 150px
+}
+
+div#pageContextMenu{
+	width: 200px;
+}
+
+div.contextMenuItem {
+	margin: 0px;
+	padding: 5px
+}
+
+div.contextMenuItem:hover {
+	background-color: #FFFFFF
+}
+
+div.subContextMenuItem {
+	margin: 0px;
+	width: 140px;
+	padding: 5px
+}
+
+div.subContextMenuItem:hover {
+	background-color: #FFFFFF
+}
+
+.word-break {
+	overflow: auto;
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap; /* HP printers */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: pre-wrap; /* CSS 2.1 */
+	white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+	word-wrap: break-word; /* IE */
+	-moz-binding: url('xbl.xml#wordwrap'); /* Firefox (using XBL) */
+}
+
+div.selected, li.selected {
+	border : 1px dashed;
+}
+
+.locationOn.glyphicons:before{
+	color : #000088;
+	font-size :18px
+}
+
+.locationOff.glyphicons:before{
+	color : #AAAAAA;
+	font-size :18px
+}
+
+a#propertiesLabelLink {
+	text-decoration: none;
+}
+
+a#propertiesLabelLink:hover {
+	text-decoration: none;
+	color: #0088cc;
+	cursor : default
+}
