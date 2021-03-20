@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>py.com.sodep.captura</groupId>
 	<artifactId>formserver</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>formserver</name>
 	<description>Captura's Form Server</description>

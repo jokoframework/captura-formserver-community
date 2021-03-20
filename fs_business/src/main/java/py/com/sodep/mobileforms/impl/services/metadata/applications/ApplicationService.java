@@ -71,7 +71,7 @@ public class ApplicationService extends BaseService<Application> implements IApp
 	@Autowired
 	private RestOperations rest;
 
-	@Value("${checkLicense:true}")
+	@Value("${checkLicense:false}")
 	private boolean checkLicense;
 	
 	
@@ -87,12 +87,6 @@ public class ApplicationService extends BaseService<Application> implements IApp
 	public void init() {
 		if (checkLicense) {
 			checkLicense();
-		
-			try {
-				notifyStartup();
-			} catch (Exception e) {
-				throw new RuntimeException("An error ocurred while notifying the License Server about this Form Server", e);
-			}
 		}
 	}
 
@@ -187,27 +181,13 @@ public class ApplicationService extends BaseService<Application> implements IApp
 	}
 
 	private void checkLicense() {
-		MFFormServerLicense serverLicense = mfLicenseManager.getFormServerLicense();
-		Long maxApplications = null;
-		if (serverLicense != null && (maxApplications = serverLicense.getMaxApplications()) != null) {
-			synchronized (newApplicationLock) {
-				Long count = count();
-				if (count > maxApplications) {
-					TooManyApplicationsException ex = new TooManyApplicationsException("License grants up to "
-							+ maxApplications + " applications. Current count is " + count);
-					ex.setMaxCount(maxApplications);
-					throw ex; // FIXME i18n?
-				}
-			}
-		}
+		logger.info("Open souce license. No limits. ");
 	}
 
 	@Override
 	public Long count() {
-		Query query = em.createQuery("SELECT COUNT(*) FROM " + Application.class.getSimpleName()
-				+ " a WHERE a.deleted = false");
-		Long count = (Long) query.getSingleResult();
-		return count;
+		//Open source license
+		return 1L;
 	}
 
 	@Override

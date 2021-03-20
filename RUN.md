@@ -2,28 +2,28 @@
 
 ## Captura Form Server
 
-- Install MongoDB 4.2.x
-- Install Postgres 9.x o 10.x
-- Go to https://hades.hq.sodep.com.py/artifactory/webapp/#/home and download the Maven Settings (you'll need them to build the projects). Copy the file to your `$HOME/hades-settings.xml`
+- Use JDK 8
+- Install MongoDB 4.4.x
+- Tested with Postgres 9.x o 10.x (should work with newers too)
+- Install with `mvn -DskipTests install` this two libraries
 
-Through Sodep's VPN, make sure you have this on your `/etc/hosts` 
- 
- `10.1.0.2 hades.hq.sodep.com.py`
+  * https://github.com/jokoframework/captura-exchange-community
+  * https://github.com/jokoframework/captura-form_definitions-community
 
 - Copy sample setup directory `conf/captura_template/profile/` to `$HOME/captura/profile` 
 ```
-cp -va conf/captura_template/profile $HOME/captura
+cp -va conf/captura_template/profile /opt/captura
 ```
 - Set an environment variable called `MOBILEFORMS_HOME` pointing to it. (.properties files)
 For example
 ```
-export MOBILEFORMS_HOME=$HOME/captura/profile
+export MOBILEFORMS_HOME=/opt/captura/profile
 ```
 
 - Create webfiles as profile sibling
 
 ```
-$HOME/captura/webfiles
+/opt/captura/webfiles
 ```
 
 ## Setup storage 
@@ -86,30 +86,29 @@ hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 hibernate.show_sql=false
 ```
 
-- Test that you can compile the project, branch `develop`
+- Test that you can compile the project, branch `main`
 
 ```
-git checkot develop; mvn -DskipTests=true -s ~/.m2/hades-settings.xml compile
+git checkout main
+mvn -DskipTests=true  compile
 ```
 
 - Run liquibase in the *fs_web* project with maven
 
 ```
 cd fs_web
-mvn -s ~/.m2/hades-settings.xml org.codehaus.mojo:properties-maven-plugin:read-project-properties liquibase:update
+mvn -DskipTests org.codehaus.mojo:properties-maven-plugin:read-project-properties liquibase:update
 ```
-
-Replace mf-settings.xml with the one obtained from artifactory (Step 4)
 
 
 ## Server paths configurations
     
 - server.properties
 
-Change the path to the home
+Change the path to the home for webfiles configured befoer
 
 ```
-server.home = /home/xxx/mf/home
+server.home = /opt/captura/webfiles
 server.images.folder = /images
 server.csv.folder = /csv
 server.upload.folder = /uploads
@@ -146,15 +145,6 @@ mail.queue.sendMax = 1
 
 `fs_web` project has a log4j.xml, you can use one of your choice for your environment.
 
-- Get a developer license from Gandalf server and put it in your profile dir
-```
-$ tree /opt/captura/profile/license/
-/opt/captura/profile/license/
-├── license
-└── license-mylicense
-```
-
-
 - If you are going to use an Android emulator, we recommend to setup a host pointing to your LAN/WIFI IP Address, to ease testing from Android app. Android 9+ has a whitelist for plain text connection to `*.sodep.com.py` 
   Add this to your `/etc/hosts`
 ```
@@ -183,7 +173,7 @@ cda@dua:~/captura/apache-tomcat-7.0.103/bin$ echo $MOBILEFORMS_HOME
 cda@dua:~/captura/apache-tomcat-7.0.103/bin$ echo $JAVA_OPTS 
 -Xms128m -Xmx1024m -XX:MaxPermSize=256m -Dlog4j.configuration="file:///home/cda/captura/profile/log4j.xml"
 
-mvn -s ~/.m2/hades-settings.xml clean package
+mvn  clean package
 
 cda@dua:~/captura/apache-tomcat-7.0.103/bin$ ./catalina.sh start
 ```

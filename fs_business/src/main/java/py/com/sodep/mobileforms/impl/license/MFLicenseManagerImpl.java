@@ -2,13 +2,10 @@ package py.com.sodep.mobileforms.impl.license;
 
 import java.io.InputStream;
 import java.security.PublicKey;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +18,7 @@ import py.com.sodep.mobileforms.api.services.license.MFAppLicenseStatus;
 import py.com.sodep.mobileforms.api.services.license.MFLicenseManager;
 import py.com.sodep.mobileforms.api.services.metadata.PagedData;
 import py.com.sodep.mobileforms.api.services.metadata.core.IUserService;
+import py.com.sodep.mobileforms.license.Constants;
 import py.com.sodep.mobileforms.license.MFApplicationLicense;
 import py.com.sodep.mobileforms.license.MFFormServerLicense;
 import py.com.sodep.mobileforms.license.crypto.CryptoUtils;
@@ -31,6 +29,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class MFLicenseManagerImpl implements MFLicenseManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(MFLicenseManagerImpl.class);
+	private static final Long MAX_USERS_OPENSOURCE = 50l;
+	private static final Long MAX_VALID_DAYS = 3650L;
+	private static final Long MAX_DEVICES = 10l;
+	private static final Long MAX_APPLICATIONS = 10l;
+	private static final String DEFAULT_OWNER = "devnull@sodep.com.py";
+	private static final Date YESTERDAY = DateUtils.addDays(new Date(), -1);
 
 	@Autowired
 	private KeyStore keyStore;
@@ -49,18 +53,72 @@ public class MFLicenseManagerImpl implements MFLicenseManager {
 
 	@Override
 	public MFFormServerLicense getFormServerLicense() {
-		// double-check idiom. Effective Java p. 283
-		MFFormServerLicense result = serverLicense;
-		if (result == null) {
-			synchronized (lock) {
-				result = serverLicense;
-				if (result == null) {
-					String encrypted = licenseStore.getEncryptedFormServerLicense();
-					String decrypted = decrypt(encrypted);
-					serverLicense = result = parseServerLicense(decrypted);
-				}
+		MFFormServerLicense result = new MFFormServerLicense() {
+			@Override
+			public Long getId() {
+				return 1l;
 			}
-		}
+
+			@Override
+			public Long getServerId() {
+				return 1l;
+			}
+
+			@Override
+			public Long getMaxApplications() {
+				return MAX_APPLICATIONS;
+			}
+
+			@Override
+			public Map<String, String> getProperties() {
+				return new HashMap<>();
+			}
+
+			@Override
+			public MFApplicationLicense getDefaultApplicationLicense() {
+				return new MFApplicationLicense() {
+					@Override
+					public Long getApplicationId() {
+						return 1l;
+					}
+
+					@Override
+					public Long getMaxDevices() {
+						return MAX_DEVICES;
+					}
+
+					@Override
+					public Long getMaxUsers() {
+						return MAX_USERS_OPENSOURCE;
+					}
+
+					@Override
+					public String getOwner() {
+						return DEFAULT_OWNER;
+					}
+
+					@Override
+					public Date getCreationDate() {
+						return YESTERDAY;
+					}
+
+					@Override
+					public Long getValidDays() {
+						return MAX_VALID_DAYS;
+					}
+				};
+			}
+
+			@Override
+			public Date getCreationDate() {
+				return DateUtils.addDays(new Date(), -1);
+			}
+
+			@Override
+			public Long getValidDays() {
+				return MAX_VALID_DAYS;
+			}
+		};
 		return result;
 	}
 
@@ -81,31 +139,37 @@ public class MFLicenseManagerImpl implements MFLicenseManager {
 
 	@Override
 	public MFApplicationLicense getLicense(Long applicationId) {
-		MFApplicationLicense mfApplicationLicense = applicationLicenseCache.get(applicationId);
-		if (mfApplicationLicense == null) {
-			synchronized (lock) {
-				mfApplicationLicense = applicationLicenseCache.get(applicationId);
-				if (mfApplicationLicense == null) {
-					List<String> encryptedApplicationLicenses = licenseStore
-							.getEncryptedApplicationLicense(applicationId);
-					if (encryptedApplicationLicenses != null && !encryptedApplicationLicenses.isEmpty()) {
-						String encrypted = encryptedApplicationLicenses.get(0);
-						String decrypted = decrypt(encrypted);
-						mfApplicationLicense = parseDecryptedOrGetDefault(decrypted);
-						Long id = mfApplicationLicense.getApplicationId();
-						if (id != null && !id.equals(applicationId)) {
-							logger.warn("License application Id and request don't match " + applicationId
-									+ ". Using default");
-							mfApplicationLicense = getDefaultApplicationLicense();
-						}
-					} else {
-						logger.info("No license for application " + applicationId + ". Using default");
-						mfApplicationLicense = getDefaultApplicationLicense();
-					}
-				}
-				applicationLicenseCache.put(applicationId, mfApplicationLicense);
+		MFApplicationLicense mfApplicationLicense = new MFApplicationLicense() {
+			@Override
+			public Long getApplicationId() {
+				return 1l;
 			}
-		}
+
+			@Override
+			public Long getMaxDevices() {
+				return MAX_DEVICES;
+			}
+
+			@Override
+			public Long getMaxUsers() {
+				return MAX_USERS_OPENSOURCE;
+			}
+
+			@Override
+			public String getOwner() {
+				return DEFAULT_OWNER;
+			}
+
+			@Override
+			public Date getCreationDate() {
+				return YESTERDAY;
+			}
+
+			@Override
+			public Long getValidDays() {
+				return MAX_VALID_DAYS;
+			}
+		};
 		return mfApplicationLicense;
 	}
 
@@ -214,8 +278,7 @@ public class MFLicenseManagerImpl implements MFLicenseManager {
 	@Override
 	public MFAppLicenseStatus getLicenseStatus(Application app) {
 		MFAppLicenseStatus status = new MFAppLicenseStatus();
-		final MFApplicationLicense license = getLicense(app.getId());
-		status.setMaxUsers(license.getMaxUsers());
+		status.setMaxUsers(MAX_USERS_OPENSOURCE);
 
 		// query a one page user list in order to obtain the total number of
 		// users without rewriting the query
