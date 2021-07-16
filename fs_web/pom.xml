@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>py.com.sodep.captura</groupId>
 		<artifactId>formserver</artifactId>
-		<version>1.4.3-SNAPSHOT</version>
+		<version>1.4.4-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring.version>4.3.16.RELEASE</spring.version>
-		<spring-security.version>4.2.5.RELEASE</spring-security.version>
+		<spring-security.version>4.2.16.RELEASE</spring-security.version>
 		<cglib.version>2.2.2</cglib.version>
 		<org.slf4j.version>1.6.1</org.slf4j.version>
 		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-web-endpoints</artifactId>
-			<version>1.4.3-SNAPSHOT</version>
+			<version>1.4.4-SNAPSHOT</version>
 			<exclusions>
 				<!-- <exclusion> -->
 				<!-- <artifactId>swagger-springmvc</artifactId> -->
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-web-common</artifactId>
-			<version>1.4.3-SNAPSHOT</version>
+			<version>1.4.4-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-business</artifactId>
-			<version>1.4.3-SNAPSHOT</version>
+			<version>1.4.4-SNAPSHOT</version>
 			<!-- <scope>runtime</scope> --> <!-- FIXME, business should be RUNTIME! -->
 		</dependency>
 
@@ -124,7 +124,7 @@
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.3</version>
+			<version>1.9.4</version>
 		</dependency>
 
 
@@ -214,7 +214,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.0.2.GA</version>
+			<version>6.0.19.Final</version>
 		</dependency>
 
 		<!-- Runtime requirements -->
@@ -237,7 +237,7 @@
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.28</version>
+			<version>2.3.30</version>
 		</dependency>
 
 		<!-- Spring Security -->
@@ -262,12 +262,12 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.6</version>
+			<version>1.13</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.3</version>
+			<version>2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -279,7 +279,7 @@
 		<dependency>
 			<groupId>net.bull.javamelody</groupId>
 			<artifactId>javamelody-core</artifactId>
-			<version>1.37.0</version>
+			<version>1.62.0</version>
 		</dependency>
 
 		<!-- simplelatlng: http://code.google.com/p/simplelatlng/ -->
