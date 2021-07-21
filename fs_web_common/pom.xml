@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>py.com.sodep.captura</groupId>
 		<artifactId>formserver</artifactId>
-		<version>1.4.4-SNAPSHOT</version>
+		<version>1.4.3-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-business-api</artifactId>
-			<version>1.4.4-SNAPSHOT</version>
+			<version>1.4.3-SNAPSHOT</version>
 		</dependency>
 		<!-- Servlets and JSP -->
 		<dependency>
