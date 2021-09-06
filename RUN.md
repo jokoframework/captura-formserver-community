@@ -12,7 +12,7 @@
 
 - Copy sample setup directory `conf/captura_template/profile/` to `$HOME/captura/profile` 
 ```
-cp -va conf/captura_template/profile /opt/captura
+cp -va conf/captura_template/profile /opt/captura/profile
 ```
 - Set an environment variable called `MOBILEFORMS_HOME` pointing to it. (.properties files)
 For example
@@ -105,7 +105,7 @@ mvn -DskipTests org.codehaus.mojo:properties-maven-plugin:read-project-propertie
     
 - server.properties
 
-Change the path to the home for webfiles configured befoer
+Change the path to the home for webfiles configured before
 
 ```
 server.home = /opt/captura/webfiles
@@ -140,7 +140,7 @@ mail.queue.sendMax = 1
 -  Add this parameters to the VM Arguments for tomcat process
 
 ```
- -Xms128m -Xmx1024m -XX:MaxPermSize=256m -Dlog4j.configuration="file:///home/cda/captura/profile/log4j.xml"
+ -Xms128m -Xmx1024m -XX:MaxPermSize=256m -Dlog4j.configuration="file:///opt/captura/profile/log4j.xml"
 ```
 
 `fs_web` project has a log4j.xml, you can use one of your choice for your environment.
@@ -171,7 +171,7 @@ You should be able to import to any IDE with maven project capabilities
 cda@dua:~/captura/apache-tomcat-7.0.103/bin$ echo $MOBILEFORMS_HOME 
 /home/cda/captura/profile
 cda@dua:~/captura/apache-tomcat-7.0.103/bin$ echo $JAVA_OPTS 
--Xms128m -Xmx1024m -XX:MaxPermSize=256m -Dlog4j.configuration="file:///home/cda/captura/profile/log4j.xml"
+-Xms128m -Xmx1024m -XX:MaxPermSize=256m -Dlog4j.configuration="file:///opt/captura/profile/log4j.xml"
 
 mvn  clean package
 
@@ -192,7 +192,7 @@ cp fs_web/target/fs-web-1.4.1-SNAPSHOT.war ~/captura/apache-tomcat-7.0.103/webap
 
   Both passwords are: 123456
 
-- As Root user, in web app you'll have to adpat to your environment this two System Parameters, they are sent to the mobile client. 
+- As Root user, in web app you'll have to adapt to your environment this two System Parameters, they are sent to the mobile client. 
 
 ```
 2020-03-27 17:54:11 [py.com.sodep.mobileforms.impl.services.config.SystemParametersBundle] DEBUG - Adding parameter #1002 - http://dev.sodep.com.py/fs-web/
