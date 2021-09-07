@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>py.com.sodep.captura</groupId>
 		<artifactId>formserver</artifactId>
-		<version>1.4.3-SNAPSHOT</version>
+		<version>1.4.4-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -16,7 +16,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring.version>4.3.16.RELEASE</spring.version>
+		<spring.version>4.3.29.RELEASE</spring.version>
 		<spring-security.version>4.2.16.RELEASE</spring-security.version>
 		<cglib.version>2.2.2</cglib.version>
 		<org.slf4j.version>1.6.1</org.slf4j.version>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-web-endpoints</artifactId>
-			<version>1.4.3-SNAPSHOT</version>
+			<version>1.4.4-SNAPSHOT</version>
 			<exclusions>
 				<!-- <exclusion> -->
 				<!-- <artifactId>swagger-springmvc</artifactId> -->
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-web-common</artifactId>
-			<version>1.4.3-SNAPSHOT</version>
+			<version>1.4.4-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-business</artifactId>
-			<version>1.4.3-SNAPSHOT</version>
+			<version>1.4.4-SNAPSHOT</version>
 			<!-- <scope>runtime</scope> --> <!-- FIXME, business should be RUNTIME! -->
 		</dependency>
 
@@ -214,7 +214,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>6.0.19.Final</version>
+			<version>4.0.2.GA</version>
 		</dependency>
 
 		<!-- Runtime requirements -->
