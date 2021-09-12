@@ -5,10 +5,6 @@
 - Use JDK 8
 - Install MongoDB 4.4.x
 - Tested with Postgres 9.x o 10.x (should work with newers too)
-- Install with `mvn -DskipTests install` this two libraries
-
-  * https://github.com/jokoframework/captura-exchange-community
-  * https://github.com/jokoframework/captura-form_definitions-community
 
 - Copy sample setup directory `conf/captura_template/profile/` to `$HOME/captura/profile` 
 ```
@@ -86,14 +82,25 @@ hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 hibernate.show_sql=false
 ```
 
-- Test that you can compile the project, branch `main`
+- Test that you can compile the project with helper scripts under [scripts](https://github.com/jokoframework/captura-formserver-community/tree/main/scripts) directory
+
+1. Customize your sources dir in both scripts
 
 ```
-git checkout main
-mvn -DskipTests=true  compile
+clone.sh
+CAPTURA_SOURCES_DIR="/tmp/captura-sources"
 ```
 
-- Run liquibase in the *fs_web* project with maven
+```
+compile.sh
+BASE_DIR="/home/intruder/git/captura-community"
+```
+
+* `clone.sh` will clone all the dependencies source code
+* `compile.sh` from source code directory created by `clone.sh` will compile and install dependencies and build form server WAR package.
+
+- Part of the compilation process is to run liquibase, so next step is only needed if you make changes to the database model
+   - Run liquibase in the *fs_web* project with maven
 
 ```
 cd fs_web
