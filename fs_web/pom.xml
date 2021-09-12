@@ -56,10 +56,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>simplecaptcha</groupId>
-			<artifactId>simplecaptcha</artifactId>
-			<version>1.2.1</version>
+		    <groupId>nl.captcha</groupId>
+		    <artifactId>simplecaptcha</artifactId>
+		    <version>1.2.1-mvn</version>
 		</dependency>
+
 		<!-- IMPL -->
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
