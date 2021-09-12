@@ -120,7 +120,6 @@ public class DeviceService extends BaseService<Device> implements IDeviceService
 		String identifier = deviceInfo.getIdentifier();
 
 		String versionNumber = deviceInfo.getVersionNumber();
-		String phoneNumber = deviceInfo.getPhoneNumber();
 
 		Application application = applicationService.findById(device.getApplicationId());
 		Device d = search(model, brand, os, identifier, application);
@@ -129,7 +128,6 @@ public class DeviceService extends BaseService<Device> implements IDeviceService
 			d.setApplication(application);
 			d = save(d);
 		} else {
-			d.setPhoneNumber(phoneNumber);
 			d.setVersionNumber(versionNumber);
 		}
 

@@ -59,7 +59,6 @@ public class DeviceAssociationIT {
 
 		info.setModel("iphone5s");
 		info.setOs("IOS");
-		info.setPhoneNumber("446544");
 		info.setVersionNumber("988v1");
 
 		info.setManufacturer("setManufacturer");
@@ -86,7 +85,6 @@ public class DeviceAssociationIT {
 
 		info.setModel("iphone5s");
 		info.setOs("iOS");
-		info.setPhoneNumber("446544");
 		info.setVersionNumber("988v1");
 
 		info.setManufacturer("setManufacturer");

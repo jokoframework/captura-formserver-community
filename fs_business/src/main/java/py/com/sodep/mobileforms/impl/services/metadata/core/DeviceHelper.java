@@ -14,7 +14,6 @@ public class DeviceHelper {
 		String brand = deviceInfo.getBrand();
 		String model = deviceInfo.getModel();
 		String versionNumber = deviceInfo.getVersionNumber();
-		String phoneNumber = deviceInfo.getPhoneNumber();
 
 		Device d = new Device();
 		d.setOs(os);
@@ -22,7 +21,6 @@ public class DeviceHelper {
 		d.setBrand(brand);
 		d.setModel(model);
 		d.setVersionNumber(versionNumber);
-		d.setPhoneNumber(phoneNumber);
 		d.setManufacturer(deviceInfo.getManufacturer());
 		d.setProduct(deviceInfo.getProduct());
 		d.setRelease(deviceInfo.getRelease());
@@ -37,7 +35,6 @@ public class DeviceHelper {
 		info.setIdentifier(entity.getIdentifier());
 		info.setModel(entity.getModel());
 		info.setOs(entity.getOs().toString());
-		info.setPhoneNumber(entity.getPhoneNumber());
 		info.setVersionNumber(entity.getVersionNumber());
 		info.setId(entity.getId());
 		info.setManufacturer(entity.getManufacturer());
