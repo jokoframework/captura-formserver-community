@@ -112,7 +112,7 @@ mvn -DskipTests org.codehaus.mojo:properties-maven-plugin:read-project-propertie
     
 - server.properties
 
-Change the path to the home for webfiles configured before
+Change the path to the home for webfiles configured before, make sure `images`, `csv` and `upload` folders, under `server.home` are writable for Tomcat process.
 
 ```
 server.home = /opt/captura/webfiles
