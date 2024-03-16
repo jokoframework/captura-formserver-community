@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
 import org.apache.commons.collections.CollectionUtils;
 import org.bson.types.ObjectId;
@@ -565,7 +565,7 @@ public class DataAccessService implements IDataAccessService {
 	 */
 	private Long getNextSequence(DB db, String metadataRef) {
 		DBCollection colMetadata = db.getCollection(DataDefinitionService.COL_DATASET_METADATA);
-		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, ObjectId.massageToObjectId(metadataRef))
+		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, new ObjectId(metadataRef))
 				.get();
 		// 1) ATOMICALLY INCREMENT THE SEQUENCE
 		DBObject incVersion = BasicDBObjectBuilder.start()
@@ -919,7 +919,7 @@ public class DataAccessService implements IDataAccessService {
 	public MFBlob getFile(MFBlob blob) {
 		DB db = mongo.getDB(database);
 		GridFS fs = new GridFS(db);
-		GridFSDBFile gridFile = fs.findOne(new BasicDBObject("_id", ObjectId.massageToObjectId(blob.getFileId())));
+		GridFSDBFile gridFile = fs.findOne(new BasicDBObject("_id", new ObjectId(blob.getFileId())));
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
 			gridFile.writeTo(out);
@@ -944,7 +944,7 @@ public class DataAccessService implements IDataAccessService {
 		}
 		DB db = mongo.getDB(database);
 		GridFS fs = new GridFS(db);
-		GridFSDBFile gridFSDBFile = fs.findOne(new BasicDBObject("_id", ObjectId.massageToObjectId(blob.getFileId())));
+		GridFSDBFile gridFSDBFile = fs.findOne(new BasicDBObject("_id", new ObjectId(blob.getFileId())));
 		return new MFFileStreamMongo(gridFSDBFile);
 
 	}
@@ -1021,7 +1021,6 @@ public class DataAccessService implements IDataAccessService {
 	 * @param restriction
 	 * @param orderBy
 	 *            The name of the field that will be used for the sorting
-	 * @param ascending
 	 * @return
 	 */
 	private DBCursor obtainDataCursor(String dataSetDef, Long ddlVersion, ConditionalCriteria restriction,

@@ -92,7 +92,7 @@ class DataSetMetadata implements MFStorable {
 	public DBObject toMongo() {
 		BasicDBObject obj = new BasicDBObject();
 		if (this.objectId != null) {
-			obj.put(MFStorable._ID, ObjectId.massageToObjectId(this.objectId));
+			obj.put(MFStorable._ID, new ObjectId(this.objectId));
 		}
 		obj.put(FIELD_LAST_VERSION, lastVersion);
 		obj.put(FIELD_TRANSACTION_STATUS, status.ordinal());

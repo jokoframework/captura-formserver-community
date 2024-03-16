@@ -85,7 +85,7 @@ public class MFBlob implements MFStorable {
 	@Override
 	public DBObject toMongo() {
 		BasicDBObject obj = new BasicDBObject();
-		obj.put(FIELD_FILEID, ObjectId.massageToObjectId(fileId));
+		obj.put(FIELD_FILEID, new ObjectId(fileId));
 		obj.put(FIELD_FILENAME, fileName);
 		obj.put(FIELD_CONTENTTYPE, contentType);
 		return obj;

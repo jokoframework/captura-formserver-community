@@ -72,7 +72,7 @@ public class Transaction implements MFStorable {
 	public DBObject toMongo() {
 		BasicDBObject obj = new BasicDBObject();
 		if (this.id != null) {
-			obj.put(MFStorable._ID, ObjectId.massageToObjectId(this.id));
+			obj.put(MFStorable._ID, new ObjectId(this.id));
 		}
 
 		obj.put(FIELD_STATE, state.ordinal());

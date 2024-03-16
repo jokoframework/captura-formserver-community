@@ -29,7 +29,7 @@ public class MongoConnectionImpl implements IMongoConnection {
 	
 	private String pwd;
 	
-	public MongoConnectionImpl(@Value("${mongo.database") String database, 
+	public MongoConnectionImpl(@Value("${mongo.database}") String database,
 			@Value("${mongo.por}") int port, 
 			@Value("${mongo.host}") String host, 
 			@Value("${mongo.user}") String user, 

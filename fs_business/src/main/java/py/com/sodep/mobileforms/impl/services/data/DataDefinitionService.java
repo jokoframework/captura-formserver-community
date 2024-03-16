@@ -127,7 +127,7 @@ public class DataDefinitionService {
 	public static Long incrementRevisionNumber(DB db, String metadataRef) {
 		DBCollection colMetadata = db.getCollection(COL_DATASET_METADATA);
 		colMetadata.setWriteConcern(WriteConcern.JOURNAL_SAFE);
-		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, ObjectId.massageToObjectId(metadataRef))
+		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, new ObjectId(metadataRef))
 				.get();
 		DBObject incVersion = BasicDBObjectBuilder.start()
 				.add("$inc", BasicDBObjectBuilder.start().add(DataSetMetadata.FIELD_REVISION, 1).get()).get();
@@ -152,7 +152,7 @@ public class DataDefinitionService {
 	private static Long incrementDDLVersion(DB db, String metadataRef) {
 		DBCollection colMetadata = db.getCollection(COL_DATASET_METADATA);
 		colMetadata.setWriteConcern(WriteConcern.JOURNAL_SAFE);
-		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, ObjectId.massageToObjectId(metadataRef))
+		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, new ObjectId(metadataRef))
 				.get();
 		DBObject incVersion = BasicDBObjectBuilder.start()
 				.add("$inc", BasicDBObjectBuilder.start().add(DataSetMetadata.FIELD_LAST_VERSION, 1).get()).get();
@@ -203,7 +203,7 @@ public class DataDefinitionService {
 	 * @return
 	 */
 	public static MFDataSetDefinitionMongo getDataSetDefinition(DB db, String id) {
-		DBObject query = BasicDBObjectBuilder.start().add(MFDataSetDefinitionMongo._ID, ObjectId.massageToObjectId(id))
+		DBObject query = BasicDBObjectBuilder.start().add(MFDataSetDefinitionMongo._ID, new ObjectId(id))
 				.get();
 		DBCollection collection = db.getCollection(COL_DDL);
 		DBObject defMongo = collection.findOne(query);
@@ -216,7 +216,7 @@ public class DataDefinitionService {
 
 	public static DataSetMetadata getDataSetMetadata(DB db, String objectId) {
 		DBCollection collection = db.getCollection(COL_DATASET_METADATA);
-		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, ObjectId.massageToObjectId(objectId)).get();
+		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, new ObjectId(objectId)).get();
 		DBObject data = collection.findOne(query);
 		if (data != null) {
 			DataSetMetadata meta = new DataSetMetadata();
@@ -302,7 +302,7 @@ public class DataDefinitionService {
 	
 	public static Long getNextSequence(DB db, String metadataRef) {
 		DBCollection colMetadata = db.getCollection(DataDefinitionService.COL_DATASET_METADATA);
-		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, ObjectId.massageToObjectId(metadataRef))
+		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, new ObjectId(metadataRef))
 				.get();
 		// 1) ATOMICALLY INCREMENT THE SEQUENCE
 		DBObject incVersion = BasicDBObjectBuilder.start()

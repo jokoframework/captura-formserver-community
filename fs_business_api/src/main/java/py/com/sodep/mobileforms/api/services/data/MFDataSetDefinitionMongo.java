@@ -41,7 +41,7 @@ public class MFDataSetDefinitionMongo extends MFDataSetDefinition implements MFS
 	public BasicDBObject toMongo() {
 		BasicDBObject obj = new BasicDBObject();
 		if (this.objectId != null) {
-			obj.put(MFStorable._ID, ObjectId.massageToObjectId(objectId));
+			obj.put(MFStorable._ID, new ObjectId(objectId));
 		}
 		List<DBObject> fieldsDbs = new ArrayList<DBObject>();
 		for (MFField mfField : fields) {

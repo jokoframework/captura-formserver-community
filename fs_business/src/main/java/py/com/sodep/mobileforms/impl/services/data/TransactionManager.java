@@ -153,7 +153,7 @@ public class TransactionManager {
 	 */
 	public Transaction getTransaction(DB db, String tx) {
 		DBCollection collection = db.getCollection(COL_TRANSACTION);
-		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, ObjectId.massageToObjectId(tx)).get();
+		DBObject query = BasicDBObjectBuilder.start().add(MFStorable._ID, new ObjectId(tx)).get();
 		DBObject data = collection.findOne(query);
 		if (data != null) {
 			Transaction t = new Transaction();

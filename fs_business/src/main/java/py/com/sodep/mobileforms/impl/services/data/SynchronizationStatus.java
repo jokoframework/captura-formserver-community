@@ -24,7 +24,7 @@ public class SynchronizationStatus implements MFStorable {
 	public DBObject toMongo() {
 		BasicDBObject obj = new BasicDBObject();
 		if (this.id != null) {
-			obj.put(MFStorable._ID, ObjectId.massageToObjectId(id));
+			obj.put(MFStorable._ID, new ObjectId(id));
 		}
 		obj.put(FIELD_USERNAME, username);
 		obj.put(FIELD_DEVICE, device);
