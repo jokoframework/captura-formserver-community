@@ -1,4 +1,4 @@
-# Instrucciones para Levantar el Proyecto Java - Captura-web
+# Instrucciones para Levantar Captura-web
 
 ## Requisitos Previos
 
