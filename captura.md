@@ -48,7 +48,14 @@
     - Crear el directorio `/opt/clientes`.
     - Descargar los archivos `joko-captura.tar.gz` y `captura.tar.gz` desde https://drive.google.com/drive/u/1/folders/12i2hLCtjAfemQDIX712v2s1428GgFpUA y extraerlos en el directorio recién creado.
 
-5. **Configuración de Propiedades:**
+5. **Configuración de Variable de Entorno `MOBILEFORM_HOME`:**
+
+    - Ir al directorio donde se encuentra IntelliJ Idea (p.ej., `/idea-version/bin`) y ejecutar el siguiente comando para configurar la variable de entorno `MOBILEFORM_HOME`:
+        ```
+        export MOBILEFORM_HOME=/opt/clientes/captura/profile
+        ```
+        
+6. **Configuración de Propiedades:**
 
     - Editar el archivo `/opt/clientes/captura/profile/jdbc.properties` y configurar:
         ```
@@ -68,7 +75,7 @@
         mongo.useAuthentication = true
         ```
 
-6. **Configuración en IntelliJ:**
+7. **Configuración en IntelliJ:**
 
     - Abrir el proyecto desde IntelliJ Ultimate.
     - Ir a `File` > `Project Structure`:
@@ -84,7 +91,7 @@
             - `MOBILEFORMS_HOME`: `/opt/clientes/captura/profile`
         - Aplicar y guardar la configuración.
 
-7. **Ejecución del Proyecto:**
+8. **Ejecución del Proyecto:**
 
     - Abrir la terminal e ingresar a la carpeta `captura-formserver-community`.
     - Cambiar a la rama `sync-2023-12`:
@@ -93,7 +100,7 @@
         ```
     - Ejecutar el proyecto para que se cree la carpeta `.m2` en el directorio personal.
 
-8. **Configuración de Dependencias de Maven:**
+9. **Configuración de Dependencias de Maven:**
 
     - Descargar los archivos `maven-captura-libs.tar.gz` y `maven-captura-libs-2.zip` desde https://drive.google.com/drive/u/1/folders/12i2hLCtjAfemQDIX712v2s1428GgFpUA.
     - Extraer el contenido en la carpeta `.m2` en tu directorio personal.
