@@ -86,6 +86,7 @@
         - Nombre: Tomcat
         - Tomcat home: `/opt/clientes/captura-apache-tomcat`
         - URL: http://localhost:8080/mf
+        - `fix` > `fs-web:war exploded`
         - Aplicación context: `fs_web_war_exploded/mf`
         - Variables de entorno:
             - `MOBILEFORMS_HOME`: `/opt/clientes/captura/profile`
@@ -105,3 +106,12 @@
     - Descargar los archivos `maven-captura-libs.tar.gz` y `maven-captura-libs-2.zip` desde https://drive.google.com/drive/u/1/folders/12i2hLCtjAfemQDIX712v2s1428GgFpUA.
     - Extraer el contenido en la carpeta `.m2` en tu directorio personal.
     - Desde IntelliJ, hacer clic en el icono "m" y seleccionar "Reload".
+    - Ejecutar el proyecto.
+
+10. **Iniciar Sesión en la Aplicación:**
+
+    Utiliza las siguientes credenciales para iniciar sesión:
+    
+    - Usuario: root@mobileforms.sodep.com.py
+    - Contraseña: 123456
+
