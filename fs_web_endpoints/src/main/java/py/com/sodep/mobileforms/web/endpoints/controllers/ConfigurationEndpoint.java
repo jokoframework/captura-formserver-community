@@ -18,7 +18,7 @@ import py.com.sodep.mobileforms.api.services.config.ISystemParametersBundle;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.wordnik.swagger.annotations.Api;
+import io.swagger.annotations.Api;
 
 @Controller
 @Api(value = "configuration", description = "Endpoint for clients to get configuration parameters from the server and to know its status", position = 1)

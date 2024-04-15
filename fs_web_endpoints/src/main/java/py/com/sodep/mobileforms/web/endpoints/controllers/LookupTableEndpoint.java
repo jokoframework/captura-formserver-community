@@ -26,11 +26,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.mangofactory.swagger.annotations.ApiIgnore;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiImplicitParam;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 import py.com.sodep.mf.exchange.MFDataHelper;
 import py.com.sodep.mf.exchange.MFField;
@@ -64,6 +63,7 @@ import py.com.sodep.mobileforms.api.services.data.SynchronizationService;
 import py.com.sodep.mobileforms.api.services.metadata.PagedData;
 import py.com.sodep.mobileforms.web.json.JsonResponse;
 import py.com.sodep.mobileforms.web.session.SessionManager;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 @Api(value = "lookuptables", description = "Operations related to Lookup Tables", position = 3)
@@ -270,7 +270,6 @@ public class LookupTableEndpoint extends EndpointController {
 	 * that support the parameters sent by
 	 * 
 	 * @param request
-	 * @param projectId
 	 * @param page
 	 * @param rows
 	 * @param orderBy

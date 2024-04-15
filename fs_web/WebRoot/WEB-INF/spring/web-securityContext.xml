@@ -20,9 +20,15 @@
 	<http pattern="/password/reset.*" security="none" />
 	<http pattern="/i18n/keys.ajax" security="none" />
 	<http pattern="/api/public/**" security="none" />
-	<http pattern="/api/api-docs/**" security="none"/>
-	<http pattern="/swagger-ui/**" security="none"/>
-	
+
+	<!-- Exclude Swagger resources from security -->
+	<http pattern="/swagger-ui.html" security="none"/>
+	<http pattern="/swagger/**" security="none"/>
+	<http pattern="/swagger-resources/**" security="none"/>
+	<http pattern="/webjars/**" security="none"/>
+	<http pattern="/v2/api-docs/**" security="none"/>
+
+
 	<http pattern="/" security="none" />
 	<!-- Static resources are not filtered -->
 	<http pattern="/**/*.css" security="none"   />

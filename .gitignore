@@ -62,3 +62,4 @@ fs_web/WebRoot/META-INF/MANIFEST.MF
 *.iml
 *.crt
 *.cer
+.run

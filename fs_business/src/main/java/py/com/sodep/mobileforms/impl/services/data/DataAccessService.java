@@ -11,9 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
 import org.apache.commons.collections.CollectionUtils;
 import org.bson.types.ObjectId;

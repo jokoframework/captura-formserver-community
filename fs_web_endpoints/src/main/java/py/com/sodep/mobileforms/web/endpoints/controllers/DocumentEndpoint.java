@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.wordnik.swagger.annotations.Api;
+import io.swagger.annotations.Api;
 
 import py.com.sodep.mf.exchange.MFDataHelper;
 import py.com.sodep.mf.exchange.MFField;

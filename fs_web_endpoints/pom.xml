@@ -16,16 +16,32 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring.version>4.3.29.RELEASE</spring.version>
-		<swagger-springmvc.version>0.0.1</swagger-springmvc.version>
+		<springfox-swagger2.version>3.0.0</springfox-swagger2.version>
 	</properties>
 
 	<dependencies>
-		<!-- Swagger documentation generator -->
+		<!-- Swagger -->
 		<dependency>
-			<groupId>py.com.sodep.mf</groupId>
-			<artifactId>swagger-springmvc</artifactId>
-			<version>${swagger-springmvc.version}</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox-swagger2.version}</version>
+			<scope>compile</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox-swagger2.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>

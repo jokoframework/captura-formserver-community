@@ -41,8 +41,8 @@ import py.com.sodep.mobileforms.web.json.JsonResponse;
 import py.com.sodep.mobileforms.web.session.SessionManager;
 import py.com.sodep.mobileforms.web.utils.RequestUtils;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Controller
 @Api(value = "authentication", description = "Operations to authenticate a user and verify a device", position = 2)

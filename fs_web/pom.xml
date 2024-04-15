@@ -49,6 +49,14 @@
 			</exclusions>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>33.1.0-jre</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>py.com.sodep.captura</groupId>
 			<artifactId>fs-web-common</artifactId>
@@ -280,7 +288,7 @@
 		<dependency>
 			<groupId>net.bull.javamelody</groupId>
 			<artifactId>javamelody-core</artifactId>
-			<version>1.62.0</version>
+			<version>1.70.0</version>
 		</dependency>
 
 		<!-- simplelatlng: http://code.google.com/p/simplelatlng/ -->
