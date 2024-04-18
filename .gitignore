@@ -51,7 +51,6 @@ build/
 .project
 .classpath
 .settings
-.externalToolBuilders
 *.swp
 src/META-INF/*
 fs_web/WebRoot/META-INF/MANIFEST.MF
@@ -63,3 +62,12 @@ fs_web/WebRoot/META-INF/MANIFEST.MF
 *.crt
 *.cer
 .run
+
+src/main/java/META-INF
+
+liquibase.properties
+.mymetadata
+.myeclipse/
+WebRoot/acme-gz/
+.freemarker-ide.xml
+.springBeans
