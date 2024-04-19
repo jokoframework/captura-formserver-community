@@ -3,7 +3,6 @@
 ## Captura Form Server
 
 - Use JDK 8
-- Install MongoDB 4.4.x
 - Tested with Postgres 9.x o 10.x (should work with newers too)
 
 ## Clone the Repositories
@@ -20,6 +19,12 @@ git clone https://github.com/jokoframework/captura-form_definitions-community.gi
 - Ensure you have the downloaded files on your system.
 - Reload the dependencies from your IDE.
   
+## Set Up the Docker Environment
+
+Navigate to the `captura-community-docker` folder and run the following command to set up Docker containers:
+        ```
+        docker compose up
+        ```
 ##
 - Copy sample setup directory `conf/captura_template/profile/` to `$HOME/captura/profile` 
 ```
@@ -184,8 +189,14 @@ You should be able to import to any IDE with maven project capabilities
 -  Add a server Tomcat in Eclipse STS (or in your favorite IDE)
 #### Remember to setup hades-settings.xml for maven configuration 
 - Most IDEs will allow you to deploy war to your tomcat
+  
+## Grant permissions to Tomcat
+Navigate to the directory where Tomcat is located, then to the bin directory and grant permissions.
+```
+chmod u+x *.sh
+```
 
-**Example Configuration in IntelliJ:**
+## Example Configuration in IntelliJ:**
 
 - Open the project using IntelliJ IDEA.
 - Go to `File` > `Project Structure`:
