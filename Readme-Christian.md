@@ -36,12 +36,6 @@
             - Base de datos de mantenimiento: postgres
             - Usuario: postgres
             - Contraseña: captura
-    - Crear una base de datos llamada `mobileforms_database`.
-    - Descargar el archivo `db_captura_community.sql` desde https://drive.google.com/drive/u/1/folders/12i2hLCtjAfemQDIX712v2s1428GgFpUA y ejecutarlo en la base de datos `mobileforms_database`.
-
-        ```
-        psql -U postgres -p 25432 -h <localhost mobileforms_database 
-        ```
     
 4. **Configuración del Directorio Clientes:**
 
