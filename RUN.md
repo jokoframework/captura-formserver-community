@@ -6,6 +6,21 @@
 - Install MongoDB 4.4.x
 - Tested with Postgres 9.x o 10.x (should work with newers too)
 
+## Clone the Repositories
+
+```
+git clone https://github.com/jokoframework/captura-formserver-community.git
+git clone https://github.com/jokoframework/captura-community-docker.git
+git clone https://github.com/jokoframework/captura-exchange-community.git
+git clone https://github.com/jokoframework/captura-form_definitions-community.git
+```
+## Setup Maven Dependencies
+
+- Download the necessary files from [this GitHub repository](https://github.com/orgs/jokoframework/teams/captura-community/repositories).
+- Ensure you have the downloaded files on your system.
+- Reload the dependencies from your IDE.
+  
+##
 - Copy sample setup directory `conf/captura_template/profile/` to `$HOME/captura/profile` 
 ```
 cp -va conf/captura_template/profile /opt/captura/profile
@@ -40,8 +55,8 @@ mongo.port = 27017
 mongo.database = mobileforms
 mongo.dataCollection = data
 mongo.user = captura
-mongo.pwd = PASSWORD
-mongo.useAuthentication = false
+mongo.pwd = captura123
+mongo.useAuthentication = true
 ```
 
    - Required for mongodb 4.x: Create mobileforms database, with some data in it.
@@ -69,9 +84,9 @@ mobileforms  0.000GB
 
 ```
 jdbc.driverClassName=org.postgresql.Driver
-jdbc.url=jdbc\:postgresql\://localhost\:5432/mobileforms_database
-jdbc.username=user
-jdbc.password=xxxxx
+jdbc.url=jdbc:postgresql://localhost:25432/mobileforms_database
+jdbc.username=postgres
+jdbc.password=captura
 ```
 
    - Hibernate configuration `hibernate.properties`
@@ -169,6 +184,24 @@ You should be able to import to any IDE with maven project capabilities
 -  Add a server Tomcat in Eclipse STS (or in your favorite IDE)
 #### Remember to setup hades-settings.xml for maven configuration 
 - Most IDEs will allow you to deploy war to your tomcat
+
+**Configuration in IntelliJ:**
+
+- Open the project using IntelliJ IDEA.
+- Go to `File` > `Project Structure`:
+    - SDK: 1.8
+    - Language level: 8 - Lambdas, type annotations, etc.
+- Configure Tomcat:
+    - Click on `Current file` > `Edit Configurations` > `Add New` > `Tomcat Server` > `Local`.
+    - Name: Tomcat
+    - Tomcat home: `tomcat location`
+    - URL: http://localhost:8080/mf/login/login.mob
+    - `fix` > `fs-web:war exploded`
+    - Application context: `/mf`
+    - Environment variables:
+        - `MOBILEFORMS_HOME`: `/opt/captura/profile`
+    - Apply and save the configuration.
+
 
 ## Manual deploy
 
