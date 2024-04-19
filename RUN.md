@@ -185,7 +185,7 @@ You should be able to import to any IDE with maven project capabilities
 #### Remember to setup hades-settings.xml for maven configuration 
 - Most IDEs will allow you to deploy war to your tomcat
 
-**Configuration in IntelliJ:**
+**Example Configuration in IntelliJ:**
 
 - Open the project using IntelliJ IDEA.
 - Go to `File` > `Project Structure`:
