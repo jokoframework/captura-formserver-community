@@ -25,7 +25,7 @@
         docker-compose up
         ```
 
-3. **Configuración de la Base de Datos:**
+3. **Registro de la Base de Datos:**
 
     - Acceder a `localhost:5050` desde un navegador.
     - Configurar la base de datos en PgAdmin:
@@ -85,15 +85,18 @@
         - Hacer clic en `Current file` > `Edit Configurations` > `Add New` > `Tomcat Server` > `Local`.
         - Nombre: Tomcat
         - Tomcat home: `/opt/clientes/captura-apache-tomcat`
-        - URL: http://localhost:8080/mf
+        - URL: http://localhost:8080/mf/login/login.mob
         - `fix` > `fs-web:war exploded`
-        - Aplicación context: `fs_web_war_exploded/mf`
+        - Aplicación context: `/mf`
         - Variables de entorno:
             - `MOBILEFORMS_HOME`: `/opt/clientes/captura/profile`
         - Aplicar y guardar la configuración.
 
 8. **Ejecución del Proyecto:**
-
+    - Ir al directorio opt/clientes/captura/apachetomcat-version/bin y dar permisos
+       ```bash
+        chmod u+x *.sh
+        ```
     - Abrir la terminal e ingresar a la carpeta `captura-formserver-community`.
     - Cambiar a la rama `sync-2023-12`:
         ```
