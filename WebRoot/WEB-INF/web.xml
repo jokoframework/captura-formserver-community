@@ -112,7 +112,7 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:/META-INF/spring/business-applicationContext.xml
-                classpath:/WEB-INF/spring/web-securityContext.xml
+                /WEB-INF/spring/web-securityContext.xml
 				classpath:net/bull/javamelody/monitoring-spring-datasource.xml</param-value>
   </context-param>
   <!-- javamelody security -->
