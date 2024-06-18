@@ -3,6 +3,7 @@ package py.com.sodep.mobileforms.api.services.metadata.core;
 import java.util.List;
 import java.util.Map;
 
+import py.com.sodep.mf.exchange.objects.device.MFDevice;
 import py.com.sodep.mobileforms.api.dtos.PendingRegistrationDTO;
 import py.com.sodep.mobileforms.api.dtos.UserDTO;
 import py.com.sodep.mobileforms.api.entities.application.Application;
@@ -237,6 +238,11 @@ public interface IUserService {
 	 * @return
 	 */
 	boolean queueActivationMail(Application application, User currentUser, User user);
+
+
+	boolean queueActivationEmail(Application application, User currentUser, User user, String email);
+
+	boolean queueSendActivationEmail(String email, MFDevice device);
 
 	/**
 	 * Send a mail to the user with his/hers credentials on behalf of the

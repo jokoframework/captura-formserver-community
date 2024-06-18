@@ -1,11 +1,14 @@
 package py.com.sodep.mobileforms.impl.services.metadata.core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import py.com.sodep.mf.exchange.objects.device.MFDevice;
 import py.com.sodep.mobileforms.api.constants.AuthorizationNames;
 import py.com.sodep.mobileforms.api.dtos.PendingRegistrationDTO;
 import py.com.sodep.mobileforms.api.dtos.UserDTO;
@@ -46,6 +49,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -303,6 +307,54 @@ class UserService extends BaseService<User> implements IUserService {
         String subject = i18nBundle.getLabel(language, "services.mail.registration.subject");
 
         mailService.queueMail(mailFrom, user.getMail(), subject, body);
+        return true;
+    }
+
+    @Override
+    public boolean queueActivationEmail(Application app, User currentUser, User user, String email) {
+        if (!em.contains(user)) {
+            user = findById(user.getId());
+        }
+        String language = user.getLanguage();
+        String fullName = user.getFirstName() + " " + user.getLastName();
+
+        String mailFrom = getMailFrom();
+
+        String contextPath = getContextPath();
+        Token token = createActivationToken(currentUser, user);
+
+        String url = contextPath + "api/public/activate/" + user.getMail() + "/" + token.getToken();
+        String body = i18nBundle.getLabel(language, "services.mail.registration.body", fullName, url); //TODO: cambiar esto
+        String subject = i18nBundle.getLabel(language, "services.mail.registration.subject");
+
+        mailService.queueMail(mailFrom, email, subject, body);
+        return true;
+    }
+
+    @Override
+    public boolean queueSendActivationEmail(String email, MFDevice device) {
+        String language = "es";
+        String mailFrom = getMailFrom();
+        String contextPath = getContextPath();
+
+        // Convertir el objeto a JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonObject = "";
+        try {
+            jsonObject = objectMapper.writeValueAsString(device);
+        } catch (JsonProcessingException e) {
+            return false;
+        }
+
+        // Codificar el JSON a base64
+        String encodedObject = Base64.getEncoder().encodeToString(jsonObject.getBytes(StandardCharsets.UTF_8));
+
+        //String url = contextPath + "account/activation.mob?device=" + encodedObject;
+        String url =  "http://localhost:8080/mf/account/activation.mob?device=" + encodedObject; //TODO: obtener del properties el dominio del server
+        String body = i18nBundle.getLabel(language, "services.mail.activation.body", url);
+        String subject = i18nBundle.getLabel(language, "services.mail.activation.subject");
+
+        mailService.queueMail(mailFrom, email, subject, body);
         return true;
     }
 

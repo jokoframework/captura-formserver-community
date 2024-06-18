@@ -36,6 +36,9 @@ import py.com.sodep.mobileforms.api.services.logging.IDBLogging;
 import py.com.sodep.mobileforms.api.services.metadata.applications.IApplicationService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IDeviceService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IUserService;
+import py.com.sodep.mobileforms.web.activation.ActivationRequest;
+import py.com.sodep.mobileforms.web.activation.ActivationResponse;
+import py.com.sodep.mobileforms.web.activation.ActivationStatusResponse;
 import py.com.sodep.mobileforms.web.endpoints.exceptions.EndpointOperationException;
 import py.com.sodep.mobileforms.web.json.JsonResponse;
 import py.com.sodep.mobileforms.web.session.SessionManager;
@@ -182,7 +185,7 @@ public class AuthenticationEndpoint extends EndpointController {
 
 		// CAP-198
 		logLogin(request, user, applicationId, authResponse.getPossibleApplications());
-		
+
 		return authResponse;
 	}
 
@@ -208,6 +211,48 @@ public class AuthenticationEndpoint extends EndpointController {
 			HttpServletRequest request) {
 		String type = RequestUtils.parseLoginType(request);
 		return LoginType.fromValue(type);
+	}
+
+
+	@RequestMapping(value = "/authentication/activation/status", method = RequestMethod.POST)
+	public @ResponseBody
+	ActivationStatusResponse activateStatus(HttpServletRequest request,
+			HttpServletResponse response, @RequestBody MFDevice device)  {
+
+
+		Application app = applicationService.findById(device.getApplicationId());
+		User user = userService.findByMail("chake@feltesq.com"); //TODO: obtener del properties
+
+		Long applicationId = device.getApplicationId();
+		String identifier = device.getDeviceInfo().getIdentifier();
+
+		boolean active = false;
+
+		if (userService.isMember(applicationId, user)) {
+			active = deviceService.isDeviceAssociated(user, app, identifier);
+		}
+
+		return new ActivationStatusResponse(active);
+	}
+
+	@RequestMapping(value = "/authentication/activation/device", method = RequestMethod.POST)
+	public @ResponseBody
+	ActivationResponse activate(HttpServletRequest request,
+								HttpServletResponse response,
+								@RequestBody ActivationRequest activationRequest) {
+
+		ActivationResponse activationResponse = new ActivationResponse();
+
+		String userEmail = activationRequest.getEmail();
+
+		if (userEmail == null) {
+			throwMailIsNull();
+		}
+
+		boolean isSentEmail = userService.queueSendActivationEmail(userEmail, activationRequest.getDevice());
+		activationResponse.setSentEmail(isSentEmail);
+
+		return activationResponse;
 	}
 
 	@ApiOperation(value = "Logout", notes = "End current session (if any)")

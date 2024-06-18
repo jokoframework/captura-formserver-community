@@ -13,6 +13,7 @@
 	 
 	<http pattern="/acme/*.ajax" security="none"  />
 	<http pattern="/registration/register.*" security="none"  />
+	<http pattern="/account/activation.*" security="none"  />
 	<http pattern="/registration/activate.*" security="none" />
 	<http pattern="/registration/*.ajax" security="none" />
 	<http pattern="/account/recovery.*" security="none" />
@@ -47,6 +48,8 @@
 		<access-denied-handler error-page="/403.html"/>
 		<intercept-url pattern="/scripting/**"  access="denyAll"/>
 		<intercept-url pattern="/api/authentication/login" access="permitAll"/>
+		<intercept-url pattern="/api/authentication/activation/device" access="permitAll"/>
+		<intercept-url pattern="/api/authentication/activation/status" access="permitAll"/>
 		<intercept-url pattern="/system/**" access="hasRole('ROLE_SYSTEM')" />
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_SYSTEM')" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />

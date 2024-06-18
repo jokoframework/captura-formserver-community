@@ -52,15 +52,13 @@
 	<bean id="myEmf"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="myDataSource" />
-		<property name="persistenceXmlLocation">
-			<value>classpath:/META-INF/persistence.xml</value>
-		</property>
-		<property name="persistenceUnitName" value="mobileforms"></property>
+		<property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml"/>
+		<property name="persistenceUnitName" value="mobileforms"/>
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="database" value="POSTGRESQL" />
 				<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />
-				<property name="showSql" value="false"></property>
+				<property name="showSql" value="false"/>
 			</bean>
 		</property>
 		<property name="jpaProperties">

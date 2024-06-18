@@ -55,7 +55,10 @@ public class MainUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
 			// FIXME
 			// This is necessary to allow login through the web api
 			String path = contextPath + apiUriPrefix;
-			if (requestURI.startsWith(path + "/authentication/login")) {
+			if (requestURI.startsWith(path + "/authentication/login") ||
+				requestURI.startsWith(path + "/authentication/activation/device") ||
+				requestURI.startsWith(path + "/authentication/activation/status")
+			) {
 				super.doFilter(req, res, chain);
 				return;
 			}
