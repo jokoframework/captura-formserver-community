@@ -324,7 +324,7 @@ class UserService extends BaseService<User> implements IUserService {
         Token token = createActivationToken(currentUser, user);
 
         String url = contextPath + "api/public/activate/" + user.getMail() + "/" + token.getToken();
-        String body = i18nBundle.getLabel(language, "services.mail.registration.body", fullName, url); //TODO: cambiar esto
+        String body = i18nBundle.getLabel(language, "services.mail.registration.body", fullName, url);
         String subject = i18nBundle.getLabel(language, "services.mail.registration.subject");
 
         mailService.queueMail(mailFrom, email, subject, body);
@@ -349,8 +349,7 @@ class UserService extends BaseService<User> implements IUserService {
         // Codificar el JSON a base64
         String encodedObject = Base64.getEncoder().encodeToString(jsonObject.getBytes(StandardCharsets.UTF_8));
 
-        //String url = contextPath + "account/activation.mob?device=" + encodedObject;
-        String url =  "http://localhost:8080/mf/account/activation.mob?device=" + encodedObject; //TODO: obtener del properties el dominio del server
+        String url = contextPath + "account/activation.mob?device=" + encodedObject;
         String body = i18nBundle.getLabel(language, "services.mail.activation.body", url);
         String subject = i18nBundle.getLabel(language, "services.mail.activation.subject");
 

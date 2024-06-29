@@ -66,6 +66,10 @@ public class AuthenticationEndpoint extends EndpointController {
 	@Autowired
 	private IDBLogging dbLogging;
 
+	private String username = "chake@feltesq.com";
+
+	/*@Value("${chake.user}")
+	private String username;*/
 
 	/**
 	 * The verification should be done after the login.
@@ -221,7 +225,7 @@ public class AuthenticationEndpoint extends EndpointController {
 
 
 		Application app = applicationService.findById(device.getApplicationId());
-		User user = userService.findByMail("chake@feltesq.com"); //TODO: obtener del properties
+		User user = userService.findByMail(username);
 
 		Long applicationId = device.getApplicationId();
 		String identifier = device.getDeviceInfo().getIdentifier();

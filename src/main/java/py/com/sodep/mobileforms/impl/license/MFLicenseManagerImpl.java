@@ -31,7 +31,7 @@ public class MFLicenseManagerImpl implements MFLicenseManager {
 	private static final Logger logger = LoggerFactory.getLogger(MFLicenseManagerImpl.class);
 	private static final Long MAX_USERS_OPENSOURCE = 50l;
 	private static final Long MAX_VALID_DAYS = 3650L;
-	private static final Long MAX_DEVICES = 2l; //TODO: cambiar cantidad de dispositivos
+	private static final Long MAX_DEVICES = 5000l;
 	private static final Long MAX_APPLICATIONS = 10l;
 	private static final String DEFAULT_OWNER = "devnull@sodep.com.py";
 	private static final Date YESTERDAY = DateUtils.addDays(new Date(), -1);
