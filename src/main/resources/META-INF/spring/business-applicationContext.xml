@@ -92,6 +92,7 @@
 				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
 				<!-- Use TLS to encrypt communication with SMTP server -->
 				<prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+				<prop key="mail.smtp.ssl.protocols">${mail.smtp.ssl.protocols}</prop>
 				<prop key="mail.debug">${mail.debug}</prop>
 			</props>
 		</property>
