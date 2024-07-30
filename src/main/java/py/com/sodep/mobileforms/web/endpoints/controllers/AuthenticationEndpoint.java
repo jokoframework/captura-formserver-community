@@ -36,6 +36,7 @@ import py.com.sodep.mobileforms.api.services.logging.IDBLogging;
 import py.com.sodep.mobileforms.api.services.metadata.applications.IApplicationService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IDeviceService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IUserService;
+import py.com.sodep.mobileforms.config.ChakeConfig;
 import py.com.sodep.mobileforms.web.activation.ActivationRequest;
 import py.com.sodep.mobileforms.web.activation.ActivationResponse;
 import py.com.sodep.mobileforms.web.activation.ActivationStatusResponse;
@@ -66,10 +67,8 @@ public class AuthenticationEndpoint extends EndpointController {
 	@Autowired
 	private IDBLogging dbLogging;
 
-	private String username = "chake@feltesq.com";
-
-	/*@Value("${chake.user}")
-	private String username;*/
+	@Autowired
+	private ChakeConfig chakeConfig;
 
 	/**
 	 * The verification should be done after the login.
@@ -89,12 +88,16 @@ public class AuthenticationEndpoint extends EndpointController {
 		User user = mgr.getUser();
 
 		Long applicationId = device.getApplicationId();
+		Application app = applicationService.findById(applicationId);
+		String identifier = device.getDeviceInfo().getIdentifier();
 
 		checkIfApplicationIsActive(user, applicationId);
 
 		if (userService.isMember(applicationId, user)) {
 			try {
-				deviceService.associate(user, device);
+				if (!deviceService.isDeviceAssociated(user, app, identifier)) {
+					deviceService.associate(user, device);
+				}
 				// set the application
 				mgr.setApplication(applicationService.findById(applicationId));
 			} catch (LicenseException ex) {
@@ -225,7 +228,7 @@ public class AuthenticationEndpoint extends EndpointController {
 
 
 		Application app = applicationService.findById(device.getApplicationId());
-		User user = userService.findByMail(username);
+		User user = userService.findByMail(chakeConfig.getEmail());
 
 		Long applicationId = device.getApplicationId();
 		String identifier = device.getDeviceInfo().getIdentifier();

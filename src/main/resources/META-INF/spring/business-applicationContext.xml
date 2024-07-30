@@ -16,6 +16,9 @@
 	</bean>
 	<bean class="py.com.sodep.mobileforms.impl.ElapsedTimeAspect">
 	</bean>
+	<bean  class="py.com.sodep.mobileforms.config.ChakeConfig">
+	</bean>
+
 
 	<!-- Enable the configuration of transactional behavior based on annotations -->
 	<tx:annotation-driven transaction-manager="myTxManager" />
@@ -41,6 +44,7 @@
 				<value>file:///${MOBILEFORMS_HOME}/mongo.properties</value>
 				<value>file:///${MOBILEFORMS_HOME}/mail.properties</value>
 				<value>file:///${MOBILEFORMS_HOME}/server.properties</value>
+				<value>file:///${MOBILEFORMS_HOME}/chake.properties</value>
 			</list>
 		</property>
 	</bean>

@@ -10,6 +10,7 @@ import py.com.sodep.mf.exchange.objects.device.MFDevice;
 import py.com.sodep.mobileforms.api.entities.core.User;
 import py.com.sodep.mobileforms.api.services.metadata.core.IDeviceService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IUserService;
+import py.com.sodep.mobileforms.config.ChakeConfig;
 import py.com.sodep.mobileforms.web.i18n.I18nManager;
 import py.com.sodep.mobileforms.web.json.JsonResponse;
 import py.com.sodep.mobileforms.web.session.SessionManager;
@@ -30,6 +31,8 @@ public class AccountActivationController {
 
 	private MFDevice mfDevice;
 
+	@Autowired
+	private ChakeConfig chakeConfig;
 
 	@RequestMapping("/account/activation.mob")
 	public ModelAndView index(HttpServletRequest request, @RequestParam("device") String device) {
@@ -68,7 +71,7 @@ public class AccountActivationController {
 			return response;
 		}
 
-		User user = userService.findByMail("chake@feltesq.com");
+		User user = userService.findByMail(chakeConfig.getEmail());
 		deviceService.associate(user, mfDevice);
 
 		response.setSuccess(true);
