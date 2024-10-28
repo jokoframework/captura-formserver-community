@@ -2,12 +2,16 @@ package py.com.sodep.mobileforms.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.captcha.Captcha;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import py.com.sodep.mf.exchange.objects.device.MFDevice;
+import py.com.sodep.mobileforms.api.entities.application.Application;
 import py.com.sodep.mobileforms.api.entities.core.User;
+import py.com.sodep.mobileforms.api.services.metadata.applications.IApplicationService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IDeviceService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IUserService;
 import py.com.sodep.mobileforms.config.ChakeConfig;
@@ -23,11 +27,16 @@ import java.util.Base64;
 @Controller
 public class AccountActivationController {
 
+	private static final Logger LOG = LoggerFactory.getLogger(AccountActivationController.class);
+
 	@Autowired
 	private IUserService userService;
 
 	@Autowired
 	private IDeviceService deviceService;
+
+	@Autowired
+	private IApplicationService applicationService;
 
 	private MFDevice mfDevice;
 
@@ -47,7 +56,7 @@ public class AccountActivationController {
 				ObjectMapper objectMapper = new ObjectMapper();
 				mfDevice = objectMapper.readValue(decodedJson, MFDevice.class);
 			} catch (IOException e) {
-				// Manejo de errores
+				LOG.error(e.getMessage(), e);
 			}
 		}
 		return mav;
@@ -71,9 +80,18 @@ public class AccountActivationController {
 			return response;
 		}
 
+		Application app = applicationService.findById(mfDevice.getApplicationId());
 		User user = userService.findByMail(chakeConfig.getEmail());
-		deviceService.associate(user, mfDevice);
+		String identifier = mfDevice.getDeviceInfo().getIdentifier();
 
+		if (deviceService.isDeviceAssociated(user, app, identifier)) {
+			response.setSuccess(true);
+			response.setObj("OK");
+			response.setUnescapedMessage("El dispositivo ya estaba activado. Sigue usando la app para hacer tus denuncias.");
+			return response;
+		}
+
+		deviceService.associate(user, mfDevice);
 		response.setSuccess(true);
 		response.setObj("OK");
 		response.setUnescapedMessage(i18n.getMessage("web.account.activation.success"));

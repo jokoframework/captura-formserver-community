@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class MFLicenseManagerImpl implements MFLicenseManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(MFLicenseManagerImpl.class);
-	private static final Long MAX_USERS_OPENSOURCE = 50l;
+	private static final Long MAX_USERS_OPENSOURCE = 200l;
 	private static final Long MAX_VALID_DAYS = 3650L;
 	private static final Long MAX_DEVICES = 5000l;
 	private static final Long MAX_APPLICATIONS = 10l;
