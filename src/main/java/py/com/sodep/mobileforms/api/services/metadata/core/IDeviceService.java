@@ -8,6 +8,7 @@ import py.com.sodep.mobileforms.api.entities.application.Application;
 import py.com.sodep.mobileforms.api.entities.core.Device;
 import py.com.sodep.mobileforms.api.entities.core.User;
 import py.com.sodep.mobileforms.api.services.metadata.PagedData;
+import py.com.sodep.mobileforms.web.activation.ActivationRequest;
 
 public interface IDeviceService {
 
@@ -16,6 +17,8 @@ public interface IDeviceService {
 	Device getOrCreateIfNotExists(MFDevice device);
 
 	void associate(User user, MFDevice device);
+
+	void associate(User user, ActivationRequest activationRequest);
 
 	void disassociateDevice(Long userId, Long deviceId);
 

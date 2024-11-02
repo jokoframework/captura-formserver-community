@@ -29,6 +29,7 @@ import py.com.sodep.mobileforms.api.services.metadata.core.IDeviceService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IUserService;
 import py.com.sodep.mobileforms.impl.services.metadata.BaseService;
 import py.com.sodep.mobileforms.license.MFApplicationLicense;
+import py.com.sodep.mobileforms.web.activation.ActivationRequest;
 
 @Service("DeviceService")
 @Transactional
@@ -151,6 +152,36 @@ public class DeviceService extends BaseService<Device> implements IDeviceService
 	@Override
 	public void associate(User user, MFDevice mfDevice) {
 		Device device = getOrCreateIfNotExists(mfDevice);
+		if (device.getBlacklisted() != null && device.getBlacklisted()) {
+			throw new DeviceBlacklistedException();
+		}
+		user = userService.findById(user.getId());
+		Application application = device.getApplication();
+		Long applicationId = application.getId();
+
+		if (mfLicenseManager.doesLicenseApply(applicationId)) {
+			MFApplicationLicense applicationLicense = mfLicenseManager.getLicense(applicationId);
+			Long maxDevicesPerUser = applicationLicense.getMaxDevices();
+			Long deviceCount = countDevices(user, application);
+			List<Device> devices = user.getDevices();
+			boolean contains = false;
+			if (devices != null) {
+				contains = devices.contains(device);
+			}
+			if (!contains && deviceCount < maxDevicesPerUser) {
+				associate(user, device);
+			} else if (!contains) {
+				logger.info("Too many devices for user : " + user.getMail() + " in application #" + application.getId());
+				throw new LicenseException("Too many devices");
+			}
+		}
+
+	}
+
+	@Override
+	public void associate(User user, ActivationRequest activationRequest) {
+		Device device = getOrCreateIfNotExists(activationRequest.getDevice());
+		device.setActivationEmail(activationRequest.getEmail());
 		if (device.getBlacklisted() != null && device.getBlacklisted()) {
 			throw new DeviceBlacklistedException();
 		}

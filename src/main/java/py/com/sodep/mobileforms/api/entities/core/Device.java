@@ -80,6 +80,8 @@ public class Device extends SodepEntity {
 	
 	private Boolean blacklisted;
 
+	private String activationEmail;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_devices")
 	@Column(unique = true, nullable = false)
@@ -194,5 +196,14 @@ public class Device extends SodepEntity {
 
 	public void setBlacklisted(Boolean blacklisted) {
 		this.blacklisted = blacklisted;
+	}
+
+	@Column(name = "activation_email")
+	public String getActivationEmail() {
+		return activationEmail;
+	}
+
+	public void setActivationEmail(String activationEmail) {
+		this.activationEmail = activationEmail;
 	}
 }

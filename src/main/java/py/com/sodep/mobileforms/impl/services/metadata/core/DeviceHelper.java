@@ -4,6 +4,7 @@ import py.com.sodep.mf.exchange.objects.device.MFDevice;
 import py.com.sodep.mf.exchange.objects.device.MFDeviceInfo;
 import py.com.sodep.mobileforms.api.entities.core.Device;
 import py.com.sodep.mobileforms.api.entities.core.Device.OS;
+import py.com.sodep.mobileforms.web.activation.ActivationRequest;
 
 public class DeviceHelper {
 
@@ -24,6 +25,27 @@ public class DeviceHelper {
 		d.setManufacturer(deviceInfo.getManufacturer());
 		d.setProduct(deviceInfo.getProduct());
 		d.setRelease(deviceInfo.getRelease());
+		return d;
+	}
+
+	public static Device toEntity(ActivationRequest activationRequest) {
+		MFDeviceInfo deviceInfo = activationRequest.getDevice().getDeviceInfo();
+		OS os = OS.getOS(deviceInfo.getOs());
+		String identifier = deviceInfo.getIdentifier();
+		String brand = deviceInfo.getBrand();
+		String model = deviceInfo.getModel();
+		String versionNumber = deviceInfo.getVersionNumber();
+
+		Device d = new Device();
+		d.setOs(os);
+		d.setIdentifier(identifier);
+		d.setBrand(brand);
+		d.setModel(model);
+		d.setVersionNumber(versionNumber);
+		d.setManufacturer(deviceInfo.getManufacturer());
+		d.setProduct(deviceInfo.getProduct());
+		d.setRelease(deviceInfo.getRelease());
+		d.setActivationEmail(activationRequest.getEmail());
 		return d;
 	}
 

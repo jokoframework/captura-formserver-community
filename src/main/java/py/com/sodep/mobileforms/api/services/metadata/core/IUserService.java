@@ -11,6 +11,7 @@ import py.com.sodep.mobileforms.api.entities.core.Group;
 import py.com.sodep.mobileforms.api.entities.core.Token;
 import py.com.sodep.mobileforms.api.entities.core.User;
 import py.com.sodep.mobileforms.api.services.metadata.PagedData;
+import py.com.sodep.mobileforms.web.activation.ActivationRequest;
 
 /**
  * To save, update, retrieve and search Users
@@ -243,6 +244,8 @@ public interface IUserService {
 	boolean queueActivationEmail(Application application, User currentUser, User user, String email);
 
 	boolean queueSendActivationEmail(String email, MFDevice device);
+
+	boolean queueSendActivationEmail(ActivationRequest activationRequest);
 
 	/**
 	 * Send a mail to the user with his/hers credentials on behalf of the

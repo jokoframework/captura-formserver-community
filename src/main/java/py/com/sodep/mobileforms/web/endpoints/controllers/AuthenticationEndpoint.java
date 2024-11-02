@@ -256,7 +256,7 @@ public class AuthenticationEndpoint extends EndpointController {
 			throwMailIsNull();
 		}
 
-		boolean isSentEmail = userService.queueSendActivationEmail(userEmail, activationRequest.getDevice());
+		boolean isSentEmail = userService.queueSendActivationEmail(activationRequest);
 		activationResponse.setSentEmail(isSentEmail);
 
 		return activationResponse;

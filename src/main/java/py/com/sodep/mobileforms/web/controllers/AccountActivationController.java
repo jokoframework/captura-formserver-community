@@ -15,6 +15,7 @@ import py.com.sodep.mobileforms.api.services.metadata.applications.IApplicationS
 import py.com.sodep.mobileforms.api.services.metadata.core.IDeviceService;
 import py.com.sodep.mobileforms.api.services.metadata.core.IUserService;
 import py.com.sodep.mobileforms.config.ChakeConfig;
+import py.com.sodep.mobileforms.web.activation.ActivationRequest;
 import py.com.sodep.mobileforms.web.i18n.I18nManager;
 import py.com.sodep.mobileforms.web.json.JsonResponse;
 import py.com.sodep.mobileforms.web.session.SessionManager;
@@ -38,7 +39,7 @@ public class AccountActivationController {
 	@Autowired
 	private IApplicationService applicationService;
 
-	private MFDevice mfDevice;
+	private ActivationRequest activationRequest;
 
 	@Autowired
 	private ChakeConfig chakeConfig;
@@ -54,7 +55,7 @@ public class AccountActivationController {
 
 				// Convertir el JSON decodificado a un objeto MFDevice
 				ObjectMapper objectMapper = new ObjectMapper();
-				mfDevice = objectMapper.readValue(decodedJson, MFDevice.class);
+				activationRequest = objectMapper.readValue(decodedJson, ActivationRequest.class);
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
 			}
@@ -80,6 +81,7 @@ public class AccountActivationController {
 			return response;
 		}
 
+		MFDevice mfDevice = activationRequest.getDevice();
 		Application app = applicationService.findById(mfDevice.getApplicationId());
 		User user = userService.findByMail(chakeConfig.getEmail());
 		String identifier = mfDevice.getDeviceInfo().getIdentifier();
@@ -87,11 +89,11 @@ public class AccountActivationController {
 		if (deviceService.isDeviceAssociated(user, app, identifier)) {
 			response.setSuccess(true);
 			response.setObj("OK");
-			response.setUnescapedMessage("El dispositivo ya estaba activado. Sigue usando la app para hacer tus denuncias.");
+			response.setUnescapedMessage("Tu dispositivo ya está activado. Continúa usando la app para realizar tus denuncias.");
 			return response;
 		}
 
-		deviceService.associate(user, mfDevice);
+		deviceService.associate(user, activationRequest);
 		response.setSuccess(true);
 		response.setObj("OK");
 		response.setUnescapedMessage(i18n.getMessage("web.account.activation.success"));

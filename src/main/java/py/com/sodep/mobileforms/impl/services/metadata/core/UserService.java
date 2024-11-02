@@ -43,6 +43,7 @@ import py.com.sodep.mobileforms.impl.services.metadata.core.find.criteria.users.
 import py.com.sodep.mobileforms.impl.services.metadata.core.find.criteria.users.GroupCriteria;
 import py.com.sodep.mobileforms.license.MFApplicationLicense;
 import py.com.sodep.mobileforms.utils.SecurityUtils;
+import py.com.sodep.mobileforms.web.activation.ActivationRequest;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -354,6 +355,32 @@ class UserService extends BaseService<User> implements IUserService {
         String subject = i18nBundle.getLabel(language, "services.mail.activation.subject");
 
         mailService.queueMail(mailFrom, email, subject, body);
+        return true;
+    }
+
+    @Override
+    public boolean queueSendActivationEmail(ActivationRequest activationRequest) {
+        String language = "es";
+        String mailFrom = getMailFrom();
+        String contextPath = getContextPath();
+
+        // Convertir el objeto a JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonObject = "";
+        try {
+            jsonObject = objectMapper.writeValueAsString(activationRequest);
+        } catch (JsonProcessingException e) {
+            return false;
+        }
+
+        // Codificar el JSON a base64
+        String encodedObject = Base64.getEncoder().encodeToString(jsonObject.getBytes(StandardCharsets.UTF_8));
+
+        String url = contextPath + "account/activation.mob?device=" + encodedObject;
+        String body = i18nBundle.getLabel(language, "services.mail.activation.body", url);
+        String subject = i18nBundle.getLabel(language, "services.mail.activation.subject");
+
+        mailService.queueMail(mailFrom, activationRequest.getEmail(), subject, body);
         return true;
     }
 
